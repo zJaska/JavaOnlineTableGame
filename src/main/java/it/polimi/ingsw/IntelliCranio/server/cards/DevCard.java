@@ -1,0 +1,49 @@
+package it.polimi.ingsw.IntelliCranio.server.cards;
+
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+
+import java.util.ArrayList;
+
+public class DevCard extends Card {
+
+    public enum CardType { GREEN, YELLOW, PURPLE, BLUE}
+
+    private CardType type;
+    private int level;
+
+    private ArrayList<FinalResource> cardCost;
+    private ArrayList<FinalResource> productionCost;
+    private ArrayList<FinalResource> product;
+
+
+    @Override
+    public int getVictoryPoints() {
+        return vp;
+    }
+
+    @Override
+    public String getID() {
+        return ID;
+    }
+
+    public CardType getType() {
+        return type;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public ArrayList<FinalResource> getCardCost() {
+        return cardCost;
+    }
+
+    public ArrayList<FinalResource> getProductionCost() {
+        return productionCost;
+    }
+
+    public ArrayList<FinalResource> getProduct() {
+        return product;
+    }
+
+}
