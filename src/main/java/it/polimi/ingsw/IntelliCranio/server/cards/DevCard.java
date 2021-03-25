@@ -16,6 +16,18 @@ public class DevCard extends Card {
     private ArrayList<FinalResource> product;
 
 
+    public DevCard(String ID, int vp, CardType type, int level, ArrayList<FinalResource> cardCost,
+                   ArrayList<FinalResource> productionCost, ArrayList<FinalResource> product) {
+
+        this.ID = ID;
+        this.vp = vp;
+        this.type = type;
+        this.level = level;
+        this.cardCost = cardCost;
+        this.productionCost = productionCost;
+        this.product = product;
+    }
+
     @Override
     public int getVictoryPoints() {
         return vp;
