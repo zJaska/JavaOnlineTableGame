@@ -2,7 +2,6 @@ package it.polimi.ingsw.IntelliCranio.server.cards;
 
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 
@@ -31,6 +30,6 @@ public class LeadCard extends Card{
     }
 
     public void useCard() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }

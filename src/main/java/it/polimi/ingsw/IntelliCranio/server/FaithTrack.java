@@ -1,7 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.server;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.ArrayList;
 import java.util.Dictionary;
 
@@ -27,15 +25,15 @@ public class FaithTrack {
 
     //Detect if a player is in a pope space and return the vatican section index
     public int popeSpace(int space) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public boolean isXSectionOrHigher(int sectionX, int space) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public int getVp(int space) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
 }

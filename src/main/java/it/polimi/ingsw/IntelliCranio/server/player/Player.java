@@ -3,7 +3,6 @@ package it.polimi.ingsw.IntelliCranio.server.player;
 import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.cards.PopeCard;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 
@@ -24,12 +23,12 @@ public class Player {
     private boolean hasPlayed;
 
 
-    public void addLeaders(ArrayList<LeadCard> cards) {
-        throw new NotImplementedException();
+    public void setLeaders(ArrayList<LeadCard> cards) {
+        throw new UnsupportedOperationException();
     }
 
     public void addFaith(int amount) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public int getFaithPosition() {
@@ -37,7 +36,7 @@ public class Player {
     }
 
     public PopeCard getPopeCard(int index) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
 }

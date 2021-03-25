@@ -4,7 +4,6 @@ import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.server.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 
@@ -18,31 +17,31 @@ public class GameManager implements Runnable{
 
     @Override
     public void run() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     private void createLeaderCards() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     private void assignCards() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     private void shufflePlayers() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     private void playerSetup() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     private void playGame() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     private void endingGame() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public FaithTrack getFaithTrack() {

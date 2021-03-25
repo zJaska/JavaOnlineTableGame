@@ -2,7 +2,6 @@ package it.polimi.ingsw.IntelliCranio.server.player;
 
 import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 
@@ -12,15 +11,15 @@ public class Strongbox {
 
 
     public int getValue(FinalResource.ResourceType resource) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public void addResources(FinalResource.ResourceType resource, int amount) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public void removeResources(FinalResource.ResourceType resource, int amount) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
 

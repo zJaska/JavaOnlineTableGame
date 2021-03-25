@@ -1,7 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.server.player;
 
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 
@@ -14,14 +13,14 @@ public class Warehouse {
     }
 
     public void swapLines(int first, int second) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public void addFromMarket(int first, int second, ArrayList<Resource> marketRes) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     public void update() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }
