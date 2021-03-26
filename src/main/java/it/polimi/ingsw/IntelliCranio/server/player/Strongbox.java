@@ -4,6 +4,7 @@ import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Strongbox {
 
@@ -11,15 +12,22 @@ public class Strongbox {
 
 
     public int getValue(FinalResource.ResourceType resource) {
-        throw new UnsupportedOperationException();
+        return this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get().getAmount();
     }
 
     public void addResources(FinalResource.ResourceType resource, int amount) {
-        throw new UnsupportedOperationException();
+        this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get().addAmount(amount);
     }
 
     public void removeResources(FinalResource.ResourceType resource, int amount) {
-        throw new UnsupportedOperationException();
+        Resource temp=this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get();
+
+        if(temp.getAmount()<amount){
+            temp.setAmount(0);
+            return;
+        }
+
+        this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get().removeAmount(amount);
     }
 
 

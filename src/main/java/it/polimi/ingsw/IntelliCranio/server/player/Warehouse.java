@@ -14,13 +14,31 @@ public class Warehouse {
 
     public void swapLines(int first, int second) {
         throw new UnsupportedOperationException();
-    }
+    }//Maybe useless because it's a client method.
 
     public void addFromMarket(int first, int second, ArrayList<Resource> marketRes) {
         throw new UnsupportedOperationException();
-    }
+    }//Maybe useless because it's a client method.
 
-    public void update() {
-        throw new UnsupportedOperationException();
-    }
+    //check number of cards discarded and update
+    public int update(ArrayList<Resource> tempDepot, ArrayList<Resource> marketRes) {
+        int numDiscards=0;
+
+            for(int i=0;i<tempDepot.size();++i)
+            {
+                if( tempDepot.get(i).getAmount() > (i+1) ) {
+                    numDiscards += tempDepot.get(i).getAmount() - (i + 1);
+                    tempDepot.get(i).setAmount(i+1);
+                }
+
+            }
+
+            depot=tempDepot;
+
+            for(int i=0;i<marketRes.size();++i){
+                numDiscards+=marketRes.get(i).getAmount();
+            }
+
+        return numDiscards;
+    }//-1 , 0 conto tuo, altrimenti risorse scartate
 }

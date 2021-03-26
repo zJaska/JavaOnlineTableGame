@@ -13,4 +13,6 @@ public class Resource extends FinalResource {
     public void removeAmount(int amount) {
         this.amount -= amount;
     }
+
+    public void setAmount(int amount) { this.amount=amount; }
 }
