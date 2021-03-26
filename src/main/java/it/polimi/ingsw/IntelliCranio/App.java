@@ -2,8 +2,6 @@ package it.polimi.ingsw.IntelliCranio;
 
 import it.polimi.ingsw.IntelliCranio.server.market.CardMarket;
 
-import java.io.IOException;
-
 /**
  * Hello world!
  *
@@ -14,5 +12,6 @@ public class App
     {
         CardMarket market = new CardMarket(3, 4);
         market.setup("src/main/resources/devcards_config.json", true);
+
     }
 }
