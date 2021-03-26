@@ -6,7 +6,16 @@ import java.util.ArrayList;
 
 public class Warehouse {
 
-    private ArrayList<Resource> depot = new ArrayList<>(3);
+    private ArrayList<Resource> depot;
+
+    /**
+     * It's the constructor of Warehouse class
+     * @param dim the dimension of the depot
+     */
+    public Warehouse(int dim){
+        depot=new ArrayList<>(dim);
+    }
+
 
     public ArrayList<Resource> getDepot() {
         return depot;
@@ -20,9 +29,24 @@ public class Warehouse {
         throw new UnsupportedOperationException();
     }//Maybe useless because it's a client method.
 
-    //check number of cards discarded and update
+    /**
+     *
+     * <summary>
+     *  check number of cards discarded and update and
+     *  check if there are 2 items on different lines.
+     * </summary>
+     * @param tempDepot this is sent by client
+     * @param marketRes this is sent by client which is left from market.
+     * @return -1 if error else number of cards discarded.
+     */
     public int update(ArrayList<Resource> tempDepot, ArrayList<Resource> marketRes) {
         int numDiscards=0;
+
+            for(int i=0;i<tempDepot.size()-1;++i)
+                for(int j=i+1;j<tempDepot.size();++j)
+                    if(tempDepot.get(i).getType()==tempDepot.get(j).getType())
+                        return -1;
+
 
             for(int i=0;i<tempDepot.size();++i)
             {
@@ -35,9 +59,10 @@ public class Warehouse {
 
             depot=tempDepot;
 
-            for(int i=0;i<marketRes.size();++i){
-                numDiscards+=marketRes.get(i).getAmount();
-            }
+            if(marketRes!=null)
+                for(int i=0;i<marketRes.size();++i)
+                    numDiscards+=marketRes.get(i).getAmount();
+
 
         return numDiscards;
     }
