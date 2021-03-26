@@ -1,8 +1,13 @@
 package it.polimi.ingsw.IntelliCranio.server.market;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,14 +24,12 @@ public class CardMarket {
      */
     public void setup() {
         //Creating the list for each group
-        for(int row = 0; row < 3; ++row) {
-            for(int col = 0; col < 4; ++col) {
+        for (int row = 0; row < 3; ++row)
+            for (int col = 0; col < 4; ++col)
                 marketGrid[row][col] = new ArrayList<>();
-            }
-        }
 
         generateGrid();
-        shuffle();
+        //shuffle();
     }
 
     /**
@@ -35,6 +38,20 @@ public class CardMarket {
      * </summary>
      */
     private void generateGrid() {
+        ArrayList<DevCard> cardList = new ArrayList<>();
+
+        try {
+            String text = new String(Files.readAllBytes(Paths.get("src/main/resources/devcards_config.json")), StandardCharsets.UTF_8);
+            Gson gson = new Gson();
+            cardList = gson.fromJson(text,ArrayList.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        int a;
+
+
+        /*
 
         String prefix = "developmentcard_front";
         String color;
@@ -1074,7 +1091,7 @@ public class CardMarket {
 
         //endregion
 
-
+        */
     }
 
     /**
@@ -1109,6 +1126,7 @@ public class CardMarket {
 
             }
         }
+
 
     }
 
