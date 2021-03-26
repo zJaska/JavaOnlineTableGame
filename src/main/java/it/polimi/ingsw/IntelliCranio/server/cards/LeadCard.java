@@ -11,15 +11,6 @@ public class LeadCard extends Card{
     private ArrayList<FinalResource> requirements;
     private Ability specialAbility;
 
-    @Override
-    public int getVictoryPoints() {
-        return vp;
-    }
-
-    @Override
-    public String getID() {
-        return ID;
-    }
 
     public boolean isActive() {
         return isActive;

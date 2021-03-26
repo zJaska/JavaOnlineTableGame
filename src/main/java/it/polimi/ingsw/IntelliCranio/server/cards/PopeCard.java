@@ -6,15 +6,6 @@ public class PopeCard extends Card{
 
     private Status status;
 
-    @Override
-    public int getVictoryPoints() {
-        return vp;
-    }
-
-    @Override
-    public String getID() {
-        return ID;
-    }
 
     public Status getStatus() {
         return status;

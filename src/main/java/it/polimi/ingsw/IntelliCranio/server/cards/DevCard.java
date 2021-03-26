@@ -28,15 +28,6 @@ public class DevCard extends Card {
         this.product = product;
     }
 
-    @Override
-    public int getVictoryPoints() {
-        return vp;
-    }
-
-    @Override
-    public String getID() {
-        return ID;
-    }
 
     public CardType getType() {
         return type;
