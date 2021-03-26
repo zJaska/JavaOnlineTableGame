@@ -1,0 +1,58 @@
+[
+  {
+    "type": "GREEN",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "SHIELD",
+        "amount": 2
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "COIN",
+        "amount": 1
+      }
+    ],
+    "product": [
+      {
+        "type": "FAITH",
+        "amount": 1
+      }
+    ],
+    "vp": 1,
+    "ID": "developmentcard_front_g_1_1"
+  },
+  {
+    "type": "GREEN",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "SHIELD",
+        "amount": 1
+      },
+      {
+        "type": "SERVANT",
+        "amount": 1
+      },
+      {
+        "type": "STONE",
+        "amount": 1
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "STONE",
+        "amount": 1
+      }
+    ],
+    "product": [
+      {
+        "type": "SERVANT",
+        "amount": 1
+      }
+    ],
+    "vp": 2,
+    "ID": "developmentcard_front_g_1_2"
+  }
+]
