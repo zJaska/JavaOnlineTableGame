@@ -40,5 +40,5 @@ public class Warehouse {
             }
 
         return numDiscards;
-    }//-1 , 0 conto tuo, altrimenti risorse scartate
+    }
 }
