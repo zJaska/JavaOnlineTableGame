@@ -9,6 +9,7 @@ public class ResourceMarket {
     private FinalResource extraMarble;
     private FinalResource[][] marbleGrid = new FinalResource[3][4];
 
+
     public void setup() {
         throw new UnsupportedOperationException();
     }

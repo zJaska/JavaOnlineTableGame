@@ -12,7 +12,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        CardMarket market = new CardMarket();
-        market.setup();
+        CardMarket market = new CardMarket(3, 4);
+        market.setup("src/main/resources/devcards_config.json", true);
     }
 }
