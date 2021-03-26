@@ -1,7 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.server;
 
-import java.util.ArrayList;
-
 public class Packet {
 
     public enum InstructionCode {
@@ -16,14 +14,14 @@ public class Packet {
     }
 
     private InstructionCode code;
-    private ArrayList<String> jsonArgs;
+    private String[] args;
 
 
     public InstructionCode getCode() {
         return code;
     }
 
-    public ArrayList<String> getArgs() {
-        return jsonArgs;
+    public String[] getArgs() {
+        return args;
     }
 }

@@ -1,29 +1,10 @@
 package it.polimi.ingsw.IntelliCranio.server.action;
 
 
-import it.polimi.ingsw.IntelliCranio.server.Packet;
-
 public class ActionFactory {
 
-    /**
-     * Generates different Action instances.
-     * @param packet
-     * @return New action based on code received in packet.
-     */
-    public Action getAction(Packet packet) {
-        Packet.InstructionCode code = packet.getCode();
-
-        if(packet == null) return null;
-        if(code == Packet.InstructionCode.CHOOSE_LEADERS) return new ChooseLeaders(packet.getArgs());
-        if(code == Packet.InstructionCode.CHOOSE_INIT_RES) return new ChooseResources(packet.getArgs());
-        if(code == Packet.InstructionCode.TAKE_RES) return new TakeResources(packet.getArgs());
-        if(code == Packet.InstructionCode.BUY_DEV_CARD) return new BuyDevCard(packet.getArgs());
-        if(code == Packet.InstructionCode.ACT_PROD) return new ActivateProduction(packet.getArgs());
-        if(code == Packet.InstructionCode.MNG_WAREHOUSE) return new ManageWarehouse(packet.getArgs());
-        if(code == Packet.InstructionCode.PLAY_LEADER) return new PlayLeader(packet.getArgs());
-        if(code == Packet.InstructionCode.DISCARD_LEADER) return new DiscardLeader(packet.getArgs());
-
-        return null;
+    public Action getAction(String input) {
+        throw new UnsupportedOperationException();
     }
 
 }
