@@ -3,10 +3,9 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
-import it.polimi.ingsw.IntelliCranio.server.ability.SaleAbility;
 import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
 import it.polimi.ingsw.IntelliCranio.server.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
@@ -81,7 +80,12 @@ public class DiscardInitLeadersTest {
         args.add(gson.toJson(cardsToDiscard));
 
         Action action = new DiscardInitLeaders(args);
-        action.playAction(manager);
+
+        try {
+            action.playAction(manager);
+        } catch (InvalidArgumentsException e) {
+            e.printStackTrace();
+        }
         //endregion
 
         //Get the actual cards the player has now

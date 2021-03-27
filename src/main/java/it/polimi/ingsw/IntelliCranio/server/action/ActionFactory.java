@@ -14,8 +14,8 @@ public class ActionFactory {
         Packet.InstructionCode code = packet.getCode();
 
         if(packet == null) return null;
-        if(code == Packet.InstructionCode.CHOOSE_LEADERS) return new DiscardInitLeaders(packet.getArgs());
-        if(code == Packet.InstructionCode.CHOOSE_INIT_RES) return new ChooseResources(packet.getArgs());
+        if(code == Packet.InstructionCode.DISCARD_INIT_LEADERS) return new DiscardInitLeaders(packet.getArgs());
+        if(code == Packet.InstructionCode.CHOOSE_INIT_RES) return new ChooseInitResources(packet.getArgs());
         if(code == Packet.InstructionCode.TAKE_RES) return new TakeResources(packet.getArgs());
         if(code == Packet.InstructionCode.BUY_DEV_CARD) return new BuyDevCard(packet.getArgs());
         if(code == Packet.InstructionCode.ACT_PROD) return new ActivateProduction(packet.getArgs());

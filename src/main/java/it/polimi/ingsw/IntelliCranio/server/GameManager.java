@@ -3,14 +3,10 @@ package it.polimi.ingsw.IntelliCranio.server;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import it.polimi.ingsw.IntelliCranio.server.ability.*;
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.server.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
-import it.polimi.ingsw.IntelliCranio.server.resource.CardResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +17,7 @@ import java.util.Random;
 
 public class GameManager implements Runnable{
 
-    private int currentPlayer;
+    private int currentPlayerIndex; //0 - 3: The index of the player turn
     private FaithTrack faithTrack;
     private CardMarket cardMarket;
     private ResourceMarket resourceMarket;
@@ -103,6 +99,46 @@ public class GameManager implements Runnable{
         throw new UnsupportedOperationException();
     }
 
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
+    /**
+     *  Get the amount of resources a player can take at the start of
+     *  the game given the current player index
+     *
+     * @param index The index of the player is currently playing
+     * @return The amount of resources a player can take at the start of the game
+     */
+    public int getInitRes(int index) {
+        ArrayList<Integer> table = new ArrayList<>();
+
+        table.add(0);
+        table.add(1);
+        table.add(1);
+        table.add(2);
+
+        return table.get(index);
+    }
+
+    /**
+     *  Get the amount of resources a player has at the start of
+     *  the game given the current player index
+     *
+     * @param index The index of the player is currently playing
+     * @return The amount of faith a player has at the start of the game
+     */
+    public int getInitFaith(int index) {
+        ArrayList<Integer> table = new ArrayList<>();
+
+        table.add(0);
+        table.add(0);
+        table.add(1);
+        table.add(1);
+
+        return table.get(index);
+    }
+
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
@@ -124,7 +160,7 @@ public class GameManager implements Runnable{
     }
 
     public Player getCurrentPlayer() {
-        return players.get(currentPlayer);
+        return players.get(currentPlayerIndex);
     }
 
 }

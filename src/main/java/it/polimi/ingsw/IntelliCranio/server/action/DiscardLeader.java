@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class DiscardLeader implements Action{
     }
 
     @Override
-    public void playAction(GameManager manager) {
+    public void playAction(GameManager manager) throws InvalidArgumentsException {
         throw new UnsupportedOperationException();
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Packet {
 
     public enum InstructionCode {
-        CHOOSE_LEADERS,
+        DISCARD_INIT_LEADERS,
         CHOOSE_INIT_RES,
         TAKE_RES,
         BUY_DEV_CARD,
