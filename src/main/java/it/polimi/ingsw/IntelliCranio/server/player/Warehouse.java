@@ -7,12 +7,14 @@ import java.util.ArrayList;
 public class Warehouse {
 
     private ArrayList<Resource> depot;
+    private int dim;
 
     /**
      * It's the constructor of Warehouse class
      * @param dim the dimension of the depot
      */
     public Warehouse(int dim){
+        this.dim=dim;
         depot=new ArrayList<>(dim);
     }
 
@@ -42,6 +44,9 @@ public class Warehouse {
     public int update(ArrayList<Resource> tempDepot, ArrayList<Resource> marketRes) {
         int numDiscards=0;
 
+        if(tempDepot.size()>dim)
+            return -1;
+
             for(int i=0;i<tempDepot.size()-1;++i)
                 for(int j=i+1;j<tempDepot.size();++j)
                     if(tempDepot.get(i).getType()==tempDepot.get(j).getType())
@@ -66,4 +71,10 @@ public class Warehouse {
 
         return numDiscards;
     }
+
+    /**
+     * This is a getter of dim
+     * @return value of dim
+     */
+    public int getDim(){ return dim};
 }
