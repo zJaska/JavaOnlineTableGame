@@ -13,15 +13,13 @@ public class DiscardInitLeaders implements Action{
     private ArrayList<LeadCard> selection;
 
     /**
-     * Constructor
-     * <p>
-     *     Gets all the necessary parameter from json strings.
-     * </p>
-     * @param jsonArgs
+     * Gets all the necessary parameter from json strings.
+     * @param jsonArgs List of all the LeadCard to discard
      */
     public DiscardInitLeaders(ArrayList<String> jsonArgs) {
 
         Gson gson = new Gson();
+
 
         selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<LeadCard>>(){}.getType());
 
@@ -32,8 +30,12 @@ public class DiscardInitLeaders implements Action{
 
         Player currentPlayer = manager.getCurrentPlayer();
 
-        selection.forEach(card -> {
-            currentPlayer.getLeaders().remove(card);
+        selection.forEach(selected -> {
+            LeadCard cardToDiscard = currentPlayer.getLeaders().stream().filter(card -> {
+                return card.getID().equals(selected.getID());
+            }).findFirst().get();
+
+            currentPlayer.getLeaders().remove(cardToDiscard);
         });
 
     }
