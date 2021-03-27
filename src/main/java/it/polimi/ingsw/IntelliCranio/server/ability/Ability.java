@@ -5,9 +5,15 @@ import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
 
-public abstract class Ability {
+public class Ability {
 
     protected FinalResource.ResourceType type;
 
-    public abstract ArrayList<Resource> effect();
+    public Ability(FinalResource.ResourceType type) {
+        this.type = type;
+    }
+
+    public ArrayList<Resource> effect() {
+        throw new UnsupportedOperationException();
+    }
 }

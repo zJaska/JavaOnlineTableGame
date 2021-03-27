@@ -3,6 +3,7 @@ package it.polimi.ingsw.IntelliCranio;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 
 import java.io.FileWriter;
@@ -10,6 +11,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CardGenerator {
+
+    public static void generateLeadCardFile(ArrayList<LeadCard> cards) throws IOException {
+        FileWriter cardFile = new FileWriter("src/main/resources/leadcards_config.json");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        cardFile.write(gson.toJson(cards));
+        cardFile.close();
+    }
 
     public static void generateDevCardFile(ArrayList<DevCard>[][] grid) throws IOException {
         FileWriter cardFile = new FileWriter("src/main/resources/devcards_config.json");

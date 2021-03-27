@@ -24,7 +24,11 @@ public class Player {
 
 
     public void setLeaders(ArrayList<LeadCard> cards) {
-        throw new UnsupportedOperationException();
+        leaders = cards;
+    }
+
+    public ArrayList<LeadCard> getLeaders() {
+        return leaders;
     }
 
     public void addFaith(int amount) {

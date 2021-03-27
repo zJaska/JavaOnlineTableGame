@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.server.player.Player;
 
 import java.util.ArrayList;
 
-public class ChooseLeaders implements Action{
+public class DiscardInitLeaders implements Action{
 
     private ArrayList<LeadCard> selection;
 
@@ -18,7 +19,7 @@ public class ChooseLeaders implements Action{
      * </p>
      * @param jsonArgs
      */
-    public ChooseLeaders(ArrayList<String> jsonArgs) {
+    public DiscardInitLeaders(ArrayList<String> jsonArgs) {
 
         Gson gson = new Gson();
 
@@ -28,6 +29,12 @@ public class ChooseLeaders implements Action{
 
     @Override
     public void playAction(GameManager manager) {
-        throw new UnsupportedOperationException();
+
+        Player currentPlayer = manager.getCurrentPlayer();
+
+        selection.forEach(card -> {
+            currentPlayer.getLeaders().remove(card);
+        });
+
     }
 }

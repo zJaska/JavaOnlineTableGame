@@ -1,0 +1,141 @@
+public ArrayList<LeadCard> generateCards() {
+
+        ArrayList<LeadCard> leaders = new ArrayList<>();
+        String ID;
+        ArrayList<CardResource> cardReq;
+        ArrayList<FinalResource> resReq;
+
+        int vp = 2;
+        Ability ability;
+
+        ID = "leadercard_front_1_1";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
+        cardReq.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
+        ability = new SaleAbility(FinalResource.ResourceType.SERVANT);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_1_2";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
+        cardReq.add(new CardResource(DevCard.CardType.PURPLE, 1, 0));
+        ability = new SaleAbility(FinalResource.ResourceType.SHIELD);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_1_3";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
+        cardReq.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
+        ability = new SaleAbility(FinalResource.ResourceType.STONE);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_1_4";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
+        cardReq.add(new CardResource(DevCard.CardType.PURPLE, 1, 0));
+        ability = new SaleAbility(FinalResource.ResourceType.COIN);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+
+        vp = 3;
+
+        ID = "leadercard_front_2_1";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        resReq.add(new FinalResource(FinalResource.ResourceType.COIN, 5));
+        ability = new DepotAbility(FinalResource.ResourceType.STONE);
+        leaders.add(new LeadCard(ID, vp, null, resReq, ability, false));
+
+        ID = "leadercard_front_2_2";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        resReq.add(new FinalResource(FinalResource.ResourceType.STONE, 5));
+        ability = new DepotAbility(FinalResource.ResourceType.SERVANT);
+        leaders.add(new LeadCard(ID, vp, null, resReq, ability, false));
+
+        ID = "leadercard_front_2_3";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        resReq.add(new FinalResource(FinalResource.ResourceType.SERVANT, 5));
+        ability = new DepotAbility(FinalResource.ResourceType.SHIELD);
+        leaders.add(new LeadCard(ID, vp, null, resReq, ability, false));
+
+        ID = "leadercard_front_2_4";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        resReq.add(new FinalResource(FinalResource.ResourceType.SHIELD, 5));
+        ability = new DepotAbility(FinalResource.ResourceType.COIN);
+        leaders.add(new LeadCard(ID, vp, null, resReq, ability, false));
+
+
+        vp = 5;
+
+        ID = "leadercard_front_3_1";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.YELLOW, 2, 0));
+        cardReq.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
+        ability = new ResourceAbility(FinalResource.ResourceType.SERVANT);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_3_2";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.GREEN, 2, 0));
+        cardReq.add(new CardResource(DevCard.CardType.PURPLE, 1, 0));
+        ability = new ResourceAbility(FinalResource.ResourceType.SHIELD);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_3_3";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.BLUE, 2, 0));
+        cardReq.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
+        ability = new ResourceAbility(FinalResource.ResourceType.STONE);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_3_4";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.PURPLE, 2, 0));
+        cardReq.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
+        ability = new ResourceAbility(FinalResource.ResourceType.COIN);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+
+        vp = 4;
+
+        ID = "leadercard_front_4_1";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.YELLOW, 1, 2));
+        ability = new ProductionAbility(FinalResource.ResourceType.SHIELD);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_4_2";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.BLUE, 1, 2));
+        ability = new ProductionAbility(FinalResource.ResourceType.SERVANT);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_4_3";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.PURPLE, 1, 2));
+        ability = new ProductionAbility(FinalResource.ResourceType.STONE);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        ID = "leadercard_front_4_4";
+        cardReq = new ArrayList<>();
+        resReq = new ArrayList<>();
+        cardReq.add(new CardResource(DevCard.CardType.GREEN, 1, 2));
+        ability = new ProductionAbility(FinalResource.ResourceType.COIN);
+        leaders.add(new LeadCard(ID, vp, cardReq, null, ability, false));
+
+        return leaders;
+    }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.IntelliCranio;
 
-import it.polimi.ingsw.IntelliCranio.server.market.CardMarket;
+import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.server.player.Player;
 
 /**
  * Hello world!
@@ -10,8 +11,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        CardMarket market = new CardMarket(3, 4);
-        market.setup("src/main/resources/devcards_config.json", true);
-
+        GameManager manager = new GameManager();
+        manager.addPlayer(new Player(), 0);
+        manager.addPlayer(new Player(), 1);
+        manager.createLeaderCards("src/main/resources/leadcards_config.json", true);
     }
 }
