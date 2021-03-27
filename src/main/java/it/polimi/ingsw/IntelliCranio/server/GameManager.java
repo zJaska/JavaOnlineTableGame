@@ -3,10 +3,14 @@ package it.polimi.ingsw.IntelliCranio.server;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import it.polimi.ingsw.IntelliCranio.server.ability.*;
+import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.server.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
+import it.polimi.ingsw.IntelliCranio.server.resource.CardResource;
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -28,7 +32,6 @@ public class GameManager implements Runnable{
         throw new UnsupportedOperationException();
     }
 
-
     /**
      * Creates all the cards from given json file and assign 4 of them randomly to each player.
      * @param path The path of the leader cards config file
@@ -47,6 +50,10 @@ public class GameManager implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        leaders.forEach(card -> {
+            card.setupAbility(card.getAbilityType(), card.getResourceType());
+        });
 
         assignCards(leaders, shuffle);
 

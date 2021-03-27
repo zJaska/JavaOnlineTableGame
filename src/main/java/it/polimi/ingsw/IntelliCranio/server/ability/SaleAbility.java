@@ -13,6 +13,7 @@ public class SaleAbility extends Ability{
 
     @Override
     public ArrayList<Resource> effect() {
-        throw  new UnsupportedOperationException();
+        System.out.println("SaleAbility");
+        return null;
     }
 }

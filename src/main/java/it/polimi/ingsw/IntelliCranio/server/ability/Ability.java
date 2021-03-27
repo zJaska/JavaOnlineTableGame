@@ -5,7 +5,7 @@ import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
 
-public class Ability {
+public abstract class Ability {
 
     protected FinalResource.ResourceType type;
 
@@ -14,6 +14,7 @@ public class Ability {
     }
 
     public ArrayList<Resource> effect() {
-        throw new UnsupportedOperationException();
+        System.out.println("Ability");
+        return null;
     }
 }

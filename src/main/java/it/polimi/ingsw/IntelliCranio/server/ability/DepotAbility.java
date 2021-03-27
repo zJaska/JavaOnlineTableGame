@@ -13,6 +13,7 @@ public class DepotAbility extends Ability{
 
     @Override
     public ArrayList<Resource> effect() {
-        throw  new UnsupportedOperationException();
+        System.out.println("DepotAbility");
+        return null;
     }
 }

@@ -30,10 +30,14 @@ public class DiscardInitLeadersTest {
         ArrayList<FinalResource> resReq = new ArrayList<>();
         cardReq.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
         cardReq.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
-        Ability ability = new Ability(FinalResource.ResourceType.SERVANT);
-        LeadCard expected = new LeadCard(ID, vp, cardReq, null, ability, false);
+        Ability ability = new SaleAbility(FinalResource.ResourceType.SERVANT);
+        LeadCard expected = new LeadCard(ID, vp, cardReq, null, LeadCard.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
+        expected.setupAbility( LeadCard.AbilityType.SALE, FinalResource.ResourceType.SERVANT);
 
         LeadCard actual = manager.getCurrentPlayer().getLeaders().get(0);
+
+        expected.getSpecialAbility().effect();
+        actual.getSpecialAbility().effect();
 
         assertTrue(deepEquals(actual, expected));
 
