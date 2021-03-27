@@ -12,28 +12,28 @@ public class WarehouseTest {
 
     @Test
     public void update() {
-        ArrayList<Resource> tempDepot=new ArrayList<>(3);
-        ArrayList<Resource> marketRes=new ArrayList<>(2);
-        Warehouse w1=new Warehouse(3);
+        Resource[] tempDepot = new Resource[3];
+        ArrayList<Resource> marketRes = new ArrayList<>(2);
+        Warehouse w1 = new Warehouse(3);
 
-        tempDepot.add(new Resource(FinalResource.ResourceType.COIN,3));//2
-        tempDepot.add(new Resource(FinalResource.ResourceType.COIN,3));//1
-        tempDepot.add(new Resource(FinalResource.ResourceType.COIN,3));//0
+        tempDepot[0] = new Resource(FinalResource.ResourceType.COIN,3);//2
+        tempDepot[1] = new Resource(FinalResource.ResourceType.COIN,3);//1
+        tempDepot[2] = new Resource(FinalResource.ResourceType.COIN,3);//0
 
         marketRes.add(new Resource(FinalResource.ResourceType.COIN,2));//2
 
         assertEquals(-1,w1.update(tempDepot,marketRes));
-        tempDepot.clear();
-        tempDepot.add(new Resource(FinalResource.ResourceType.COIN,3));//2
-        tempDepot.add(new Resource(FinalResource.ResourceType.FAITH,3));//1
-        tempDepot.add(new Resource(FinalResource.ResourceType.STONE,3));//0
+        tempDepot = new Resource[3];
+        tempDepot[0] = new Resource(FinalResource.ResourceType.COIN,3);//2
+        tempDepot[1] = new Resource(FinalResource.ResourceType.FAITH,3);//1
+        tempDepot[2] = new Resource(FinalResource.ResourceType.STONE,3);//0
 
         assertEquals(5,w1.update(tempDepot,marketRes));
-        tempDepot.clear();
+        tempDepot = new Resource[3];
 
-        tempDepot.add(new Resource(FinalResource.ResourceType.COIN,3));//2
-        tempDepot.add(new Resource(FinalResource.ResourceType.COIN,3));//1
-        tempDepot.add(new Resource(FinalResource.ResourceType.FAITH,3));//0
+        tempDepot[0] = new Resource(FinalResource.ResourceType.COIN,3);//2
+        tempDepot[1] = new Resource(FinalResource.ResourceType.COIN,3);//1
+        tempDepot[2] = new Resource(FinalResource.ResourceType.FAITH,3);//0
 
         assertEquals(-1,w1.update(tempDepot,marketRes));
 

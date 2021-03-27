@@ -31,6 +31,10 @@ public class Player {
         return leaders;
     }
 
+    public Strongbox getStrongbox() {
+        return strongbox;
+    }
+
     public void addFaith(int amount) {
         throw new UnsupportedOperationException();
     }

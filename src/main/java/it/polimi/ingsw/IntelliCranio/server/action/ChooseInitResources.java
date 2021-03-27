@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.server.player.Player;
+import it.polimi.ingsw.IntelliCranio.server.player.Strongbox;
 import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
@@ -12,7 +14,8 @@ import java.util.ArrayList;
 
 public class ChooseInitResources implements Action{
 
-    private ArrayList<Resource> selection; //The resources the player has choosed
+    private ArrayList<Resource> selection; //The resources the player choosed
+    private Resource[] tempDepot; //The depot configuration of the client
 
     /**
      * Gets all the necessary parameter from json strings.
@@ -24,6 +27,7 @@ public class ChooseInitResources implements Action{
         Gson gson = new Gson();
 
         selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<Resource>>(){}.getType());
+        tempDepot = gson.fromJson(jsonArgs.get(1), new TypeToken<Resource[]>(){}.getType());
     }
 
     @Override
@@ -39,6 +43,9 @@ public class ChooseInitResources implements Action{
         if(actualAmount != correctAmount)
             throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
         //endregion
+
+        //I get here if no problems occur
+
 
 
 

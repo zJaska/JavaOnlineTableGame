@@ -3,8 +3,6 @@ package it.polimi.ingsw.IntelliCranio;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
 
-import java.io.IOException;
-
 /**
  * Hello world!
  *

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Warehouse {
 
-    private ArrayList<Resource> depot;
+    private Resource[] depot;
     private int dim;
 
     /**
@@ -14,12 +14,12 @@ public class Warehouse {
      * @param dim the dimension of the depot
      */
     public Warehouse(int dim){
-        this.dim=dim;
-        depot=new ArrayList<>(dim);
+        this.dim = dim;
+        depot = new Resource[dim];
     }
 
 
-    public ArrayList<Resource> getDepot() {
+    public Resource[] getDepot() {
         return depot;
     }
 
@@ -38,35 +38,32 @@ public class Warehouse {
      *  check if there are 2 items on different lines.
      * </summary>
      * @param tempDepot this is sent by client
-     * @param marketRes this is sent by client which is left from market.
+     * @param extraRes this is sent by client which is left from market.
      * @return -1 if error else number of cards discarded.
      */
-    public int update(ArrayList<Resource> tempDepot, ArrayList<Resource> marketRes) {
+    public int update(Resource[] tempDepot, ArrayList<Resource> extraRes) {
         int numDiscards=0;
 
-        if(tempDepot.size()>dim)
+        if(tempDepot.length > dim)
             return -1;
 
-            for(int i=0;i<tempDepot.size()-1;++i)
-                for(int j=i+1;j<tempDepot.size();++j)
-                    if(tempDepot.get(i).getType()==tempDepot.get(j).getType())
+            for(int i = 0; i < tempDepot.length - 1; ++i)
+                for(int j = i + 1; j < tempDepot.length; ++j)
+                    if(tempDepot[i].getType() == tempDepot[j].getType())
                         return -1;
 
 
-            for(int i=0;i<tempDepot.size();++i)
-            {
-                if( tempDepot.get(i).getAmount() > (i+1) ) {
-                    numDiscards += tempDepot.get(i).getAmount() - (i + 1);
-                    tempDepot.get(i).setAmount(i+1);
+            for(int i = 0; i < tempDepot.length; ++i)
+                if( tempDepot[i].getAmount() > (i + 1) ) {
+                    numDiscards += tempDepot[i].getAmount() - (i + 1);
+                    tempDepot[i].setAmount(i+1);
                 }
 
-            }
+            depot = tempDepot;
 
-            depot=tempDepot;
-
-            if(marketRes!=null)
-                for(int i=0;i<marketRes.size();++i)
-                    numDiscards+=marketRes.get(i).getAmount();
+            if(extraRes!=null)
+                for(int i=0;i<extraRes.size();++i)
+                    numDiscards+=extraRes.get(i).getAmount();
 
 
         return numDiscards;
@@ -76,5 +73,5 @@ public class Warehouse {
      * This is a getter of dim
      * @return value of dim
      */
-    public int getDim(){ return dim};
+    public int getDim(){ return dim;}
 }
