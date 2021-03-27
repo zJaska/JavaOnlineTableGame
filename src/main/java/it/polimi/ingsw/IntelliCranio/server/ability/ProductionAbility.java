@@ -13,6 +13,7 @@ public class ProductionAbility extends Ability{
 
     @Override
     public ArrayList<Resource> effect() {
-        throw  new UnsupportedOperationException();
+        System.out.println("ProductionAbility");
+        return null;
     }
 }

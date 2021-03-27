@@ -13,6 +13,7 @@ public class ResourceAbility extends Ability{
 
     @Override
     public ArrayList<Resource> effect() {
-        throw  new UnsupportedOperationException();
+        System.out.println("ResourceAbility");
+        return null;
     }
 }
