@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.cedarsoftware.util.DeepEquals.deepEquals;
 
-public class ChooseInitResources implements Action{
+public class ChooseInitResources implements Action {
 
     private ArrayList<Resource> selection; //The resources the player choosed
     private Resource[] tempDepot; //The depot configuration of the client
@@ -25,14 +25,16 @@ public class ChooseInitResources implements Action{
      * Validate the input and check depot configuration. Game status is updated if everything is correct.
      *
      * @param jsonArgs Two elements containing the list of resources the player choosed
-     *                and the depot configuration.
+     *                 and the depot configuration.
      */
     public ChooseInitResources(ArrayList<String> jsonArgs) {
 
         Gson gson = new Gson();
 
-        selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<Resource>>(){}.getType());
-        tempDepot = gson.fromJson(jsonArgs.get(1), new TypeToken<Resource[]>(){}.getType());
+        selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<Resource>>() {
+        }.getType());
+        tempDepot = gson.fromJson(jsonArgs.get(1), new TypeToken<Resource[]>() {
+        }.getType());
     }
 
     /**
@@ -40,19 +42,22 @@ public class ChooseInitResources implements Action{
      *
      * @param manager
      * @throws InvalidArgumentsException If input args does not match server data
+     * @return
      */
     @Override
-    public void playAction(GameManager manager) throws InvalidArgumentsException {
+    public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
 
         argumentValidation(manager);
+
 
         //I get here if no problems occur
 
         //Try update the warehouse, get -1 if error occurs
         Warehouse warehouse = manager.getCurrentPlayer().getWarehouse();
-        if(warehouse.update(tempDepot, null) == -1) {
+        if (warehouse.update(tempDepot, null) == -1) {
             //Todo: Update error handling
         }
+        return null;
     }
 
     //Check the client input with server data
@@ -61,24 +66,24 @@ public class ChooseInitResources implements Action{
 
         //Check if depot contains all the elements in selection (can have more then selection)
         selection.forEach(res -> {
-            if(Arrays.stream(tempDepot).filter(Objects::nonNull).noneMatch(dep -> {
+            if (Arrays.stream(tempDepot).filter(Objects::nonNull).noneMatch(dep -> {
                 return dep.getType() == res.getType() && dep.getAmount() == res.getAmount();
             }))
                 error.set(true);
         });
 
-        if(error.get())
+        if (error.get())
             throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
 
         //Check if selection contains all the elements in depot
         Arrays.stream(tempDepot).filter(Objects::nonNull).forEach(dep -> {
-            if(selection.stream().noneMatch(res -> {
+            if (selection.stream().noneMatch(res -> {
                 return dep.getType() == res.getType() && dep.getAmount() == res.getAmount();
             }))
                 error.set(true);
         });
 
-        if(error.get())
+        if (error.get())
             throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
 
 
@@ -88,7 +93,7 @@ public class ChooseInitResources implements Action{
         //The amount of resources provided by the client arguments
         int actualAmount = selection.stream().mapToInt(Resource::getAmount).sum();
 
-        if(actualAmount != correctAmount)
+        if (actualAmount != correctAmount)
             throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
     }
 }

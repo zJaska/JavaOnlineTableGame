@@ -11,9 +11,10 @@ public class Warehouse {
 
     /**
      * It's the constructor of Warehouse class
+     *
      * @param dim the dimension of the depot
      */
-    public Warehouse(int dim){
+    public Warehouse(int dim) {
         depot = new Resource[dim];
     }
 
@@ -31,39 +32,39 @@ public class Warehouse {
     }//Maybe useless because it's a client method.
 
     /**
-     *
      * <summary>
-     *  check number of resources discarded and update and
-     *  check if there are 2 items on different lines.
+     * check number of resources discarded and update and
+     * check if there are 2 items on different lines.
      * </summary>
+     *
      * @param tempDepot this is sent by client
-     * @param extraRes this is sent by client which is left from market.
+     * @param extraRes  this is sent by client which is left from market.
      * @return -1 if error else number of cards discarded.
      */
     public int update(Resource[] tempDepot, ArrayList<Resource> extraRes) {
-        int numDiscards=0;
+        int numDiscards = 0;
 
-        if(tempDepot.length > depot.length)
+        if (tempDepot.length > depot.length)
             return -1;
 
-        for(int i = 0; i < tempDepot.length - 1; ++i)
-            for(int j = i + 1; j < tempDepot.length; ++j)
-                if(tempDepot[i] != null && tempDepot[j] != null)
-                    if(tempDepot[i].getType() == tempDepot[j].getType())
+        for (int i = 0; i < tempDepot.length - 1; ++i)
+            for (int j = i + 1; j < tempDepot.length; ++j)
+                if (tempDepot[i] != null && tempDepot[j] != null)
+                    if (tempDepot[i].getType() == tempDepot[j].getType())
                         return -1;
 
 
-        for(int i = 0; i < tempDepot.length; ++i)
-            if(tempDepot[i] != null)
-                if( tempDepot[i].getAmount() > (i + 1) ) {
+        for (int i = 0; i < tempDepot.length; ++i)
+            if (tempDepot[i] != null)
+                if (tempDepot[i].getAmount() > (i + 1)) {
                     numDiscards += tempDepot[i].getAmount() - (i + 1);
-                    tempDepot[i].setAmount(i+1);
+                    tempDepot[i].setAmount(i + 1);
                 }
 
         depot = tempDepot;
 
 
-            numDiscards+=extraRes.stream().filter(Objects::nonNull).mapToInt(Resource::getAmount).sum();
+        numDiscards += extraRes.stream().filter(Objects::nonNull).mapToInt(Resource::getAmount).sum();
 
 
         return numDiscards;

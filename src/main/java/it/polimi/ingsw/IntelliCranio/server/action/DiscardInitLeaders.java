@@ -9,6 +9,7 @@ import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DiscardInitLeaders implements Action{
 
@@ -40,13 +41,14 @@ public class DiscardInitLeaders implements Action{
      * @param manager
      * @throws InvalidArgumentsException Takes the action code as parameter to signal
      * the game manager what operation went wrong
+     * @return
      */
     @Override
-    public void playAction(GameManager manager) throws InvalidArgumentsException {
+    public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
 
-        //Error Handling
-        if(selection.size() != 2)
-            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_INIT_LEADERS);
+        argumentValidation(manager);
+
+        //I get here if there are no problems with input args
 
         Player currentPlayer = manager.getCurrentPlayer();
 
@@ -60,5 +62,28 @@ public class DiscardInitLeaders implements Action{
             currentPlayer.getLeaders().remove(cardToDiscard);
         });
 
+        return null;
+    }
+
+    private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
+
+        Player currentPlayer = manager.getCurrentPlayer();
+        AtomicBoolean error = new AtomicBoolean(false);
+
+        //Check if amount of cards is correct
+        if(selection.size() != 2)
+            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_INIT_LEADERS);
+
+
+        //Check if selected cards are actually in player cards
+        selection.forEach(selected -> {
+            if(currentPlayer.getLeaders().stream().noneMatch(card -> {
+                return card.getID().equals(selected.getID());
+            }))
+                error.set(true);
+        });
+
+        if(error.get())
+            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_INIT_LEADERS);
     }
 }

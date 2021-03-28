@@ -27,7 +27,7 @@ public class DiscardLeader implements Action{
     }
 
     @Override
-    public void playAction(GameManager manager) throws InvalidArgumentsException {
+    public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
         throw new UnsupportedOperationException();
     }
 }
