@@ -21,7 +21,8 @@ public class ChooseInitResources implements Action{
     private Resource[] tempDepot; //The depot configuration of the client
 
     /**
-     * Gets all the necessary parameter from json strings.
+     * This action handle the resource selected from the client and the depot configuration.
+     * Validate the input and check depot configuration. Game status is updated if everything is correct.
      *
      * @param jsonArgs Two elements containing the list of resources the player choosed
      *                and the depot configuration.
@@ -34,11 +35,28 @@ public class ChooseInitResources implements Action{
         tempDepot = gson.fromJson(jsonArgs.get(1), new TypeToken<Resource[]>(){}.getType());
     }
 
+    /**
+     * Check input consistency and update the status of the warehouse.
+     *
+     * @param manager
+     * @throws InvalidArgumentsException If input args does not match server data
+     */
     @Override
     public void playAction(GameManager manager) throws InvalidArgumentsException {
 
-        //region Error Handling
+        argumentValidation(manager);
 
+        //I get here if no problems occur
+
+        //Try update the warehouse, get -1 if error occurs
+        Warehouse warehouse = manager.getCurrentPlayer().getWarehouse();
+        if(warehouse.update(tempDepot, null) == -1) {
+            //Todo: Update error handling
+        }
+    }
+
+    //Check the client input with server data
+    private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
         AtomicBoolean error = new AtomicBoolean(false);
 
         //Check if depot contains all the elements in selection (can have more then selection)
@@ -72,14 +90,5 @@ public class ChooseInitResources implements Action{
 
         if(actualAmount != correctAmount)
             throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
-        //endregion
-
-        //I get here if no problems occur
-
-        //Try update the warehouse, get -1 if error occurs
-        Warehouse warehouse = manager.getCurrentPlayer().getWarehouse();
-        if(warehouse.update(tempDepot, null) == -1) {
-            //Todo: Update error handling
-        }
     }
 }
