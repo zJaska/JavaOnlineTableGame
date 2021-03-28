@@ -22,6 +22,13 @@ public class Player {
 
     private boolean hasPlayed;
 
+    public Player() {
+
+    }
+
+    public Player(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
 
     public void setLeaders(ArrayList<LeadCard> cards) {
         leaders = cards;
@@ -33,6 +40,10 @@ public class Player {
 
     public Strongbox getStrongbox() {
         return strongbox;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
     }
 
     public void addFaith(int amount) {

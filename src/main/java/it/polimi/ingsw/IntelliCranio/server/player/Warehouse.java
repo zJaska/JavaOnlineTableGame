@@ -47,23 +47,25 @@ public class Warehouse {
         if(tempDepot.length > dim)
             return -1;
 
-            for(int i = 0; i < tempDepot.length - 1; ++i)
-                for(int j = i + 1; j < tempDepot.length; ++j)
+        for(int i = 0; i < tempDepot.length - 1; ++i)
+            for(int j = i + 1; j < tempDepot.length; ++j)
+                if(tempDepot[i] != null && tempDepot[j] != null)
                     if(tempDepot[i].getType() == tempDepot[j].getType())
                         return -1;
 
 
-            for(int i = 0; i < tempDepot.length; ++i)
+        for(int i = 0; i < tempDepot.length; ++i)
+            if(tempDepot[i] != null)
                 if( tempDepot[i].getAmount() > (i + 1) ) {
                     numDiscards += tempDepot[i].getAmount() - (i + 1);
                     tempDepot[i].setAmount(i+1);
                 }
 
-            depot = tempDepot;
+        depot = tempDepot;
 
-            if(extraRes!=null)
-                for(int i=0;i<extraRes.size();++i)
-                    numDiscards+=extraRes.get(i).getAmount();
+        if(extraRes!=null)
+            for(int i=0;i<extraRes.size();++i)
+                numDiscards+=extraRes.get(i).getAmount();
 
 
         return numDiscards;
