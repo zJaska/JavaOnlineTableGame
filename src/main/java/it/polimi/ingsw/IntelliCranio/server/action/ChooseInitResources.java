@@ -1,6 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.server.action;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.Packet;
@@ -18,51 +19,48 @@ import static com.cedarsoftware.util.DeepEquals.deepEquals;
 public class ChooseInitResources implements Action {
 
     private ArrayList<Resource> selection; //The resources the player choosed
-    private Resource[] tempDepot; //The depot configuration of the client
 
     /**
-     * This action handle the resource selected from the client and the depot configuration.
-     * Validate the input and check depot configuration. Game status is updated if everything is correct.
+     * This action validate the resources choosed by the player at the start of the game.
      *
-     * @param jsonArgs Two elements containing the list of resources the player choosed
-     *                 and the depot configuration.
+     * @param jsonArgs The list of resources the player choosed.
      */
     public ChooseInitResources(ArrayList<String> jsonArgs) {
 
         Gson gson = new Gson();
 
-        selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<Resource>>() {
-        }.getType());
-        tempDepot = gson.fromJson(jsonArgs.get(1), new TypeToken<Resource[]>() {
-        }.getType());
+        if(jsonArgs.size() > 0)
+            selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<Resource>>(){}.getType());
     }
 
     /**
-     * Check input consistency and update the status of the warehouse.
+     * Check input consistency, throw InvalidArgumentException if something is wrong
      *
      * @param manager
+     * @return The selected resources converted back to json string
      * @throws InvalidArgumentsException If input args does not match server data
-     * @return
      */
     @Override
     public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
 
         argumentValidation(manager);
 
-
         //I get here if no problems occur
 
-        //Try update the warehouse, get -1 if error occurs
-        Warehouse warehouse = manager.getCurrentPlayer().getWarehouse();
-        if (warehouse.update(tempDepot, null) == -1) {
-            //Todo: Update error handling
-        }
-        return null;
+        if(selection.size() > 0) {
+            ArrayList<String> returnArgs = new ArrayList<>();
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            returnArgs.add(gson.toJson(selection));
+
+            return returnArgs;
+        } else
+            return null;
     }
 
     //Check the client input with server data
     private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
-        AtomicBoolean error = new AtomicBoolean(false);
+        /*AtomicBoolean error = new AtomicBoolean(false);
 
         //Check if depot contains all the elements in selection (can have more then selection)
         selection.forEach(res -> {
@@ -85,7 +83,11 @@ public class ChooseInitResources implements Action {
 
         if (error.get())
             throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
+        */
 
+        //NonNull Condition
+        if(selection == null)
+            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
 
         //The amount of resources i expect
         int correctAmount = manager.getInitRes(manager.getCurrentPlayerIndex());
