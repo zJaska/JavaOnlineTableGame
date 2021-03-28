@@ -44,7 +44,6 @@ public class App
             e.printStackTrace();
         }
 
-
 /*
         try {
             CardGenerator.generateLeadCardFile(manager.generateCards());
