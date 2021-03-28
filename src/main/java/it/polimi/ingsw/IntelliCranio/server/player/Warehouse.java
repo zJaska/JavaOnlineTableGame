@@ -34,7 +34,7 @@ public class Warehouse {
     /**
      *
      * <summary>
-     *  check number of cards discarded and update and
+     *  check number of resources discarded and update and
      *  check if there are 2 items on different lines.
      * </summary>
      * @param tempDepot this is sent by client
