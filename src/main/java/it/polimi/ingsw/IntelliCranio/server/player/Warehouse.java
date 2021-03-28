@@ -3,18 +3,17 @@ package it.polimi.ingsw.IntelliCranio.server.player;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Warehouse {
 
     private Resource[] depot;
-    private int dim;
 
     /**
      * It's the constructor of Warehouse class
      * @param dim the dimension of the depot
      */
     public Warehouse(int dim){
-        this.dim = dim;
         depot = new Resource[dim];
     }
 
@@ -44,7 +43,7 @@ public class Warehouse {
     public int update(Resource[] tempDepot, ArrayList<Resource> extraRes) {
         int numDiscards=0;
 
-        if(tempDepot.length > dim)
+        if(tempDepot.length > depot.length)
             return -1;
 
         for(int i = 0; i < tempDepot.length - 1; ++i)
@@ -63,17 +62,11 @@ public class Warehouse {
 
         depot = tempDepot;
 
-        if(extraRes!=null)
-            for(int i=0;i<extraRes.size();++i)
-                numDiscards+=extraRes.get(i).getAmount();
+
+            numDiscards+=extraRes.stream().filter(Objects::nonNull).mapToInt(Resource::getAmount).sum();
 
 
         return numDiscards;
     }
 
-    /**
-     * This is a getter of dim
-     * @return value of dim
-     */
-    public int getDim(){ return dim;}
 }
