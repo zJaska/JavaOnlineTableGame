@@ -109,9 +109,6 @@ public class GameManager implements Runnable{
         this.lastActionReturnArgs = lastActionReturnArgs;
     }
 
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
-    }
 
     /**
      *  Get the amount of resources a player can take at the start of
@@ -165,12 +162,23 @@ public class GameManager implements Runnable{
         return players;
     }
 
+    public void addPlayerFaith(Player player, int faithAmount) {
+        //Loop and increment for every faithAmount to add
+        //Check every increment the position of the player on the faith track
+        throw new UnsupportedOperationException();
+    }
+
     public void addPlayer(Player player, int turn) {
+        //Bisogna fare un check sul numero di giocatori presenti
         players.add(turn, player);
     }
 
     public Player getCurrentPlayer() {
         return players.get(currentPlayerIndex);
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 
 }

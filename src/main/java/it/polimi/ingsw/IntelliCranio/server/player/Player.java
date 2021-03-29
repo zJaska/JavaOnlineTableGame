@@ -50,8 +50,8 @@ public class Player {
         return warehouse;
     }
 
-    public void addFaith(int amount) {
-        throw new UnsupportedOperationException();
+    public void incrementFaith() {
+        faithPosition++;
     }
 
     public int getFaithPosition() {

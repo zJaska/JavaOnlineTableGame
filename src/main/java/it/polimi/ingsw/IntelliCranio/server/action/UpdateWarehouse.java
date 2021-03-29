@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.server.player.Player;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class UpdateWarehouse implements Action{
      * If so, Warehouse.update method is called and the depot is updated.
      *
      * @param manager
-     * @return A single element containing the int amount of discarded resources in json.
+     * @return null
      * @throws InvalidArgumentsException
      */
     @Override
@@ -52,15 +53,19 @@ public class UpdateWarehouse implements Action{
         //I get here if data is correct
 
         int discardedAmount = manager.getCurrentPlayer().getWarehouse().update(clientDepot, clientExtraResources);
+
         if(discardedAmount == -1){
             //Todo: Handle error
+        } else {
+            Player currentPlayer = manager.getCurrentPlayer();
+            manager.getPlayers().stream().filter(player -> {
+                return !player.equals(currentPlayer);
+            }).forEach(player -> {
+                manager.addPlayerFaith(player, discardedAmount); //ERROR: Method not implemented yet
+            });
         }
 
-        ArrayList<String> returnArgs = new ArrayList<>();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        returnArgs.add(gson.toJson(discardedAmount));
-
-        return returnArgs;
+        return null;
     }
 
     private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
