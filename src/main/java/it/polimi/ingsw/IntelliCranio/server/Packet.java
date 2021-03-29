@@ -10,7 +10,7 @@ public class Packet {
         TAKE_RES,
         BUY_DEV_CARD,
         ACT_PROD,
-        MNG_WAREHOUSE,
+        UPDATE_WAREHOUSE,
         PLAY_LEADER,
         DISCARD_LEADER
     }

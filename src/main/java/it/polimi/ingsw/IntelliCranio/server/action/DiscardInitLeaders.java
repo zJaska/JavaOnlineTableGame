@@ -23,8 +23,8 @@ public class DiscardInitLeaders implements Action{
 
         Gson gson = new Gson();
 
-
-        selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<LeadCard>>(){}.getType());
+        if(jsonArgs.size() > 0)
+            selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<LeadCard>>(){}.getType());
 
     }
 
@@ -69,6 +69,10 @@ public class DiscardInitLeaders implements Action{
 
         Player currentPlayer = manager.getCurrentPlayer();
         AtomicBoolean error = new AtomicBoolean(false);
+
+        //NonNull Condition
+        if(selection == null)
+            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_INIT_LEADERS);
 
         //Check if amount of cards is correct
         if(selection.size() != 2)

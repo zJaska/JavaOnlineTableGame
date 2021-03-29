@@ -38,7 +38,7 @@ class ChooseInitResourcesTest {
         assertThrows(InvalidArgumentsException.class, executable);
         //endregion
 
-        //region Test when args has an empty list serialized in json
+        //region Test when args has an empty list serialized in json (0 resources to take)
         args.add(gson.toJson(testSelection)); //args has one element but from empty list
 
         executable = new Executable() {

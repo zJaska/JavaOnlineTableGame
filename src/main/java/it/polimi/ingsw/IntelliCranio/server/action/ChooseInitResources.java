@@ -60,30 +60,6 @@ public class ChooseInitResources implements Action {
 
     //Check the client input with server data
     private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
-        /*AtomicBoolean error = new AtomicBoolean(false);
-
-        //Check if depot contains all the elements in selection (can have more then selection)
-        selection.forEach(res -> {
-            if (Arrays.stream(tempDepot).filter(Objects::nonNull).noneMatch(dep -> {
-                return dep.getType() == res.getType() && dep.getAmount() == res.getAmount();
-            }))
-                error.set(true);
-        });
-
-        if (error.get())
-            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
-
-        //Check if selection contains all the elements in depot
-        Arrays.stream(tempDepot).filter(Objects::nonNull).forEach(dep -> {
-            if (selection.stream().noneMatch(res -> {
-                return dep.getType() == res.getType() && dep.getAmount() == res.getAmount();
-            }))
-                error.set(true);
-        });
-
-        if (error.get())
-            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
-        */
 
         //NonNull Condition
         if(selection == null)

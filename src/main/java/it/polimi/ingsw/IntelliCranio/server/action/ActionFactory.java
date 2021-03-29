@@ -20,7 +20,7 @@ public class ActionFactory {
         if (code == Packet.InstructionCode.TAKE_RES) return new TakeResources(packet.getArgs());
         if (code == Packet.InstructionCode.BUY_DEV_CARD) return new BuyDevCard(packet.getArgs());
         if (code == Packet.InstructionCode.ACT_PROD) return new ActivateProduction(packet.getArgs());
-        if (code == Packet.InstructionCode.MNG_WAREHOUSE) return new ManageWarehouse(packet.getArgs());
+        if (code == Packet.InstructionCode.UPDATE_WAREHOUSE) return new UpdateWarehouse(packet.getArgs());
         if (code == Packet.InstructionCode.PLAY_LEADER) return new PlayLeader(packet.getArgs());
         if (code == Packet.InstructionCode.DISCARD_LEADER) return new DiscardLeader(packet.getArgs());
 

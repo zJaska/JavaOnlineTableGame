@@ -22,6 +22,7 @@ public class GameManager implements Runnable{
     private CardMarket cardMarket;
     private ResourceMarket resourceMarket;
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<String> lastActionReturnArgs;
 
     @Override
     public void run() {
@@ -97,6 +98,10 @@ public class GameManager implements Runnable{
 
     private void endingGame() {
         throw new UnsupportedOperationException();
+    }
+
+    public ArrayList<String> getLastActionReturnArgs() {
+        return lastActionReturnArgs;
     }
 
     public int getCurrentPlayerIndex() {
