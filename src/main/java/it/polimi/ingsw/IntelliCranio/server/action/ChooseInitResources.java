@@ -7,6 +7,7 @@ import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.player.Warehouse;
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
@@ -63,6 +64,12 @@ public class ChooseInitResources implements Action {
 
         //NonNull Condition
         if(selection == null)
+            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
+
+        //Search if at least one element is faith or blank
+        if(selection.stream().anyMatch(res -> {
+            return res.getType() == FinalResource.ResourceType.FAITH || res.getType() == FinalResource.ResourceType.BLANK;
+        }))
             throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
 
         //The amount of resources i expect

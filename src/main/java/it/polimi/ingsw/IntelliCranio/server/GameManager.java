@@ -104,6 +104,11 @@ public class GameManager implements Runnable{
         return lastActionReturnArgs;
     }
 
+    //Test only
+    public void setLastActionReturnArgs(ArrayList<String> lastActionReturnArgs) {
+        this.lastActionReturnArgs = lastActionReturnArgs;
+    }
+
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }

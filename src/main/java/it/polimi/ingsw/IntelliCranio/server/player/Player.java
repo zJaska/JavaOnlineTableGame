@@ -34,6 +34,10 @@ public class Player {
         leaders = cards;
     }
 
+    public void setWarehouse(Warehouse warehouse){
+        this.warehouse = warehouse;
+    }
+
     public ArrayList<LeadCard> getLeaders() {
         return leaders;
     }
