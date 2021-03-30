@@ -20,7 +20,7 @@ public class BuyDevCard implements Action{
      * </p>
      * @param jsonArgs
      */
-    public BuyDevCard(ArrayList<String> jsonArgs) {
+    public BuyDevCard(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
 
         Gson gson = new Gson();
 

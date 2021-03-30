@@ -11,6 +11,14 @@ import java.util.stream.Collectors;
 
 public class Utility {
 
+    /**
+     * Takes a List of resources with repeated type and return a new list with a single type for
+     * each element in original list with its multiplicity.
+     *
+     * @param list
+     * @param <T> A generic of type FinalResource or Resource
+     * @return A new list with only distinct types.
+     */
     public static <T extends FinalResource> ArrayList<T> unifyResourceAmounts(List<T> list) {
         ArrayList<T> result = new ArrayList<>();
 

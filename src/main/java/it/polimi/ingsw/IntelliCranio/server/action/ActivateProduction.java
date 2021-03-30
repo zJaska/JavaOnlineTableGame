@@ -21,7 +21,7 @@ public class ActivateProduction implements Action{
      * </p>
      * @param jsonArgs
      */
-    public ActivateProduction(ArrayList<String> jsonArgs) {
+    public ActivateProduction(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
 
         Gson gson = new Gson();
 

@@ -19,12 +19,17 @@ public class DiscardInitLeaders implements Action{
      * Gets all the necessary parameter from json strings.
      * @param jsonArgs List of all the LeadCard to discard
      */
-    public DiscardInitLeaders(ArrayList<String> jsonArgs) {
+    public DiscardInitLeaders(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
 
         Gson gson = new Gson();
 
-        if(jsonArgs.size() > 0)
-            selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<LeadCard>>(){}.getType());
+        if (jsonArgs.size() > 0)
+
+            try {
+                selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<LeadCard>>(){}.getType());
+            } catch (Exception e) {
+                throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
+            }
 
     }
 
@@ -54,9 +59,9 @@ public class DiscardInitLeaders implements Action{
 
         selection.forEach(selected -> {
             //Get the card that match the selected one by ID
-            LeadCard cardToDiscard = currentPlayer.getLeaders().stream().filter(card -> {
-                return card.getID().equals(selected.getID());
-            }).findFirst().get();
+            LeadCard cardToDiscard = currentPlayer.getLeaders().stream()
+                    .filter(card -> card.getID().equals(selected.getID()))
+                    .findFirst().get();
 
             //Remove the card from the list
             currentPlayer.getLeaders().remove(cardToDiscard);
@@ -81,9 +86,7 @@ public class DiscardInitLeaders implements Action{
 
         //Check if selected cards are actually in player cards
         selection.forEach(selected -> {
-            if(currentPlayer.getLeaders().stream().noneMatch(card -> {
-                return card.getID().equals(selected.getID());
-            }))
+            if(currentPlayer.getLeaders().stream().noneMatch(card -> card.getID().equals(selected.getID())))
                 error.set(true);
         });
 

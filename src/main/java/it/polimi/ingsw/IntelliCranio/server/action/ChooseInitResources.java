@@ -26,12 +26,16 @@ public class ChooseInitResources implements Action {
      *
      * @param jsonArgs The list of resources the player choosed.
      */
-    public ChooseInitResources(ArrayList<String> jsonArgs) {
+    public ChooseInitResources(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
 
         Gson gson = new Gson();
 
         if(jsonArgs.size() > 0)
-            selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<Resource>>(){}.getType());
+            try{
+                selection = gson.fromJson(jsonArgs.get(0), new TypeToken<ArrayList<Resource>>(){}.getType());
+            } catch (Exception e) {
+                throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
+            }
     }
 
     /**

@@ -19,7 +19,7 @@ public class PlayLeader implements Action{
      * </p>
      * @param jsonArgs
      */
-    public PlayLeader(ArrayList<String> jsonArgs) {
+    public PlayLeader(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
 
         Gson gson = new Gson();
 

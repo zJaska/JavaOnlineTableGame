@@ -80,7 +80,12 @@ public class DiscardInitLeadersTest {
         ArrayList<String> args = new ArrayList<>();
         args.add(gson.toJson(cardsToDiscard));
 
-        Action action = new DiscardInitLeaders(args);
+        Action action = null;
+        try {
+            action = new DiscardInitLeaders(args);
+        } catch (InvalidArgumentsException e) {
+            e.printStackTrace();
+        }
 
         try {
             action.playAction(manager);

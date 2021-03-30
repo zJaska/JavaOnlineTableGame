@@ -3,6 +3,7 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 
 import it.polimi.ingsw.IntelliCranio.server.Packet;
 import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
+import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
 public class ActionFactory {
 
@@ -12,7 +13,7 @@ public class ActionFactory {
      * @param packet
      * @return New action based on code received in packet.
      */
-    public Action getAction(Packet packet) {
+    public Action getAction(Packet packet) throws InvalidArgumentsException {
         InstructionCode code = packet.getCode();
 
         if (packet == null) return null;

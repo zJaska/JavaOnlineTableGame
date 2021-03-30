@@ -21,36 +21,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        GameManager manager = new GameManager();
-        manager.addPlayer(new Player(new Warehouse(3)), 0);
 
-        Resource[] temp = new Resource[3];
-        ArrayList<Resource> res = new ArrayList<>();
-
-        temp[0] = new Resource(FinalResource.ResourceType.STONE, 2);
-        temp[1] = new Resource(FinalResource.ResourceType.COIN, 2);
-        res.add(new Resource(FinalResource.ResourceType.STONE, 2));
-        res.add(new Resource(FinalResource.ResourceType.COIN, 2));
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        ArrayList<String> arg = new ArrayList<>();
-        arg.add(gson.toJson(res));
-        arg.add(gson.toJson(temp));
-
-        ChooseInitResources action = new ChooseInitResources(arg);
-        try {
-            action.playAction(manager);
-        } catch (InvalidArgumentsException e) {
-            e.printStackTrace();
-        }
-
-/*
-        try {
-            CardGenerator.generateLeadCardFile(manager.generateCards());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-        manager.createLeaderCards("src/main/resources/leadcards_config.json", true);
     }
 }

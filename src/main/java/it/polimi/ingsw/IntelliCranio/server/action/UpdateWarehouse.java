@@ -1,18 +1,23 @@
 package it.polimi.ingsw.IntelliCranio.server.action;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
 import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
+import it.polimi.ingsw.IntelliCranio.server.Utility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.cedarsoftware.util.DeepEquals.deepEquals;
 
 public class UpdateWarehouse implements Action{
 
@@ -27,7 +32,7 @@ public class UpdateWarehouse implements Action{
      * @param jsonArgs args[0] is the depot configuration received from client.
      *                 args[1] is the list of extra resources (can be empty if the warehouse has only been changed)
      */
-    public UpdateWarehouse(ArrayList<String> jsonArgs) {
+    public UpdateWarehouse(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
         Gson gson = new Gson();
 
         //There has to be at least 2 arguments
@@ -56,13 +61,15 @@ public class UpdateWarehouse implements Action{
 
         if(discardedAmount == -1){
             //Todo: Handle error
-        } else { //Todo: Check if 0
+        } else {
             Player currentPlayer = manager.getCurrentPlayer();
-            manager.getPlayers().stream().filter(player -> { //Todo: Change with single increment for each player
-                return !player.equals(currentPlayer);
-            }).forEach(player -> {
-                manager.addPlayerFaith(player, discardedAmount); //ERROR: Method not implemented yet
-            });
+            ArrayList<Player> players = manager.getPlayers();
+
+            for(int i = 0; i < discardedAmount; ++i) {
+                players.stream()
+                        .filter(player -> !player.equals(currentPlayer))
+                        .forEach(manager::addPlayerFaith); //ERROR: Method not implemented yet
+            }
         }
 
         return null;
@@ -74,6 +81,18 @@ public class UpdateWarehouse implements Action{
         if(clientDepot == null || clientExtraResources == null)
             throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
 
+        //Check if depot sent by client contains BLANK or FAITH resource
+        if(Arrays.stream(clientDepot)
+                .filter(Objects::nonNull)
+                .anyMatch(res -> (res.getType() == ResourceType.BLANK) || res.getType() == ResourceType.FAITH))
+            throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
+
+        //Check if extra resources sent by client contains BLANK or FAITH resource
+        if(clientExtraResources.stream()
+                .filter(Objects::nonNull)
+                .anyMatch(res -> (res.getType() == ResourceType.BLANK) || res.getType() == ResourceType.FAITH))
+            throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
+
         ArrayList<Resource> clientResources = new ArrayList<>(); //To store both depot and extra resources from client
         ArrayList<Resource> serverResources = new ArrayList<>(); //To store both depot and extra resources from server
 
@@ -82,20 +101,7 @@ public class UpdateWarehouse implements Action{
         Arrays.stream(clientDepot).filter(Objects::nonNull).forEach(clientResources::add);
         clientResources.addAll(clientExtraResources);
 
-        ArrayList<Resource> temp = new ArrayList<>();
-
-        clientResources.forEach(res -> {
-            if(temp.stream().noneMatch(tempRes -> {
-                return tempRes.getType() == res.getType();
-            }))
-                temp.add(res);
-            else
-                temp.stream().filter(tempRes -> {
-                    return tempRes.getType() == res.getType();
-                }).findFirst().get().addAmount(res.getAmount());
-        });
-
-        //Add the client resources from depot and extra (extra can be empty but nonNull)
+        //Add the server resources from depot and extra (extra can be empty but nonNull)
         Resource[] serverDepot = manager.getCurrentPlayer().getWarehouse().getDepot();
         ArrayList<Resource> lastActionResources = new ArrayList<>(); //Example: Resources from TakeResources
         ArrayList<String> lastActionReturnArgs = manager.getLastActionReturnArgs();
@@ -117,6 +123,16 @@ public class UpdateWarehouse implements Action{
         serverResources.addAll(lastActionResources);
 
         //Check if server and client resources match
+        clientResources = Utility.unifyResourceAmounts(clientResources);
+        serverResources = Utility.unifyResourceAmounts(serverResources);
+
+        clientResources.sort(Comparator.comparing(FinalResource::getType));
+        serverResources.sort(Comparator.comparing(FinalResource::getType));
+
+        if(!deepEquals(clientResources, serverResources))
+            throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
+
+        /*
         AtomicBoolean error = new AtomicBoolean(false);
 
         //Check if server contains all the elements in client (can have more)
@@ -140,6 +156,6 @@ public class UpdateWarehouse implements Action{
 
         if (error.get())
             throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
-
+        */
     }
 }

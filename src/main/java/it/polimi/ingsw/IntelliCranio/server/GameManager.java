@@ -162,8 +162,8 @@ public class GameManager implements Runnable{
         return players;
     }
 
-    public void addPlayerFaith(Player player, int faithAmount) {
-        //Loop and increment for every faithAmount to add
+    public void addPlayerFaith(Player player) {
+        //Increment player Faith
         //Check every increment the position of the player on the faith track
         throw new UnsupportedOperationException();
     }

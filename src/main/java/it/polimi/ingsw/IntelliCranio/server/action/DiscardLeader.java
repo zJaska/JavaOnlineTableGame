@@ -21,12 +21,16 @@ public class DiscardLeader implements Action{
      * </p>
      * @param jsonArgs
      */
-    public DiscardLeader(ArrayList<String> jsonArgs) {
+    public DiscardLeader(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
 
         Gson gson = new Gson();
 
         if(jsonArgs.size() > 0)
-            card = gson.fromJson(jsonArgs.get(0), new TypeToken<LeadCard>(){}.getType());
+            try {
+                card = gson.fromJson(jsonArgs.get(0), new TypeToken<LeadCard>(){}.getType());
+            } catch (Exception e) {
+                throw new InvalidArgumentsException(InstructionCode.DISCARD_LEADER);
+            }
     }
 
     @Override
@@ -43,7 +47,7 @@ public class DiscardLeader implements Action{
             return leader.getID().equals(card.getID());
         });
 
-        manager.addPlayerFaith(currentPlayer, 1); //ERROR: Method not implemented yet
+        manager.addPlayerFaith(currentPlayer); //ERROR: Method not implemented yet
 
         return null;
     }
@@ -57,9 +61,11 @@ public class DiscardLeader implements Action{
         //Check if the selected card is actually in player hand
         ArrayList<LeadCard> playerLeaders = manager.getCurrentPlayer().getLeaders();
 
-        if(playerLeaders.stream().noneMatch(leader -> {
-            return card.getID().equals(leader.getID());
-        }))
+        if(playerLeaders.stream().noneMatch(leader -> card.getID().equals(leader.getID())))
+            throw new InvalidArgumentsException(InstructionCode.DISCARD_LEADER);
+
+        //Check if the selected card has already been activated
+        if(playerLeaders.stream().anyMatch(leader -> (leader.getID().equals(card.getID()) && leader.isActive())))
             throw new InvalidArgumentsException(InstructionCode.DISCARD_LEADER);
 
     }

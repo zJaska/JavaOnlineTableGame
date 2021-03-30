@@ -21,7 +21,7 @@ public class TakeResources implements Action{
      * </p>
      * @param jsonArgs The string representing row/col and its number
      */
-    public TakeResources(ArrayList<String> jsonArgs) {
+    public TakeResources(ArrayList<String> jsonArgs) throws InvalidArgumentsException {
 
         Gson gson = new Gson();
 
