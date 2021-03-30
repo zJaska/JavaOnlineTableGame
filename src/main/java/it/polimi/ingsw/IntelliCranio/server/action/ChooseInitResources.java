@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
-import it.polimi.ingsw.IntelliCranio.server.Packet;
+import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.player.Warehouse;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
@@ -64,13 +64,13 @@ public class ChooseInitResources implements Action {
 
         //NonNull Condition
         if(selection == null)
-            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
+            throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
 
         //Search if at least one element is faith or blank
         if(selection.stream().anyMatch(res -> {
-            return res.getType() == FinalResource.ResourceType.FAITH || res.getType() == FinalResource.ResourceType.BLANK;
+            return res.getType() == ResourceType.FAITH || res.getType() == ResourceType.BLANK;
         }))
-            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
+            throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
 
         //The amount of resources i expect
         int correctAmount = manager.getInitRes(manager.getCurrentPlayerIndex());
@@ -79,6 +79,6 @@ public class ChooseInitResources implements Action {
         int actualAmount = selection.stream().mapToInt(Resource::getAmount).sum();
 
         if (actualAmount != correctAmount)
-            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
+            throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
     }
 }

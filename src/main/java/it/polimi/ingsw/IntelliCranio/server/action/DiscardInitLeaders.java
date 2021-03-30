@@ -3,7 +3,7 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
-import it.polimi.ingsw.IntelliCranio.server.Packet;
+import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
@@ -72,11 +72,11 @@ public class DiscardInitLeaders implements Action{
 
         //NonNull Condition
         if(selection == null)
-            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_INIT_LEADERS);
+            throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
 
         //Check if amount of cards is correct
         if(selection.size() != 2)
-            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_INIT_LEADERS);
+            throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
 
 
         //Check if selected cards are actually in player cards
@@ -88,6 +88,6 @@ public class DiscardInitLeaders implements Action{
         });
 
         if(error.get())
-            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_INIT_LEADERS);
+            throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
     }
 }

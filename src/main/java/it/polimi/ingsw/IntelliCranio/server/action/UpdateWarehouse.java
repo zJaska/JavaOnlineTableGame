@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
-import it.polimi.ingsw.IntelliCranio.server.Packet;
+import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
@@ -56,9 +56,9 @@ public class UpdateWarehouse implements Action{
 
         if(discardedAmount == -1){
             //Todo: Handle error
-        } else {
+        } else { //Todo: Check if 0
             Player currentPlayer = manager.getCurrentPlayer();
-            manager.getPlayers().stream().filter(player -> {
+            manager.getPlayers().stream().filter(player -> { //Todo: Change with single increment for each player
                 return !player.equals(currentPlayer);
             }).forEach(player -> {
                 manager.addPlayerFaith(player, discardedAmount); //ERROR: Method not implemented yet
@@ -72,14 +72,28 @@ public class UpdateWarehouse implements Action{
 
         //NonNull Condition
         if(clientDepot == null || clientExtraResources == null)
-            throw new InvalidArgumentsException(Packet.InstructionCode.UPDATE_WAREHOUSE);
+            throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
 
         ArrayList<Resource> clientResources = new ArrayList<>(); //To store both depot and extra resources from client
         ArrayList<Resource> serverResources = new ArrayList<>(); //To store both depot and extra resources from server
 
+        //Todo: Group amount
         //Add the client resources from depot and extra (extra can be empty but nonNull)
         Arrays.stream(clientDepot).filter(Objects::nonNull).forEach(clientResources::add);
         clientResources.addAll(clientExtraResources);
+
+        ArrayList<Resource> temp = new ArrayList<>();
+
+        clientResources.forEach(res -> {
+            if(temp.stream().noneMatch(tempRes -> {
+                return tempRes.getType() == res.getType();
+            }))
+                temp.add(res);
+            else
+                temp.stream().filter(tempRes -> {
+                    return tempRes.getType() == res.getType();
+                }).findFirst().get().addAmount(res.getAmount());
+        });
 
         //Add the client resources from depot and extra (extra can be empty but nonNull)
         Resource[] serverDepot = manager.getCurrentPlayer().getWarehouse().getDepot();
@@ -94,7 +108,7 @@ public class UpdateWarehouse implements Action{
                 lastActionResources = gson.fromJson(lastActionReturnArgs.get(0),
                         new TypeToken<ArrayList<Resource>>(){}.getType());
             } catch (Exception e) {
-                throw new InvalidArgumentsException(Packet.InstructionCode.UPDATE_WAREHOUSE);
+                throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
             }
         }
 
@@ -114,7 +128,7 @@ public class UpdateWarehouse implements Action{
         });
 
         if (error.get())
-            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
+            throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
 
         //Check if client contains all the elements in server
         serverResources.forEach(serverRes -> {
@@ -125,7 +139,7 @@ public class UpdateWarehouse implements Action{
         });
 
         if (error.get())
-            throw new InvalidArgumentsException(Packet.InstructionCode.CHOOSE_INIT_RES);
+            throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
 
     }
 }

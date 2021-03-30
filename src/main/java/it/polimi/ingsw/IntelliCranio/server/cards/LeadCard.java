@@ -1,26 +1,26 @@
 package it.polimi.ingsw.IntelliCranio.server.cards;
 
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType;
 import it.polimi.ingsw.IntelliCranio.server.ability.AbilityFactory;
 import it.polimi.ingsw.IntelliCranio.server.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType;
 
 import java.util.ArrayList;
 
 public class LeadCard extends Card{
-
-    public enum AbilityType{SALE, DEPOT, RESOURCE, PRODUCTION}
 
     private boolean isActive;
     private ArrayList<CardResource> cardRequirements;
     private ArrayList<FinalResource> resourceRequirements;
 
     private AbilityType abilityType;
-    private FinalResource.ResourceType resourceType;
+    private ResourceType resourceType;
     private Ability specialAbility;
 
     public LeadCard(String ID, int vp, ArrayList<CardResource> cardRequirements,
-                    ArrayList<FinalResource> resourceRequirements, AbilityType at, FinalResource.ResourceType rt, boolean isActive) {
+                    ArrayList<FinalResource> resourceRequirements, AbilityType at, ResourceType rt, boolean isActive) {
         this.ID = ID;
         this.vp = vp;
         this.cardRequirements = cardRequirements;
@@ -31,7 +31,7 @@ public class LeadCard extends Card{
     }
 
 
-    public void setupAbility(AbilityType at, FinalResource.ResourceType rt) {
+    public void setupAbility(AbilityType at, ResourceType rt) {
         specialAbility = new AbilityFactory().getAbility(at, rt);
     }
 
@@ -40,11 +40,11 @@ public class LeadCard extends Card{
     }
 
 
-    public AbilityType getAbilityType() {
+    public Ability.AbilityType getAbilityType() {
         return abilityType;
     }
 
-    public FinalResource.ResourceType getResourceType() {
+    public ResourceType getResourceType() {
         return resourceType;
     }
 

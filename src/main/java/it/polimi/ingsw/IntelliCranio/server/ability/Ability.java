@@ -1,15 +1,17 @@
 package it.polimi.ingsw.IntelliCranio.server.ability;
 
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
 
 import java.util.ArrayList;
 
 public abstract class Ability {
 
-    protected FinalResource.ResourceType type;
+    public enum AbilityType{SALE, DEPOT, RESOURCE, PRODUCTION}
 
-    public Ability(FinalResource.ResourceType type) {
+    protected ResourceType type;
+
+    public Ability(ResourceType type) {
         this.type = type;
     }
 
@@ -17,4 +19,5 @@ public abstract class Ability {
         System.out.println("Ability");
         return null;
     }
+
 }

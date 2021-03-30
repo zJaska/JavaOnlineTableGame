@@ -3,6 +3,7 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
@@ -37,7 +38,7 @@ public class DiscardInitLeadersTest {
         cardReq.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
         cardReq.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
 
-        LeadCard card1 = new LeadCard(ID, vp, cardReq, null, LeadCard.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
+        LeadCard card1 = new LeadCard(ID, vp, cardReq, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
         //endregion
 
         //region Card 2
@@ -47,7 +48,7 @@ public class DiscardInitLeadersTest {
         cardReq.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
         cardReq.add(new CardResource(DevCard.CardType.PURPLE, 1, 0));
 
-        LeadCard card2 = new LeadCard(ID, vp, cardReq, null, LeadCard.AbilityType.SALE, FinalResource.ResourceType.SHIELD, false);
+        LeadCard card2 = new LeadCard(ID, vp, cardReq, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SHIELD, false);
         //endregion
 
         //region Card 3
@@ -57,7 +58,7 @@ public class DiscardInitLeadersTest {
         cardReq.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         cardReq.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
 
-        LeadCard card3 = new LeadCard(ID, vp, cardReq, null, LeadCard.AbilityType.SALE, FinalResource.ResourceType.STONE, false);
+        LeadCard card3 = new LeadCard(ID, vp, cardReq, null, Ability.AbilityType.SALE, FinalResource.ResourceType.STONE, false);
         //endregion
 
         //region Card 4
@@ -67,7 +68,7 @@ public class DiscardInitLeadersTest {
         cardReq.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
         cardReq.add(new CardResource(DevCard.CardType.PURPLE, 1, 0));
 
-        LeadCard card4 = new LeadCard(ID, vp, cardReq, null, LeadCard.AbilityType.SALE, FinalResource.ResourceType.COIN, false);
+        LeadCard card4 = new LeadCard(ID, vp, cardReq, null, Ability.AbilityType.SALE, FinalResource.ResourceType.COIN, false);
         //endregion
         //endregion
 
@@ -92,8 +93,8 @@ public class DiscardInitLeadersTest {
         ArrayList<LeadCard> actualCards = manager.getCurrentPlayer().getLeaders();
 
         //region Setup expected Cards
-        card2.setupAbility(LeadCard.AbilityType.SALE, FinalResource.ResourceType.SHIELD);
-        card3.setupAbility(LeadCard.AbilityType.SALE, FinalResource.ResourceType.STONE);
+        card2.setupAbility(Ability.AbilityType.SALE, FinalResource.ResourceType.SHIELD);
+        card3.setupAbility(Ability.AbilityType.SALE, FinalResource.ResourceType.STONE);
 
         expectedCards.add(card2);
         expectedCards.add(card3);

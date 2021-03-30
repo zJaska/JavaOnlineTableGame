@@ -3,7 +3,7 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.GameManager;
-import it.polimi.ingsw.IntelliCranio.server.Packet;
+import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.player.Player;
@@ -52,7 +52,7 @@ public class DiscardLeader implements Action{
 
         //NonNull Condition
         if(card == null)
-            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_LEADER);
+            throw new InvalidArgumentsException(InstructionCode.DISCARD_LEADER);
 
         //Check if the selected card is actually in player hand
         ArrayList<LeadCard> playerLeaders = manager.getCurrentPlayer().getLeaders();
@@ -60,7 +60,7 @@ public class DiscardLeader implements Action{
         if(playerLeaders.stream().noneMatch(leader -> {
             return card.getID().equals(leader.getID());
         }))
-            throw new InvalidArgumentsException(Packet.InstructionCode.DISCARD_LEADER);
+            throw new InvalidArgumentsException(InstructionCode.DISCARD_LEADER);
 
     }
 }

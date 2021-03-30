@@ -10,26 +10,36 @@ import java.util.ArrayList;
 
 public class TakeResources implements Action{
 
-    private ResourceMarket market;
-    private String code; //Identify row or col number "c1", "r2", ...
+    private char code; //Identify row or col
+    private int selected; //Identify the number of row/col
+    private String input;
 
     /**
-     * Constructor
+     * Gets a string representing which row or col is selected.
      * <p>
      *     Gets all the necessary parameter from json strings.
      * </p>
-     * @param jsonArgs
+     * @param jsonArgs The string representing row/col and its number
      */
     public TakeResources(ArrayList<String> jsonArgs) {
 
         Gson gson = new Gson();
 
-        market = gson.fromJson(jsonArgs.get(0), new TypeToken<ResourceMarket>(){}.getType());
-        code = gson.fromJson(jsonArgs.get(1), new TypeToken<String>(){}.getType());
+        if(jsonArgs.size() > 0)
+            input = gson.fromJson(jsonArgs.get(1), new TypeToken<String>(){}.getType());
     }
 
     @Override
     public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
+
+        argumentValidation(manager);
+
+        //I get here if there are no problems with input arguments
+
         throw new UnsupportedOperationException();
+    }
+
+    private void argumentValidation(GameManager manager) {
+
     }
 }
