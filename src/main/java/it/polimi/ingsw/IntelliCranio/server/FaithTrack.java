@@ -46,9 +46,8 @@ public class FaithTrack {
     }
 
     /**
-     *
      * @param space The number of the cell
-     * @return  The number of the vatican section the pope space is in, otherwise -1 if the cell isn't a pope space
+     * @return The number of the vatican section the pope space is in, otherwise -1 if the cell isn't a pope space
      */
 
     public int popeSpace(int space) {
@@ -59,9 +58,9 @@ public class FaithTrack {
      * This method will be used when player reaches a pope space, and other players
      * will have to set the state of a pope card based on the section they're in.
      *
-     * @param sectionX  The vatican section starting from 0
-     * @param space     The number of the cell to be checked
-     * @return  The number of the last section that the player has passed, or -1 if he hasn't still passed a section
+     * @param sectionX The vatican section starting from 0
+     * @param space    The number of the cell to be checked
+     * @return The number of the last section that the player has passed, or -1 if he hasn't still passed a section
      */
 
     public boolean isXSectionOrHigher(int sectionX, int space) {

@@ -6,12 +6,22 @@ public class Resource extends FinalResource {
         super(type, amount);
     }
 
-    public void addAmount(int amount) {
+    public int addAmount(int amount) {
         this.amount += amount;
+        return amount;
     }
 
-    public void removeAmount(int amount) {
-        this.amount -= amount;
+    /**
+     * This method doesn't remove any resource if the new amount would be less than 0
+     *
+     * @return  The modified amount if it's >= 0, otherwise -1
+     */
+    public int removeAmount(int amount) {
+        if (this.amount - amount >= 0)
+            this.amount -= amount;
+        else
+            return -1;
+        return this.amount;
     }
 
     public void setAmount(int amount) { this.amount=amount; }

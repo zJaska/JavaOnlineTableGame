@@ -1,5 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.server.resource;
 
+import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+
 public class FinalResource {
 
     public enum ResourceType {STONE, SHIELD, SERVANT, COIN, FAITH, BLANK}
@@ -8,6 +10,8 @@ public class FinalResource {
     protected int amount;
 
     public FinalResource(ResourceType type, int amount) {
+        if (amount < 0)
+            throw new IllegalArgumentException();
         this.type = type;
         this.amount = amount;
     }
