@@ -1,12 +1,10 @@
 package it.polimi.ingsw.IntelliCranio.server.market;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
 
-import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,7 +13,7 @@ import java.util.Random;
 
 public class CardMarket {
 
-    private int rows, cols;
+    private final int rows, cols;
     private ArrayList<DevCard>[][] marketGrid;
 
     public CardMarket(int rows, int cols) {

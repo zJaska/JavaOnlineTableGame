@@ -72,9 +72,6 @@ public class DiscardInitLeaders implements Action{
 
     private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
 
-        Player currentPlayer = manager.getCurrentPlayer();
-        AtomicBoolean error = new AtomicBoolean(false);
-
         //NonNull Condition
         if(selection == null)
             throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
@@ -85,6 +82,9 @@ public class DiscardInitLeaders implements Action{
 
 
         //Check if selected cards are actually in player cards
+        Player currentPlayer = manager.getCurrentPlayer();
+        AtomicBoolean error = new AtomicBoolean(false);
+
         selection.forEach(selected -> {
             if(currentPlayer.getLeaders().stream().noneMatch(card -> card.getID().equals(selected.getID())))
                 error.set(true);

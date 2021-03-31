@@ -98,8 +98,8 @@ public class DiscardInitLeadersTest {
         ArrayList<LeadCard> actualCards = manager.getCurrentPlayer().getLeaders();
 
         //region Setup expected Cards
-        card2.setupAbility(Ability.AbilityType.SALE, FinalResource.ResourceType.SHIELD);
-        card3.setupAbility(Ability.AbilityType.SALE, FinalResource.ResourceType.STONE);
+        card2.setupAbility();
+        card3.setupAbility();
 
         expectedCards.add(card2);
         expectedCards.add(card3);

@@ -22,23 +22,33 @@ public class Strongbox {
                 .forEach( type -> resources.add(new Resource(type, 0)));
     }
 
-    public int getValue(FinalResource.ResourceType resource) {
-        return this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get().getAmount();
+    public int getAmount(ResourceType resource) {
+        return resources.stream()
+                .filter(res -> res.getType() == resource)
+                .findFirst().get().getAmount();
     }
 
-    public void addResources(FinalResource.ResourceType resource, int amount) {
-        this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get().addAmount(amount);
+    public void addResources(ResourceType resource, int amount) {
+        resources.stream()
+                .filter(res -> res.getType() == resource)
+                .findFirst().get()
+                .addAmount(amount);
     }
 
-    public void removeResources(FinalResource.ResourceType resource, int amount) {
-        Resource temp=this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get();
+    public void removeResources(ResourceType resource, int amount) {
+        Resource temp = resources.stream()
+                .filter(res -> res.getType() == resource)
+                .findFirst().get();
 
-        if(temp.getAmount()<amount){
+        if(temp.getAmount() < amount){
             temp.setAmount(0);
             return;
         }
 
-        this.resources.stream().filter(res -> res.getType() == resource ).findFirst().get().removeAmount(amount);
+        resources.stream()
+                .filter(res -> res.getType() == resource)
+                .findFirst().get()
+                .removeAmount(amount);
     }
 
 

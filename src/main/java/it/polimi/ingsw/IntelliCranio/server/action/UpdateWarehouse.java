@@ -96,7 +96,6 @@ public class UpdateWarehouse implements Action{
         ArrayList<Resource> clientResources = new ArrayList<>(); //To store both depot and extra resources from client
         ArrayList<Resource> serverResources = new ArrayList<>(); //To store both depot and extra resources from server
 
-        //Todo: Group amount
         //Add the client resources from depot and extra (extra can be empty but nonNull)
         Arrays.stream(clientDepot).filter(Objects::nonNull).forEach(clientResources::add);
         clientResources.addAll(clientExtraResources);

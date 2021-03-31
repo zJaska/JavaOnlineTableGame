@@ -31,8 +31,8 @@ public class LeadCard extends Card{
     }
 
 
-    public void setupAbility(AbilityType at, ResourceType rt) {
-        specialAbility = new AbilityFactory().getAbility(at, rt);
+    public void setupAbility() {
+        specialAbility = new AbilityFactory().getAbility(abilityType, resourceType);
     }
 
     public boolean isActive() {

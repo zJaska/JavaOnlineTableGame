@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class ResourceMarket {
 
-    private final int ROWS;
-    private final int COLUMNS;
+    public final int ROWS;
+    public final int COLUMNS;
 
     private FinalResource extraMarble;
     private FinalResource[][] marbleGrid;

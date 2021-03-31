@@ -49,7 +49,7 @@ public class GameManager implements Runnable{
         }
 
         leaders.forEach(card -> {
-            card.setupAbility(card.getAbilityType(), card.getResourceType());
+            card.setupAbility();
         });
 
         assignCards(leaders, shuffle);
