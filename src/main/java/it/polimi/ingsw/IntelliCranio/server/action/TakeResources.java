@@ -85,7 +85,7 @@ public class TakeResources implements Action{
             marketResources.addAll(leader.getSpecialAbility().effect());
         }
 
-        //Clear di Faith e Blank
+        //Clear of Faith and Blank
         marketResources.removeIf(res -> (res.getType() == BLANK || res.getType() == FAITH));
 
         //Unify the resources

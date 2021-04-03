@@ -33,6 +33,13 @@ public class DiscardLeader implements Action{
             }
     }
 
+    /**
+     * Check client input validity, if there are no errors,
+     * remove the card from player and add one faith.
+     * @param manager
+     * @return null
+     * @throws InvalidArgumentsException
+     */
     @Override
     public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
 
@@ -43,9 +50,7 @@ public class DiscardLeader implements Action{
         Player currentPlayer = manager.getCurrentPlayer();
 
         //Remove matching ID card
-        currentPlayer.getLeaders().removeIf(leader -> {
-            return leader.getID().equals(card.getID());
-        });
+        currentPlayer.getLeaders().removeIf(leader -> leader.getID().equals(card.getID()));
 
         manager.addPlayerFaith(currentPlayer); //ERROR: Method not implemented yet
 

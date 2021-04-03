@@ -25,7 +25,7 @@ public class UpdateWarehouse implements Action{
     private ArrayList<Resource> clientExtraResources;
 
     /**
-     * Creates a new instance of this class.
+     * Creates a new action. Get the depot configuration and the left resources from client.
      * <p>
      *     Gets all the necessary parameter from json strings.
      * </p>
@@ -45,6 +45,7 @@ public class UpdateWarehouse implements Action{
     /**
      * Check that the resources provided by the client and the server data match.
      * If so, Warehouse.update method is called and the depot is updated.
+     * Every other player in order gains faith for every resource discarded.
      *
      * @param manager
      * @return null
@@ -81,13 +82,13 @@ public class UpdateWarehouse implements Action{
         if(clientDepot == null || clientExtraResources == null)
             throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
 
-        //Check if depot sent by client contains BLANK or FAITH resource
+        //Depot from client has BLANK or FAITH Condition
         if(Arrays.stream(clientDepot)
                 .filter(Objects::nonNull)
                 .anyMatch(res -> (res.getType() == ResourceType.BLANK) || res.getType() == ResourceType.FAITH))
             throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
 
-        //Check if extra resources sent by client contains BLANK or FAITH resource
+        //Resources from client has BLANK or FAITH Condition
         if(clientExtraResources.stream()
                 .filter(Objects::nonNull)
                 .anyMatch(res -> (res.getType() == ResourceType.BLANK) || res.getType() == ResourceType.FAITH))
@@ -128,33 +129,9 @@ public class UpdateWarehouse implements Action{
         clientResources.sort(Comparator.comparing(FinalResource::getType));
         serverResources.sort(Comparator.comparing(FinalResource::getType));
 
+        //Server and client does not match Condition
         if(!deepEquals(clientResources, serverResources))
             throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
 
-        /*
-        AtomicBoolean error = new AtomicBoolean(false);
-
-        //Check if server contains all the elements in client (can have more)
-        clientResources.forEach(clientRes -> {
-            if (serverResources.stream().noneMatch(serverRes -> {
-                return serverRes.getType() == clientRes.getType() && serverRes.getAmount() == clientRes.getAmount();
-            }))
-                error.set(true);
-        });
-
-        if (error.get())
-            throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
-
-        //Check if client contains all the elements in server
-        serverResources.forEach(serverRes -> {
-            if (clientResources.stream().noneMatch(clientRes -> {
-                return serverRes.getType() == clientRes.getType() && serverRes.getAmount() == clientRes.getAmount();
-            }))
-                error.set(true);
-        });
-
-        if (error.get())
-            throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
-        */
     }
 }

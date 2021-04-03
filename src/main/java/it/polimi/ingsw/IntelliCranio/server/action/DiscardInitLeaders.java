@@ -76,12 +76,15 @@ public class DiscardInitLeaders implements Action{
         if(selection == null)
             throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
 
-        //Check if amount of cards is correct
+        //Invalid Amount Condition
         if(selection.size() != 2)
             throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
 
+        //Duplicated Condition
+        if(selection.get(0).getID().equals(selection.get(1).getID())) //IDs Match
+            throw new InvalidArgumentsException(InstructionCode.DISCARD_INIT_LEADERS);
 
-        //Check if selected cards are actually in player cards
+        //Not in player hand Condition
         Player currentPlayer = manager.getCurrentPlayer();
         AtomicBoolean error = new AtomicBoolean(false);
 

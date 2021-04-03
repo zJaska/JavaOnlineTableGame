@@ -22,7 +22,7 @@ public class ChooseInitResources implements Action {
     private ArrayList<Resource> selection; //The resources the player choosed
 
     /**
-     * This action validate the resources choosed by the player at the start of the game.
+     * Create the new Action and get the necessary parameters from json.
      *
      * @param jsonArgs The list of resources the player choosed.
      */
@@ -39,7 +39,8 @@ public class ChooseInitResources implements Action {
     }
 
     /**
-     * Check input consistency, throw InvalidArgumentException if something is wrong
+     * Check input consistency, throw InvalidArgumentException if something is wrong.
+     * Return the selected resources to use for other action checks.
      *
      * @param manager
      * @return The selected resources converted back to json string
@@ -70,12 +71,13 @@ public class ChooseInitResources implements Action {
         if(selection == null)
             throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
 
-        //Search if at least one element is faith or blank
+        //Faith or Blank Condition
         if(selection.stream().anyMatch(res -> {
             return res.getType() == ResourceType.FAITH || res.getType() == ResourceType.BLANK;
         }))
             throw new InvalidArgumentsException(InstructionCode.CHOOSE_INIT_RES);
 
+        //Invalid Amount Condition
         //The amount of resources i expect
         int correctAmount = manager.getInitRes(manager.getCurrentPlayerIndex());
 
