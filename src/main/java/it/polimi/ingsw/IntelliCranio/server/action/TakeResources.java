@@ -68,6 +68,8 @@ public class TakeResources implements Action{
 
         //I get here if there are no problems
 
+        usedLeaders.forEach(LeadCard::setupAbility); //Setup the ability of each card
+
         ResourceMarket resourceMarket = manager.getResourceMarket();
         ArrayList<FinalResource> marketResources = new ArrayList<>();
 

@@ -61,7 +61,7 @@ public class LeadCard extends Card{
         return resourceRequirements;
     }
 
-    public void useCard() {
-        throw new UnsupportedOperationException();
+    public void activateCard() {
+        isActive = true;
     }
 }

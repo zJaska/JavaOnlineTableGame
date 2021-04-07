@@ -62,4 +62,14 @@ public class Player {
         throw new UnsupportedOperationException();
     }
 
+    public ArrayList<DevCard> getAllDevCards() {
+        ArrayList<DevCard> temp = new ArrayList<>();
+
+        temp.addAll(firstSlot);
+        temp.addAll(secondSlot);
+        temp.addAll(thirdSlot);
+
+        return temp;
+    }
+
 }
