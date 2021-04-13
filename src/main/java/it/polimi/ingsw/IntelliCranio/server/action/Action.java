@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface Action {
 
-    public ArrayList<String> playAction(Game manager) throws InvalidArgumentsException;
+    ArrayList<String> playAction(Game manager) throws InvalidArgumentsException;
 
 }
