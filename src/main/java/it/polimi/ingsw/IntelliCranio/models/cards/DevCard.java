@@ -1,6 +1,6 @@
-package it.polimi.ingsw.IntelliCranio.server.cards;
+package it.polimi.ingsw.IntelliCranio.models.cards;
 
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 
 import java.util.ArrayList;
 

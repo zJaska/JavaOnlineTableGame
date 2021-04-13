@@ -1,6 +1,6 @@
-package it.polimi.ingsw.IntelliCranio.server.player;
+package it.polimi.ingsw.IntelliCranio.models.player;
 
-import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
 import java.util.Objects;

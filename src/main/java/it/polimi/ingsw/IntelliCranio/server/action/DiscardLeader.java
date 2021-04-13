@@ -2,11 +2,11 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
-import it.polimi.ingsw.IntelliCranio.server.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class DiscardLeader implements Action{
      * @throws InvalidArgumentsException
      */
     @Override
-    public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
+    public ArrayList<String> playAction(Game manager) throws InvalidArgumentsException {
 
         argumentValidation(manager);
 
@@ -57,7 +57,7 @@ public class DiscardLeader implements Action{
         return null;
     }
 
-    private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
+    private void argumentValidation(Game manager) throws InvalidArgumentsException {
 
         //NonNull Condition
         if(card == null)

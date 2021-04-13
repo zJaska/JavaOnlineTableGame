@@ -2,15 +2,14 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +17,7 @@ class ChooseInitResourcesTest {
 
     @Test
     void playAction() throws InvalidArgumentsException {
-        GameManager manager = new GameManager();
+        Game manager = new Game();
         Action action;
         Executable executable;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

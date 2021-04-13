@@ -2,14 +2,14 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
-import it.polimi.ingsw.IntelliCranio.server.player.Player;
-import it.polimi.ingsw.IntelliCranio.server.resource.CardResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class DiscardInitLeadersTest {
 
     @Test
     public void playAction() {
-        GameManager manager = new GameManager();
+        Game manager = new Game();
         manager.addPlayer(new Player(), 0);
 
         ArrayList<LeadCard> cardsToDiscard = new ArrayList<>();

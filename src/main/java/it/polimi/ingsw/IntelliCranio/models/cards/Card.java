@@ -1,4 +1,4 @@
-package it.polimi.ingsw.IntelliCranio.server.cards;
+package it.polimi.ingsw.IntelliCranio.models.cards;
 
 public abstract class Card {
 

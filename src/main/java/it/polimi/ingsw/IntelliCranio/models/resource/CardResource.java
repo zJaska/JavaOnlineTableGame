@@ -1,6 +1,6 @@
-package it.polimi.ingsw.IntelliCranio.server.resource;
+package it.polimi.ingsw.IntelliCranio.models.resource;
 
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard.CardType;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard.CardType;
 
 public class CardResource {
 

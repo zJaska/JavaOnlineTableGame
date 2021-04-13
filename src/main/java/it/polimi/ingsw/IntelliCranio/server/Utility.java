@@ -1,13 +1,10 @@
 package it.polimi.ingsw.IntelliCranio.server;
 
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Utility {
 

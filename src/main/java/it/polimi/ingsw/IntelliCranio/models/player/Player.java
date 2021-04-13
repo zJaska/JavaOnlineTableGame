@@ -1,8 +1,8 @@
-package it.polimi.ingsw.IntelliCranio.server.player;
+package it.polimi.ingsw.IntelliCranio.models.player;
 
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
-import it.polimi.ingsw.IntelliCranio.server.cards.PopeCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 
 import java.util.ArrayList;
 

@@ -1,11 +1,11 @@
-package it.polimi.ingsw.IntelliCranio.server.cards;
+package it.polimi.ingsw.IntelliCranio.models.cards;
 
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType;
 import it.polimi.ingsw.IntelliCranio.server.ability.AbilityFactory;
-import it.polimi.ingsw.IntelliCranio.server.resource.CardResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType;
+import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 
 import java.util.ArrayList;
 

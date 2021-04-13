@@ -2,20 +2,19 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.Utility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
-import it.polimi.ingsw.IntelliCranio.server.player.Player;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType;
-import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.cedarsoftware.util.DeepEquals.deepEquals;
 
@@ -52,7 +51,7 @@ public class UpdateWarehouse implements Action{
      * @throws InvalidArgumentsException
      */
     @Override
-    public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
+    public ArrayList<String> playAction(Game manager) throws InvalidArgumentsException {
 
         argumentValidation(manager);
 
@@ -76,7 +75,7 @@ public class UpdateWarehouse implements Action{
         return null;
     }
 
-    private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
+    private void argumentValidation(Game manager) throws InvalidArgumentsException {
 
         //NonNull Condition
         if(clientDepot == null || clientExtraResources == null)

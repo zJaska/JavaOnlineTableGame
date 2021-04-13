@@ -2,15 +2,13 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.IntelliCranio.server.GameManager;
-import it.polimi.ingsw.IntelliCranio.server.Packet;
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.Game;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
-import it.polimi.ingsw.IntelliCranio.server.resource.CardResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode.*;
 
@@ -45,7 +43,7 @@ public class PlayLeader implements Action{
      * @throws InvalidArgumentsException
      */
     @Override
-    public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
+    public ArrayList<String> playAction(Game manager) throws InvalidArgumentsException {
 
         argumentValidation(manager);
 
@@ -61,7 +59,7 @@ public class PlayLeader implements Action{
         throw new UnsupportedOperationException();
     }
 
-    private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
+    private void argumentValidation(Game manager) throws InvalidArgumentsException {
 
         //NonNull Condition
         if(card == null)

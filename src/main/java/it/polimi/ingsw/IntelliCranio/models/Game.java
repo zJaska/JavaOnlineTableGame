@@ -1,12 +1,12 @@
-package it.polimi.ingsw.IntelliCranio.server;
+package it.polimi.ingsw.IntelliCranio.models;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
-import it.polimi.ingsw.IntelliCranio.server.market.CardMarket;
-import it.polimi.ingsw.IntelliCranio.server.market.ResourceMarket;
-import it.polimi.ingsw.IntelliCranio.server.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.market.CardMarket;
+import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameManager implements Runnable{
+public class Game{
 
     private int currentPlayerIndex; //0 - 3: The index of the player turn
     private FaithTrack faithTrack;
@@ -24,10 +24,6 @@ public class GameManager implements Runnable{
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<String> lastActionReturnArgs;
 
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * Creates all the cards from given json file and assign 4 of them randomly to each player.

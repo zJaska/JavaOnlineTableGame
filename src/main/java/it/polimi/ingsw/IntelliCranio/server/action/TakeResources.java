@@ -3,19 +3,19 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.Utility;
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
-import it.polimi.ingsw.IntelliCranio.server.market.ResourceMarket;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
-import static it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType.*;
+import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.*;
 
 public class TakeResources implements Action{
 
@@ -62,7 +62,7 @@ public class TakeResources implements Action{
      * @throws InvalidArgumentsException
      */
     @Override
-    public ArrayList<String> playAction(GameManager manager) throws InvalidArgumentsException {
+    public ArrayList<String> playAction(Game manager) throws InvalidArgumentsException {
 
         argumentValidation(manager);
 
@@ -101,7 +101,7 @@ public class TakeResources implements Action{
         return returnArgs;
     }
 
-    private void argumentValidation(GameManager manager) throws InvalidArgumentsException {
+    private void argumentValidation(Game manager) throws InvalidArgumentsException {
 
         AtomicBoolean error = new AtomicBoolean(false);
 

@@ -1,14 +1,11 @@
-package it.polimi.ingsw.IntelliCranio.server;
+package it.polimi.ingsw.IntelliCranio.models;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.TreeMap;
 
 public class FaithTrack {

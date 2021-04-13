@@ -3,12 +3,12 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.IntelliCranio.server.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
-import it.polimi.ingsw.IntelliCranio.server.player.Player;
-import it.polimi.ingsw.IntelliCranio.server.player.Warehouse;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -22,7 +22,7 @@ class UpdateWarehouseTest {
     void playAction() throws InvalidArgumentsException {
         Action action;
         Executable executable;
-        GameManager manager = new GameManager();
+        Game manager = new Game();
         Player player = new Player();
         Warehouse serverWarehouse = new Warehouse(3);
         Resource[] serverDepot = new Resource[3];

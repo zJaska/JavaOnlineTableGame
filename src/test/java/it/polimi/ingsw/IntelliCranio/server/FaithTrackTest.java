@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.server;
 
+import it.polimi.ingsw.IntelliCranio.models.FaithTrack;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

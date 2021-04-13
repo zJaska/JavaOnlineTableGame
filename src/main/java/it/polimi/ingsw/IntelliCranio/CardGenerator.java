@@ -2,9 +2,8 @@ package it.polimi.ingsw.IntelliCranio;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 
 import java.io.FileWriter;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.IntelliCranio.server.resource;
+package it.polimi.ingsw.IntelliCranio.models.resource;
 
 public class Resource extends FinalResource {
 

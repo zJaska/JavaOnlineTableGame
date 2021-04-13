@@ -1,9 +1,8 @@
-package it.polimi.ingsw.IntelliCranio.server.market;
+package it.polimi.ingsw.IntelliCranio.models.market;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
-import it.polimi.ingsw.IntelliCranio.server.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

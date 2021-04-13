@@ -1,6 +1,4 @@
-package it.polimi.ingsw.IntelliCranio.server.resource;
-
-import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+package it.polimi.ingsw.IntelliCranio.models.resource;
 
 public class FinalResource {
 

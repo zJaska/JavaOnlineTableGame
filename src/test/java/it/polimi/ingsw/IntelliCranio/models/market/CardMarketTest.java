@@ -1,7 +1,7 @@
-package it.polimi.ingsw.IntelliCranio.server.market;
+package it.polimi.ingsw.IntelliCranio.models.market;
 
-import it.polimi.ingsw.IntelliCranio.server.cards.DevCard;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import org.junit.Test;
 
 import java.util.ArrayList;

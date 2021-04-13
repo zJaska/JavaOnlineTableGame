@@ -1,12 +1,10 @@
-package it.polimi.ingsw.IntelliCranio.server.player;
+package it.polimi.ingsw.IntelliCranio.models.player;
 
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource.ResourceType;
-import it.polimi.ingsw.IntelliCranio.server.resource.FinalResource;
-import it.polimi.ingsw.IntelliCranio.server.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class Strongbox {
 
