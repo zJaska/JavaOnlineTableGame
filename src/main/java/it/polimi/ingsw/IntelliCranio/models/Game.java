@@ -22,8 +22,94 @@ public class Game{
     private CardMarket cardMarket;
     private ResourceMarket resourceMarket;
     private ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<String> lastActionReturnArgs;
 
+
+
+    //region GETTERS
+    /**
+     *  Get the amount of resources a player can take at the start of
+     *  the game given the current player index
+     *
+     * @param index The index of the player is currently playing
+     * @return The amount of resources a player can take at the start of the game
+     */
+    public int getInitRes(int index) {
+        ArrayList<Integer> table = new ArrayList<>();
+
+        table.add(0);
+        table.add(1);
+        table.add(1);
+        table.add(2);
+
+        return table.get(index);
+    }
+
+    /**
+     *  Get the amount of resources a player has at the start of
+     *  the game given the current player index
+     *
+     * @param index The index of the player is currently playing
+     * @return The amount of faith a player has at the start of the game
+     */
+    public int getInitFaith(int index) {
+        ArrayList<Integer> table = new ArrayList<>();
+
+        table.add(0);
+        table.add(0);
+        table.add(1);
+        table.add(1);
+
+        return table.get(index);
+    }
+
+    /**
+     * Get the faithtrack.
+     * @return This faithtrack
+     */
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    /**
+     * Get the CardMarket
+     * @return This cardmarket
+     */
+    public CardMarket getCardMarket() {
+        return cardMarket;
+    }
+
+    /**
+     * Get the resource market
+     * @return This resource market
+     */
+    public ResourceMarket getResourceMarket() {
+        return resourceMarket;
+    }
+
+    /**
+     * Return the list of all players
+     * @return A list of Player
+     */
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Get the player that is actually playing its turn
+     * @return A single Player. The active one in this turn.
+     */
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayerIndex);
+    }
+
+    /**
+     * Get the index of the active player
+     * @return An integer representing the index in the list of players.
+     */
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+    //endregion
 
     /**
      * Creates all the cards from given json file and assign 4 of them randomly to each player.
@@ -80,87 +166,31 @@ public class Game{
 
     }
 
-    private void shufflePlayers() {
-        throw new UnsupportedOperationException();
-    }
-
-    private void playerSetup() {
-        throw new UnsupportedOperationException();
-    }
-
-    private void playGame() {
-        throw new UnsupportedOperationException();
-    }
-
-    private void endingGame() {
-        throw new UnsupportedOperationException();
-    }
-
-    public ArrayList<String> getLastActionReturnArgs() {
-        return lastActionReturnArgs;
-    }
-
-    //Test only
-    public void setLastActionReturnArgs(ArrayList<String> lastActionReturnArgs) {
-        this.lastActionReturnArgs = lastActionReturnArgs;
-    }
-
-
     /**
-     *  Get the amount of resources a player can take at the start of
-     *  the game given the current player index
-     *
-     * @param index The index of the player is currently playing
-     * @return The amount of resources a player can take at the start of the game
+     * Randomize the list of players defining the game turns.
+     * Must be called before the setup.
      */
-    public int getInitRes(int index) {
-        ArrayList<Integer> table = new ArrayList<>();
+    public void shufflePlayers() {
+        ArrayList<Player> temp = new ArrayList<>(); //Temporary array for randomized players
+        Random random = new Random();
 
-        table.add(0);
-        table.add(1);
-        table.add(1);
-        table.add(2);
+        do{
+            int randIndex = random.ints(0, players.size()).findFirst().getAsInt();
 
-        return table.get(index);
-    }
+            temp.add(players.get(randIndex));
+        } while ((temp.size() != players.size()));
 
-    /**
-     *  Get the amount of resources a player has at the start of
-     *  the game given the current player index
-     *
-     * @param index The index of the player is currently playing
-     * @return The amount of faith a player has at the start of the game
-     */
-    public int getInitFaith(int index) {
-        ArrayList<Integer> table = new ArrayList<>();
-
-        table.add(0);
-        table.add(0);
-        table.add(1);
-        table.add(1);
-
-        return table.get(index);
-    }
-
-    public FaithTrack getFaithTrack() {
-        return faithTrack;
-    }
-
-    public CardMarket getCardMarket() {
-        return cardMarket;
-    }
-
-    public ResourceMarket getResourceMarket() {
-        return resourceMarket;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
+        players = temp;
     }
 
     public void addPlayerFaith(Player player) {
         //Increment player Faith
         //Check every increment the position of the player on the faith track
+
+        player.incrementFaith();
+
+        //Todo: Gestione posizioni e fine del gioco
+
         throw new UnsupportedOperationException();
     }
 
@@ -169,12 +199,6 @@ public class Game{
         players.add(turn, player);
     }
 
-    public Player getCurrentPlayer() {
-        return players.get(currentPlayerIndex);
-    }
 
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
-    }
 
 }
