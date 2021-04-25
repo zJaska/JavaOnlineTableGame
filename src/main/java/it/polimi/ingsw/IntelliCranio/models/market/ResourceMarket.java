@@ -1,6 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.market;
 
-import it.polimi.ingsw.IntelliCranio.server.Utility;
+import it.polimi.ingsw.IntelliCranio.Utility;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 

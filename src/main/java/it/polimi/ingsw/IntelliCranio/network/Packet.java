@@ -1,9 +1,8 @@
-package it.polimi.ingsw.IntelliCranio.server;
+package it.polimi.ingsw.IntelliCranio.network;
 
 import java.util.ArrayList;
 
 public class Packet {
-
 
     public enum InstructionCode {
         DISCARD_INIT_LEADERS,
@@ -13,17 +12,30 @@ public class Packet {
         ACT_PROD,
         UPDATE_WAREHOUSE,
         PLAY_LEADER,
-        DISCARD_LEADER
+        DISCARD_LEADER,
+
+        CHOOSE_NICKNAME,
+        CHOOSE_NUMBER_PLAYERS
     }
 
     public enum ErrorCode {
+        ACK,
+        NICKNAME_TAKEN,
 
+        NOT_ONE_WORD,
+        OUT_OF_BOUNDS,
+        NOT_A_NUMBER
     }
 
     private InstructionCode instructionCode;
     private ErrorCode errorCode;
     private ArrayList<String> jsonArgs;
 
+    public Packet(InstructionCode instructionCode, ErrorCode errorCode, ArrayList<String> jsonArgs) {
+        this.instructionCode = instructionCode;
+        this.errorCode = errorCode;
+        this.jsonArgs = jsonArgs;
+    }
 
     public InstructionCode getInstructionCode() {
         return instructionCode;

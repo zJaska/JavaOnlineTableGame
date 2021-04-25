@@ -3,17 +3,14 @@ package it.polimi.ingsw.IntelliCranio.server.action;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.models.Game;
-import it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode;
-import it.polimi.ingsw.IntelliCranio.server.Utility;
+import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
-import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Objects;
 
 import static com.cedarsoftware.util.DeepEquals.deepEquals;
@@ -103,6 +100,9 @@ public class UpdateWarehouse implements Action{
         //Add the server resources from depot and extra (extra can be empty but nonNull)
         Resource[] serverDepot = manager.getCurrentPlayer().getWarehouse().getDepot();
         ArrayList<Resource> lastActionResources = new ArrayList<>(); //Example: Resources from TakeResources
+
+        // TO REVISE
+        /*
         ArrayList<String> lastActionReturnArgs = manager.getLastActionReturnArgs();
 
         if(lastActionReturnArgs != null) {
@@ -131,6 +131,6 @@ public class UpdateWarehouse implements Action{
         //Server and client does not match Condition
         if(!deepEquals(clientResources, serverResources))
             throw new InvalidArgumentsException(InstructionCode.UPDATE_WAREHOUSE);
-
+        */
     }
 }

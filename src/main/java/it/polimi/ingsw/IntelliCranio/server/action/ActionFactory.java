@@ -1,10 +1,10 @@
 package it.polimi.ingsw.IntelliCranio.server.action;
 
 
-import it.polimi.ingsw.IntelliCranio.server.Packet;
+import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
-import static it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode.*;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class ActionFactory {
 

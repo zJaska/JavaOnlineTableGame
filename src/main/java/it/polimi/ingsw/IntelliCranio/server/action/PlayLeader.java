@@ -10,7 +10,7 @@ import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.IntelliCranio.server.Packet.InstructionCode.*;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class PlayLeader implements Action{
 

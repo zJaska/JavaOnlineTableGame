@@ -1,6 +1,8 @@
 package it.polimi.ingsw.IntelliCranio.views.cli.scenes;
 
-public interface CliScene {
+import it.polimi.ingsw.IntelliCranio.network.Packet.ErrorCode;
 
-    void displayOptions();
+public interface CliScene {
+    void displayOptions(ErrorCode option);
+    ErrorCode isSintaxCorrect(String input);
 }

@@ -1,9 +1,10 @@
-package it.polimi.ingsw.IntelliCranio.server;
+package it.polimi.ingsw.IntelliCranio;
 
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Utility {
@@ -27,4 +28,9 @@ public class Utility {
         return result;
     }
 
+    public static <T> ArrayList<T> toList(T[] arr) {
+        ArrayList<T> result = new ArrayList<T>();
+        Arrays.stream(arr).forEach(x -> { result.add(x); });
+        return result;
+    }
 }
