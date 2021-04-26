@@ -20,6 +20,7 @@ public class DiscardInitLeadersAction implements ActionI {
         this.game = game;
 
         if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
+
         if(packet.getInstructionCode() == DISCARD_LEAD) return discard(packet.getArgs());
 
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
@@ -53,7 +54,7 @@ public class DiscardInitLeadersAction implements ActionI {
 
         //Not in hand Condition
         if(playerCards.stream().noneMatch(pCard -> pCard.getID().equals(card.getID())))
-            throw new InvalidArgumentsException(NOT_IN_HAND);
+            throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //endregion
 

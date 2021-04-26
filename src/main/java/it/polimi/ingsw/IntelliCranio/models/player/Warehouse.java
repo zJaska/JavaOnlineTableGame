@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.player;
 
+import it.polimi.ingsw.IntelliCranio.Utility;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Objects;
 
 public class Warehouse {
 
-    private Resource[] depot;
+    private Resource[] depot; //First element is top line (1 resource only), every other element is one resource bigger
 
     /**
      * It's the constructor of Warehouse class
@@ -23,13 +24,90 @@ public class Warehouse {
         return depot;
     }
 
-    public void swapLines(int first, int second) {
-        throw new UnsupportedOperationException();
-    }//Maybe useless because it's a client method.
+    /**
+     *
+     * Swap two lines in the depot and add the resource surplus
+     * to player extra resources.
+     * Set the amount to depot line capacity
+     *
+     * @param first first index of depot line
+     * @param second second index of depot line
+     * @param playerExtra pool of the player extra resources
+     */
+    public void swapLines(int first, int second, ArrayList<Resource> playerExtra) {
 
-    public void addFromMarket(int first, int second, ArrayList<Resource> marketRes) {
-        throw new UnsupportedOperationException();
-    }//Maybe useless because it's a client method.
+        Resource temp; //To store a resource from depot before swapping
+
+        temp = depot[first]; //Store the first index selected
+
+        depot[first] = depot[second]; //Add resource from second index to first one
+        depot[second] = temp; //Complete the swap
+
+        //region Check for surplus
+
+        //Surplus on first index after swapping
+        if(depot[first].getAmount() > first + 1) {
+            //Add to extra a new resource of the same type and with amount
+            //given by difference between resource amount and depot capacity
+            playerExtra.add(new Resource(depot[first].getType(), depot[first].getAmount() - (first + 1)));
+            depot[first].setAmount(first + 1);
+        }
+
+        //Surplus on second index after swapping
+        if(depot[second].getAmount() > second + 1) {
+            //Add to extra a new resource of the same type and with amount
+            //given by difference between resource amount and depot capacity
+            playerExtra.add(new Resource(depot[second].getType(), depot[second].getAmount() - (second + 1)));
+            depot[second].setAmount(second+1);
+        }
+
+        //Unify the extra resources before returning
+        playerExtra = Utility.unifyResourceAmounts(playerExtra);
+
+        //endregion
+
+    }
+
+    /**
+     *
+     * Increment the value of a resource in depot and remove one
+     * from the extra resources list.
+     * Remove the resource from list if value reduced to 0
+     *
+     * @param depotLine index of the depot array
+     * @param resource the resource to take from extra resources
+     * @param extraRes list of resources of the player extra resources
+     */
+    public void addFromExtra(int depotLine, Resource resource, ArrayList<Resource> extraRes) {
+
+        depot[depotLine].addAmount(1); //Add the amount to depot
+
+        //Get the correct amount from extra and reduce the amount by 1
+        extraRes.stream()
+                .filter(res -> res.getType() == resource.getType())
+                .findFirst().get().removeAmount(1);
+
+        //Remove the resource if amount is now 0
+        extraRes.removeIf(res -> res.getAmount() == 0);
+
+    }
+
+    /**
+     * Add a resource to the extra resources list. The list is then unified again.
+     * Remove a single amount of that resource from selected depot line
+     * @param depotLine index of the line in depot
+     * @param extraRes List of extra resources from current player
+     */
+    public void removeToExtra(int depotLine, ArrayList<Resource> extraRes) {
+
+        //Add to extra resources before removing. Prevent null check later.
+        extraRes.add(new Resource(depot[depotLine].getType(), 1));
+        extraRes = Utility.unifyResourceAmounts(extraRes);
+
+        //Remove 1 resource from depot
+        removeAmount(depotLine, 1);
+
+    }
 
     /**
      * <summary>
@@ -68,6 +146,19 @@ public class Warehouse {
 
 
         return numDiscards;
+    }
+
+    /**
+     * Remove the specified amount from selected line. If the amount of resources is 0, depot line is set to null.
+     * @param depotLine Index of the depot
+     * @param amount Amount of resources to remove
+     */
+    public void removeAmount(int depotLine, int amount) {
+        depot[depotLine].removeAmount(amount);
+
+        //Set the line to null if there are no resources there
+        if(depot[depotLine].getAmount() == 0)
+            depot[depotLine] = null;
     }
 
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.server.exceptions;
 
-import it.polimi.ingsw.IntelliCranio.network.Packet;
-
 import static it.polimi.ingsw.IntelliCranio.network.Packet.*;
 
 public class InvalidArgumentsException extends Exception{

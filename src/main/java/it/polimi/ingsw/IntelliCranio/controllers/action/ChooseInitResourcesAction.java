@@ -1,9 +1,8 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.IntelliCranio.Utility;
 import it.polimi.ingsw.IntelliCranio.models.Game;
-import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
-import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
@@ -23,6 +22,7 @@ public class ChooseInitResourcesAction implements ActionI{
         this.game = game;
 
         if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
+
         if(packet.getInstructionCode() == CHOOSE_RES) return chooseResource(packet.getArgs());
 
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
@@ -78,8 +78,11 @@ public class ChooseInitResourcesAction implements ActionI{
         //Check for return type
         if(playerResources.size() < allowedAmount)
             return null; //No need to change state
-        else
+        else {
+            //Resources are unified ONLY before going in warehouse
+            playerResources = Utility.unifyResourceAmounts(playerResources);
             return new ManageWarehouseAction(false);
+        }
 
         //endregion
     }
