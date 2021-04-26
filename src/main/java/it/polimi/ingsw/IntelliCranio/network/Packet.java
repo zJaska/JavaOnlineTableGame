@@ -8,6 +8,12 @@ public class Packet {
         // Action codes
         DISCARD_LEAD,
         CHOOSE_RES,
+        SWAP_LINES,
+        ADD_FROM_EXTRA,
+        REMOVE_FROM_DEPOT,
+        DEPOT_TO_CARD,
+        EXTRA_TO_CARD,
+
 
         // Setup codes
         CHOOSE_NICKNAME,
@@ -28,9 +34,9 @@ public class Packet {
         TOO_MANY_ARGS,
         TYPE_MISMATCH,
         NULL_ARG,
-        NOT_IN_HAND,
         SELECTION_INVALID,
         VALUE_INVALID,
+        STATE_INVALID,
 
         // Setup network errors
         NICKNAME_TAKEN,
