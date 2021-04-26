@@ -5,14 +5,8 @@ import java.util.ArrayList;
 public class Packet {
 
     public enum InstructionCode {
-        DISCARD_INIT_LEADERS,
-        CHOOSE_INIT_RES,
-        TAKE_RES,
-        BUY_DEV_CARD,
-        ACT_PROD,
-        UPDATE_WAREHOUSE,
-        PLAY_LEADER,
-        DISCARD_LEADER,
+        DISCARD_LEAD,
+        CHOOSE_RES,
 
         CHOOSE_NICKNAME,
         CHOOSE_NUMBER_PLAYERS
@@ -20,6 +14,17 @@ public class Packet {
 
     public enum ErrorCode {
         ACK,
+
+        CODE_NULL,
+        CODE_NOT_ALLOWED,
+        NOT_ENOUGH_ARGS,
+        TOO_MANY_ARGS,
+        TYPE_MISMATCH,
+        NULL_ARG,
+        NOT_IN_HAND,
+        SELECTION_INVALID,
+        VALUE_INVALID,
+
         NICKNAME_TAKEN,
 
         NOT_ONE_WORD,

@@ -3,7 +3,9 @@ package it.polimi.ingsw.IntelliCranio.models.player;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Player {
@@ -13,6 +15,8 @@ public class Player {
 
     private Warehouse warehouse;
     private Strongbox strongbox;
+
+    private ArrayList<Resource> extraRes;
 
     private ArrayList<DevCard> firstSlot;
     private ArrayList<DevCard> secondSlot;
@@ -50,6 +54,10 @@ public class Player {
         return warehouse;
     }
 
+    public ArrayList<Resource> getExtraRes() {
+        return extraRes;
+    }
+
     public void incrementFaith() {
         faithPosition++;
     }
@@ -58,6 +66,7 @@ public class Player {
         return faithPosition;
     }
 
+    //Todo
     public PopeCard getPopeCard(int index) {
         throw new UnsupportedOperationException();
     }

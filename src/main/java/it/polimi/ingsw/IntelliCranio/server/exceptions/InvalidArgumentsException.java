@@ -2,15 +2,17 @@ package it.polimi.ingsw.IntelliCranio.server.exceptions;
 
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 
+import static it.polimi.ingsw.IntelliCranio.network.Packet.*;
+
 public class InvalidArgumentsException extends Exception{
 
-    private Packet.InstructionCode code;
+    private ErrorCode code;
 
-    public InvalidArgumentsException(Packet.InstructionCode code) {
+    public InvalidArgumentsException(ErrorCode code) {
         this.code = code;
     }
 
-    public Packet.InstructionCode getCode() {
+    public ErrorCode getCode() {
         return code;
     }
 
