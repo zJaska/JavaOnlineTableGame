@@ -1,32 +1,54 @@
 package it.polimi.ingsw.IntelliCranio.views.cli.scenes;
 
-import it.polimi.ingsw.IntelliCranio.network.Packet.ErrorCode;
+import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
+import it.polimi.ingsw.IntelliCranio.network.Packet.Response;
 
+import java.util.ArrayList;
+
+import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static java.lang.Integer.parseInt;
 
 public class CliChooseNumberPlayersScene implements CliScene {
-    public void displayOptions(ErrorCode option) {
-        switch (option) {
+    public void displayOptions() {
+        System.out.println("Choose the number of players of the party (2 to 4): ");
+    }
+
+    public void displayError (Response response) {
+        if (response == null || response == ACK)
+            return;
+
+        switch (response) {
             case OUT_OF_BOUNDS:
                 System.out.println("ERROR, choose between 2 and 4: ");
+                break;
+            case BAD_ARGUMENTS_NUMBER:
+                System.out.println("ERROR, only 1 argument expected");
                 break;
             case NOT_A_NUMBER:
                 System.out.println("ERROR, you must input a number: ");
                 break;
             default:
-                System.out.println("Choose the number of players of the party (2 to 4): ");
+                System.out.println("Choose the number of players of the party (2 to 4): (an error has occurred)");
                 break;
         }
     }
 
-    public ErrorCode isSintaxCorrect(String input) {
+    public Response isSyntaxCorrect(ArrayList<String> input) {
+        if (input.size() != 1)
+            return Response.BAD_ARGUMENTS_NUMBER;
+
         try {
-            int num = parseInt(input);
+            int num = parseInt(input.get(0));
             if (num >= 2 && num <= 4)
-                return ErrorCode.ACK;
+                return ACK;
             else
-                return ErrorCode.OUT_OF_BOUNDS;
+                return Response.OUT_OF_BOUNDS;
         } catch (NumberFormatException e) { }
-        return ErrorCode.NOT_A_NUMBER;
+
+        return Response.NOT_A_NUMBER;
+    }
+
+    public InstructionCode getInstructionCode(ArrayList<String> input) {
+        return InstructionCode.CHOOSE_NUMBER_PLAYERS;
     }
 }

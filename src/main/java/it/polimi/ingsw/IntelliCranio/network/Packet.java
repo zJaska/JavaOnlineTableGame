@@ -5,16 +5,23 @@ import java.util.ArrayList;
 public class Packet {
 
     public enum InstructionCode {
+        // Action codes
         DISCARD_LEAD,
         CHOOSE_RES,
 
+        // Setup codes
         CHOOSE_NICKNAME,
-        CHOOSE_NUMBER_PLAYERS
+        CHOOSE_NUMBER_PLAYERS,
+        COMMUNICATION,
+
+        // Logic codes
+        PING
     }
 
-    public enum ErrorCode {
+    public enum Response {
         ACK,
 
+        // Action errors
         CODE_NULL,
         CODE_NOT_ALLOWED,
         NOT_ENOUGH_ARGS,
@@ -25,20 +32,22 @@ public class Packet {
         SELECTION_INVALID,
         VALUE_INVALID,
 
+        // Setup network errors
         NICKNAME_TAKEN,
 
-        NOT_ONE_WORD,
+        // Setup syntax errors
+        BAD_ARGUMENTS_NUMBER,
         OUT_OF_BOUNDS,
         NOT_A_NUMBER
     }
 
     private InstructionCode instructionCode;
-    private ErrorCode errorCode;
+    private Response response;
     private ArrayList<String> jsonArgs;
 
-    public Packet(InstructionCode instructionCode, ErrorCode errorCode, ArrayList<String> jsonArgs) {
+    public Packet(InstructionCode instructionCode, Response response, ArrayList<String> jsonArgs) {
         this.instructionCode = instructionCode;
-        this.errorCode = errorCode;
+        this.response = response;
         this.jsonArgs = jsonArgs;
     }
 
@@ -46,8 +55,8 @@ public class Packet {
         return instructionCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public Response getResponse() {
+        return response;
     }
 
     public ArrayList<String> getArgs() {

@@ -1,11 +1,14 @@
 package it.polimi.ingsw.IntelliCranio.views;
 
-import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.network.Packet.ErrorCode;
+import it.polimi.ingsw.IntelliCranio.network.Packet.Response;
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
 
 public interface View {
-
-    Packet setScene(InstructionCode code, boolean display, ErrorCode option);
-
+    Pair<InstructionCode,ArrayList<String>> getInput();
+    void setScene(InstructionCode code);
+    void displayError(Response response);
+    void showCommunication(String msg);
 }

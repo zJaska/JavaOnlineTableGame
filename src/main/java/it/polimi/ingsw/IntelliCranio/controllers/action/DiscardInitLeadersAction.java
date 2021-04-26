@@ -8,7 +8,7 @@ import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException
 
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.IntelliCranio.network.Packet.ErrorCode.*;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class DiscardInitLeadersAction implements ActionI {

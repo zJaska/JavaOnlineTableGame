@@ -2,6 +2,8 @@ package it.polimi.ingsw.IntelliCranio;
 
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.network.Packet;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,5 +34,9 @@ public class Utility {
         ArrayList<T> result = new ArrayList<T>();
         Arrays.stream(arr).forEach(x -> { result.add(x); });
         return result;
+    }
+
+    public static Packet createPacketFromInput(Pair<Packet.InstructionCode,ArrayList<String>> input) {
+        return new Packet(input.getKey(), null, input.getValue());
     }
 }

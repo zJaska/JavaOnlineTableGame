@@ -6,13 +6,13 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.*;
 
 public class InvalidArgumentsException extends Exception{
 
-    private ErrorCode code;
+    private Response code;
 
-    public InvalidArgumentsException(ErrorCode code) {
+    public InvalidArgumentsException(Response code) {
         this.code = code;
     }
 
-    public ErrorCode getCode() {
+    public Response getCode() {
         return code;
     }
 
