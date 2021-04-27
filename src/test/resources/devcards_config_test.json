@@ -54,5 +54,197 @@
     ],
     "vp": 2,
     "ID": "developmentcard_front_g_1_2"
+  },
+  {
+    "type": "GREEN",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "SHIELD",
+        "amount": 3
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "SERVANT",
+        "amount": 2
+      }
+    ],
+    "product": [
+      {
+        "type": "COIN",
+        "amount": 1
+      },
+      {
+        "type": "SHIELD",
+        "amount": 1
+      },
+      {
+        "type": "STONE",
+        "amount": 1
+      }
+    ],
+    "vp": 3,
+    "ID": "developmentcard_front_g_1_3"
+  },
+  {
+    "type": "GREEN",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "SHIELD",
+        "amount": 2
+      },
+      {
+        "type": "COIN",
+        "amount": 2
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "STONE",
+        "amount": 1
+      },
+      {
+        "type": "SERVANT",
+        "amount": 1
+      }
+    ],
+    "product": [
+      {
+        "type": "COIN",
+        "amount": 2
+      },
+      {
+        "type": "FAITH",
+        "amount": 1
+      }
+    ],
+    "vp": 4,
+    "ID": "developmentcard_front_g_1_4"
+  },
+  {
+    "type": "BLUE",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "COIN",
+        "amount": 2
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "SHIELD",
+        "amount": 1
+      }
+    ],
+    "product": [
+      {
+        "type": "FAITH",
+        "amount": 1
+      }
+    ],
+    "vp": 1,
+    "ID": "developmentcard_front_b_1_1"
+  },
+  {
+    "type": "BLUE",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "COIN",
+        "amount": 1
+      },
+      {
+        "type": "SERVANT",
+        "amount": 1
+      },
+      {
+        "type": "STONE",
+        "amount": 1
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "SERVANT",
+        "amount": 1
+      }
+    ],
+    "product": [
+      {
+        "type": "STONE",
+        "amount": 1
+      }
+    ],
+    "vp": 2,
+    "ID": "developmentcard_front_b_1_2"
+  },
+  {
+    "type": "BLUE",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "COIN",
+        "amount": 3
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "STONE",
+        "amount": 2
+      }
+    ],
+    "product": [
+      {
+        "type": "COIN",
+        "amount": 1
+      },
+      {
+        "type": "SERVANT",
+        "amount": 1
+      },
+      {
+        "type": "SHIELD",
+        "amount": 1
+      }
+    ],
+    "vp": 3,
+    "ID": "developmentcard_front_b_1_3"
+  },
+  {
+    "type": "BLUE",
+    "level": 1,
+    "cardCost": [
+      {
+        "type": "COIN",
+        "amount": 2
+      },
+      {
+        "type": "SERVANT",
+        "amount": 2
+      }
+    ],
+    "productionCost": [
+      {
+        "type": "SHIELD",
+        "amount": 1
+      },
+      {
+        "type": "STONE",
+        "amount": 1
+      }
+    ],
+    "product": [
+      {
+        "type": "SERVANT",
+        "amount": 2
+      },
+      {
+        "type": "FAITH",
+        "amount": 1
+      }
+    ],
+    "vp": 4,
+    "ID": "developmentcard_front_b_1_4"
   }
 ]
