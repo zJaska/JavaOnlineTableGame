@@ -14,12 +14,17 @@ public class ResourceMarket {
     private FinalResource extraMarble;
     private FinalResource[][] marbleGrid;
 
+    
     public ResourceMarket(int rows, int columns) {
         marbleGrid = new FinalResource[rows][columns];
         ROWS = rows;
         COLUMNS = columns;
     }
 
+    /**
+     * This method generate a my resource market.
+     * @param resourcesParam
+     */
     public void setup(ArrayList<Resource> resourcesParam) {
         ArrayList<Resource> resources = new ArrayList<>();
         resourcesParam.forEach(res -> resources.add(new Resource(res.getType(),res.getAmount())));
@@ -40,10 +45,20 @@ public class ResourceMarket {
         extraMarble = resources.get(0);
     }
 
+    /**
+     *  This method return a row of my resourceMarket
+     * @param row
+     * @return a row of resource market
+     */
     public ArrayList<FinalResource> selectRow(int row) {
         return Lists.unifyResourceAmounts(Arrays.asList(marbleGrid[row].clone()));
     }
 
+    /**
+     * This method return a column of my resourceMarket
+     * @param column
+     * @return a column of my resourceMarket
+     */
     public ArrayList<FinalResource> selectColumn(int column) {
         ArrayList<FinalResource> list = new ArrayList<>();
         for (int r=0; r<ROWS; r++)

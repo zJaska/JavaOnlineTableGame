@@ -175,10 +175,10 @@ public class CardMarketTest {
 
         DevCard actual4 = market.getCard(2,0);
 
-        assertTrue(deepEquals(actual4, null));
+        assertNull(actual4);
 
         DevCard actual5 = market.getCard(0,0);
-        assertTrue(deepEquals(actual5, null));
+        assertNull(actual5);
     }
 
 }
