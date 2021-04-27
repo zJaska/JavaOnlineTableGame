@@ -15,7 +15,8 @@ public class PingingDevice implements Runnable {
             try { Thread.sleep(SocketHandler.TIMEOUT/3); }
             catch (Exception e) {}
 
-            socketHandler.send(new Packet(PING,null,null));
+            try {socketHandler.send(new Packet(PING,null,null)); }
+            catch (Exception e) {}
         }
 
     }

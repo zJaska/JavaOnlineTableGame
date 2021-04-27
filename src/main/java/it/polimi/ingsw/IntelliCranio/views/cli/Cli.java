@@ -9,7 +9,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.IntelliCranio.Utility.toList;
+import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
 
 public class Cli implements View {
 

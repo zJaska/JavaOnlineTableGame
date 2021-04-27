@@ -1,7 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.client;
 
-import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
+import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.views.DummyView;
 import it.polimi.ingsw.IntelliCranio.views.View;
 import it.polimi.ingsw.IntelliCranio.views.cli.Cli;
@@ -10,18 +10,18 @@ import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.IntelliCranio.Utility.*;
-import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
-import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
-import static java.lang.Integer.parseInt;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.ACK;
+import static it.polimi.ingsw.IntelliCranio.util.Net.createPacketFromInput;
 
 public class MainClient {
 
-    public static void main(String[] args) {
-        //View view = askView();
-        View view = getDummyView(parseInt(args[0]));
+    static SocketHandler socketHandler;
+    static View view;
 
-        SocketHandler socketHandler;
+    public static void main(String[] args) {
+        view = askView();
+        // view = getDummyView(parseInt(args[0]));
+
         try { socketHandler = new SocketHandler("localhost",1051); }
         catch (IOException e) { return ; }
 
@@ -31,30 +31,40 @@ public class MainClient {
 
             // Client waiting for the instruction given by the server
 
-            do {
-                try { pack = socketHandler.receive(); }
-                catch (IOException e) { return; }
-            } while (pack.getInstructionCode() == PING);
-
-            if (pack.getInstructionCode() == COMMUNICATION) {
-                view.showCommunication(pack.getArgs().get(0));
-                continue;
-            }
-
-            view.setScene(pack.getInstructionCode());
+            pack = receivePacket();
 
             // Client inside a specific scene where an input is required
+
+            view.setScene(pack.getInstructionCode());
 
             while (pack.getResponse() != ACK) {
                 socketHandler.send(createPacketFromInput(view.getInput()));
 
-                do {
-                    try { pack = socketHandler.receive(); }
-                    catch (IOException e) { return; }
-                } while (pack.getInstructionCode() == PING);
+                pack = receivePacket();
 
                 view.displayError(pack.getResponse());
             }
+        }
+    }
+
+    private static Packet receivePacket() {
+        Packet pack = null;
+
+        try { pack = socketHandler.receive(); }
+        catch (IOException e) {
+            System.exit(-100);
+        }
+
+        switch (pack.getInstructionCode()) {
+            case PING:
+                return receivePacket();
+            case COMMUNICATION:
+                view.showCommunication(pack.getArgs().get(0));
+                return receivePacket();
+            case DIE:
+                System.exit(-101);
+            default:
+                return pack;
         }
     }
 

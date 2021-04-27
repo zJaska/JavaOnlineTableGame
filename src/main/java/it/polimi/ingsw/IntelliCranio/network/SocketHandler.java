@@ -11,7 +11,7 @@ public class SocketHandler {
     private PrintWriter out;
     private Socket socket;
 
-    public static final int TIMEOUT = 100*1000;
+    public static final int TIMEOUT = 10*1000;
 
     public SocketHandler(String ip, int port) throws IOException {
         try {

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.market;
 
-import it.polimi.ingsw.IntelliCranio.Utility;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
@@ -41,14 +41,14 @@ public class ResourceMarket {
     }
 
     public ArrayList<FinalResource> selectRow(int row) {
-        return Utility.unifyResourceAmounts(Arrays.asList(marbleGrid[row].clone()));
+        return Lists.unifyResourceAmounts(Arrays.asList(marbleGrid[row].clone()));
     }
 
     public ArrayList<FinalResource> selectColumn(int column) {
         ArrayList<FinalResource> list = new ArrayList<>();
         for (int r=0; r<ROWS; r++)
             list.add(marbleGrid[r][column]);
-        return Utility.unifyResourceAmounts(list);
+        return Lists.unifyResourceAmounts(list);
     }
 
     // NEEDED ONLY TO TEST

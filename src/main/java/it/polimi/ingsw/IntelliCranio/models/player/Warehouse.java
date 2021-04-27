@@ -1,6 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.player;
 
-import it.polimi.ingsw.IntelliCranio.Utility;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class Warehouse {
         }
 
         //Unify the extra resources before returning
-        playerExtra = Utility.unifyResourceAmounts(playerExtra);
+        playerExtra = Lists.unifyResourceAmounts(playerExtra);
 
         //endregion
 
@@ -102,7 +102,7 @@ public class Warehouse {
 
         //Add to extra resources before removing. Prevent null check later.
         extraRes.add(new Resource(depot[depotLine].getType(), 1));
-        extraRes = Utility.unifyResourceAmounts(extraRes);
+        extraRes = Lists.unifyResourceAmounts(extraRes);
 
         //Remove 1 resource from depot
         removeAmount(depotLine, 1);

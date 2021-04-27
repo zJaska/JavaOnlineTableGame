@@ -4,11 +4,10 @@ import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.views.cli.Cli;
 import javafx.util.Pair;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static it.polimi.ingsw.IntelliCranio.Utility.toList;
+import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
 
 public class DummyView extends Cli {
     private int count = 0;

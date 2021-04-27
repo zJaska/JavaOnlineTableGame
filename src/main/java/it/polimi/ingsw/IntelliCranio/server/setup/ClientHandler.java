@@ -8,18 +8,30 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
 
+import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
+import static it.polimi.ingsw.IntelliCranio.util.Net.TIMEOUT_MSG;
+import static it.polimi.ingsw.IntelliCranio.util.Net.disconnectPlayer;
 import static java.lang.Integer.parseInt;
 
 public class ClientHandler implements Runnable {
-    private static ArrayList<Pair<String,SocketHandler>> firstPlayers = new ArrayList<>();
-    private static ArrayList<Pair<String,SocketHandler>> waitingPlayers = new ArrayList<>();
-    private static ArrayList<String> allPlayers = new ArrayList<>();
 
     private SocketHandler socketHandler;
+
+    // Vector is used because it's thread-safe
+    private static Vector<Pair<String,SocketHandler>> waitingPlayers = new Vector<>();
+    private static Vector<String> playersNames = new Vector<>();
+    private static int numFirstPlayers = 0;
+
+    private static Semaphore playerReady = new Semaphore(0);
+    public static void acquirePlayerReady() {
+        try { playerReady.acquire(); }
+        catch (InterruptedException e) { }
+    }
 
     ClientHandler(Socket socket) throws IOException {
         socketHandler = new SocketHandler(socket);
@@ -55,14 +67,17 @@ public class ClientHandler implements Runnable {
                 nickname = socketHandler.receive().getArgs().get(0);
                 String finalNickname = nickname;
 
-                if (allPlayers.stream().anyMatch(x -> x.equals(finalNickname))) {
+                if (playersNames.stream().anyMatch(x -> x.equals(finalNickname))) {
                     chosen = true;
                     socketHandler.send(new Packet(CHOOSE_NICKNAME, NICKNAME_TAKEN,null));
                 }
-            } catch (IOException e) { return; }
+            } catch (IOException e) {
+                disconnectPlayer(socketHandler,TIMEOUT_MSG);
+                return;
+            }
         } while (chosen);
 
-        allPlayers.add(nickname);
+        playersNames.add(nickname);
 
         socketHandler.send(new Packet(CHOOSE_NICKNAME, ACK,null));
 
@@ -77,10 +92,12 @@ public class ClientHandler implements Runnable {
 
         Pair<String,SocketHandler> playerPair = new Pair<String, SocketHandler>(nickname, socketHandler);
 
-        if (3 * firstPlayers.size() <= waitingPlayers.size())
+        if (3 * numFirstPlayers <= waitingPlayers.size() && WaitingRoom.getNumLobbies() <= 0)
             firstPlayersCycle(playerPair);
-        else
+        else {
             waitingPlayers.add(playerPair);
+            playerReady.release();
+        }
     }
 
     /**
@@ -89,30 +106,36 @@ public class ClientHandler implements Runnable {
      */
 
     private void firstPlayersCycle(Pair<String,SocketHandler> firstPlayer) {
-        firstPlayers.add(firstPlayer);
+        numFirstPlayers++;
 
-        socketHandler.send(new Packet(CHOOSE_NUMBER_PLAYERS, null,null));
+        firstPlayer.getValue().send(new Packet(CHOOSE_NUMBER_PLAYERS, null,null));
         try {
 
-            int numPlayers = parseInt(socketHandler.receive().getArgs().get(0));
+            int numPlayers = parseInt(firstPlayer.getValue().receive().getArgs().get(0));
 
             System.out.println("Received size");
-            socketHandler.send(new Packet(CHOOSE_NUMBER_PLAYERS, ACK,null));
+            firstPlayer.getValue().send(new Packet(CHOOSE_NUMBER_PLAYERS, ACK,null));
 
+            numFirstPlayers--;
             new WaitingRoom(numPlayers, firstPlayer).run();
 
         } catch (SocketTimeoutException e) {
 
+            numFirstPlayers--;
+            playersNames.remove(firstPlayer.getKey());
+            disconnectPlayer(firstPlayer.getValue(),TIMEOUT_MSG);
+
             if (waitingPlayers.size() >= 1) {
-                firstPlayers.remove(firstPlayer);
                 Pair<String,SocketHandler> waitingPlayer = waitingPlayers.get(0);
                 waitingPlayers.remove(0);
+                waitingPlayers.add(firstPlayer);
                 firstPlayersCycle(waitingPlayer);
-            } else {
-                firstPlayersCycle(firstPlayer);
             }
 
         }
-        catch (IOException e) { return; }
+        catch (IOException e) {
+            numFirstPlayers--;
+            return;
+        }
     }
 }

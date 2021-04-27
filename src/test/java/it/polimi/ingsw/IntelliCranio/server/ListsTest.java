@@ -1,6 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.server;
 
-import it.polimi.ingsw.IntelliCranio.Utility;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UtilityTest {
+class ListsTest {
 
     @Test
     void unifyResourceAmounts() {
@@ -20,7 +20,7 @@ class UtilityTest {
         res.add(new Resource(FinalResource.ResourceType.COIN,2));
         res.add(new Resource(FinalResource.ResourceType.STONE,1));
 
-        res = Utility.unifyResourceAmounts(res);
+        res = Lists.unifyResourceAmounts(res);
 
         assertEquals(3,res.get(0).getAmount());
         assertEquals(11,res.get(1).getAmount());

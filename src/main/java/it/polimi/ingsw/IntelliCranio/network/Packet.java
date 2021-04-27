@@ -18,9 +18,10 @@ public class Packet {
         // Setup codes
         CHOOSE_NICKNAME,
         CHOOSE_NUMBER_PLAYERS,
-        COMMUNICATION,
 
         // Logic codes
+        COMMUNICATION,
+        DIE,
         PING
     }
 

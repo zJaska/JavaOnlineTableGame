@@ -1,6 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.market;
 
-import it.polimi.ingsw.IntelliCranio.Utility;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class ResourceMarketTest {
             }
         }
         list.add(market.getExtraMarble());
-        list = Utility.unifyResourceAmounts(list);
+        list = Lists.unifyResourceAmounts(list);
 
         list.sort(Comparator.comparing(FinalResource::getType));
         resources.sort(Comparator.comparing(FinalResource::getType));

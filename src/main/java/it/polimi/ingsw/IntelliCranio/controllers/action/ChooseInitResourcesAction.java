@@ -1,7 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.IntelliCranio.Utility;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
@@ -80,7 +80,7 @@ public class ChooseInitResourcesAction implements ActionI{
             return null; //No need to change state
         else {
             //Resources are unified ONLY before going in warehouse
-            playerResources = Utility.unifyResourceAmounts(playerResources);
+            playerResources = Lists.unifyResourceAmounts(playerResources);
             return new ManageWarehouseAction(false);
         }
 

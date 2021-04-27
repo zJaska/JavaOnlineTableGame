@@ -1,4 +1,4 @@
-package it.polimi.ingsw.IntelliCranio;
+package it.polimi.ingsw.IntelliCranio.util;
 
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Utility {
+public class Lists {
 
     /**
      * Takes a List of resources with repeated type and return a new list with a single type for
@@ -36,7 +36,9 @@ public class Utility {
         return result;
     }
 
-    public static Packet createPacketFromInput(Pair<Packet.InstructionCode,ArrayList<String>> input) {
-        return new Packet(input.getKey(), null, input.getValue());
+    public static <T> ArrayList<T> toList(T var) {
+        ArrayList<T> result = new ArrayList<T>();
+        result.add(var);
+        return result;
     }
 }
