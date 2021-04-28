@@ -52,12 +52,12 @@ public class Packet {
 
     private InstructionCode instructionCode;
     private Response response;
-    private ArrayList<String> jsonArgs;
+    private ArrayList<Object> args;
 
-    public Packet(InstructionCode instructionCode, Response response, ArrayList<String> jsonArgs) {
+    public Packet(InstructionCode instructionCode, Response response, ArrayList<Object> args) {
         this.instructionCode = instructionCode;
         this.response = response;
-        this.jsonArgs = jsonArgs;
+        this.args = args;
     }
 
     public InstructionCode getInstructionCode() {
@@ -68,7 +68,7 @@ public class Packet {
         return response;
     }
 
-    public ArrayList<String> getArgs() {
-        return jsonArgs;
+    public ArrayList<Object> getArgs() {
+        return args;
     }
 }

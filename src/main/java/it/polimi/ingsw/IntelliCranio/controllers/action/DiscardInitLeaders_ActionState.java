@@ -31,18 +31,17 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
     }
 
-    private void discard(ArrayList<String> args) throws InvalidArgumentsException {
+    private void discard(ArrayList<Object> args) throws InvalidArgumentsException {
 
         LeadCard card; //Expected argument for this operation
 
         //region Conversion of args from packet
-        Gson gson = new Gson();
 
         if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
         if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
 
         try {
-            card = gson.fromJson((args.get(0)), LeadCard.class);
+            card = (LeadCard) args.get(0);
         } catch (Exception e) {
             throw new InvalidArgumentsException(TYPE_MISMATCH);
         }

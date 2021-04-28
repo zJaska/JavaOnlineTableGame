@@ -44,20 +44,18 @@ public class ManageWarehouse_ActionState extends ActionState {
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
     }
 
-    private void swapLines(ArrayList<String> args) throws InvalidArgumentsException {
+    private void swapLines(ArrayList<Object> args) throws InvalidArgumentsException {
 
         int first, second; //Expected arguments for this operation
 
         //region Conversion of args from packet
 
-        Gson gson = new Gson();
-
         if(args.size() < 2) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
         if(args.size() > 2) throw new InvalidArgumentsException(TOO_MANY_ARGS);
 
         try{
-            first = gson.fromJson(args.get(0), Integer.class);
-            second = gson.fromJson(args.get(1), Integer.class);
+            first = (int)args.get(0);
+            second = (int)args.get(1);
         } catch (Exception e) {
             throw new InvalidArgumentsException(TYPE_MISMATCH);
         }
@@ -92,21 +90,19 @@ public class ManageWarehouse_ActionState extends ActionState {
         //endregion
     }
 
-    private void addFromExtra(ArrayList<String> args) throws InvalidArgumentsException {
+    private void addFromExtra(ArrayList<Object> args) throws InvalidArgumentsException {
 
         Resource resource; //First Expected argument
         int depotLine; //Second Expected argument
 
         //region Conversion of args from packet
 
-        Gson gson = new Gson();
-
         if(args.size() < 2) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
         if(args.size() > 2) throw new InvalidArgumentsException(TOO_MANY_ARGS);
 
         try {
-            resource = gson.fromJson(args.get(0), Resource.class);
-            depotLine = gson.fromJson(args.get(1), Integer.class);
+            resource = (Resource) args.get(0);
+            depotLine = (int) args.get(1);
         }catch (Exception e) {
             throw new InvalidArgumentsException(TYPE_MISMATCH);
         }
@@ -155,19 +151,17 @@ public class ManageWarehouse_ActionState extends ActionState {
         //endregion
     }
 
-    private void removeFromDepot(ArrayList<String> args) throws InvalidArgumentsException {
+    private void removeFromDepot(ArrayList<Object> args) throws InvalidArgumentsException {
 
         int depotLine; //Expected argument
 
         //region Conversion of args from packet
 
-        Gson gson = new Gson();
-
         if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
         if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
 
         try {
-            depotLine = gson.fromJson(args.get(0), Integer.class);
+            depotLine = (int) args.get(0);
         } catch (Exception e) {
             throw new InvalidArgumentsException(TYPE_MISMATCH);
         }
@@ -203,19 +197,17 @@ public class ManageWarehouse_ActionState extends ActionState {
         //endregion
     }
 
-    private void depotToCard(ArrayList<String> args) throws InvalidArgumentsException {
+    private void depotToCard(ArrayList<Object> args) throws InvalidArgumentsException {
 
         int depotLine; //Expected first argument
 
         //region Conversion of args from packet
 
-        Gson gson = new Gson();
-
         if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
         if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
 
         try {
-            depotLine = gson.fromJson(args.get(0), Integer.class);
+            depotLine = (int) args.get(0);
         }catch (Exception e) {
             throw new InvalidArgumentsException(TYPE_MISMATCH);
         }
@@ -270,19 +262,17 @@ public class ManageWarehouse_ActionState extends ActionState {
         //endregion
     }
 
-    private void extraToCard(ArrayList<String> args) throws InvalidArgumentsException {
+    private void extraToCard(ArrayList<Object> args) throws InvalidArgumentsException {
 
         Resource resource; //Expected argument
 
         //region Conversion of args from packet
 
-        Gson gson = new Gson();
-
         if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
         if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
 
         try {
-            resource = gson.fromJson(args.get(0), Resource.class);
+            resource = (Resource) args.get(0);
         }catch (Exception e) {
             throw new InvalidArgumentsException(TYPE_MISMATCH);
         }
@@ -298,6 +288,10 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //Invalid State Condition
         if(fromDefault) throw new InvalidArgumentsException(STATE_INVALID);
+
+        //Extra Empty Condition
+        if(!player.hasExtra())
+            throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //Resource Not in Extra Condition
         if(!player.hasExtra(resource.getType()))

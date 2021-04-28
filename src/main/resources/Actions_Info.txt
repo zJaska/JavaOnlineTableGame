@@ -28,6 +28,7 @@ Over Size -> L'indice eccede il massimo valore utilizzabile per accedere all'arr
 Null -> La risorsa passata è null
 Negative Line -> Indice di destinazione negativo, impossibile accedere all'array
 Over Size -> Indice oltre il valore massimo, impossibile accedere all'array
+Extra Empty -> Controlla che il pool extra non sia vuoto
 Not in Extra -> La risorsa non è presente nella lista di risorse extra. Invalida anche la selezione di faith e blank
 Not Same Resource -> Si sta cercando di aggiungere alla riga nel deposito una risorsa di diverso tipo
 Line Full -> Si sta cercando di aggiungere una risorsa a una linea del deposito già piena
@@ -46,6 +47,7 @@ Card Full -> Il deposito interno della carta è pieno
 
 -extraToCard
 Invalid State -> Si sta provando a mettere risorse nelle carte dal default. L'inserimento nelle carte è ammissibile solo dopo aver preso risorse
+Extra Empty -> Controlla che il pool extra non sia vuoto
 Not in Extra -> La risorsa selezionata non è nelle extra resource. Invalida anche blank e faith
 Not in Hand -> Viene controllata la presenza prima del tipo di abilità (DEPOT) e se questo va a buon fine, viene controllato il tipo di risorsa ammissibile
 Card Inactive -> Il player ha la carta giusta a questa operazione, ma la carta non è stata attivata
