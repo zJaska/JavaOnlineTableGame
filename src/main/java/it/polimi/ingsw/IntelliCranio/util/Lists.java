@@ -46,7 +46,6 @@ public class Lists {
         return result;
     }
 
-<<<<<<< Updated upstream
     public static <T> ArrayList<Object> toObjectList(ArrayList<T> arr) {
         ArrayList<Object> result = new ArrayList<>();
         arr.forEach( x -> result.add(x));
@@ -63,7 +62,8 @@ public class Lists {
         ArrayList<Object> result = new ArrayList<>();
         result.add(var);
         return result;
-=======
+    }
+
     public static ArrayList<CardResource> toCardResource(ArrayList<DevCard> cards) {
 
         ArrayList<CardResource> temp = new ArrayList<>();
@@ -82,6 +82,5 @@ public class Lists {
         });
 
         return temp;
->>>>>>> Stashed changes
     }
 }
