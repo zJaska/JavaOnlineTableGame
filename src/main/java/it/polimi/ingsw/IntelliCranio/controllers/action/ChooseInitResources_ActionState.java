@@ -2,7 +2,6 @@ package it.polimi.ingsw.IntelliCranio.controllers.action;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
-import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
@@ -14,22 +13,26 @@ import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.Resour
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
-public class ChooseInitResourcesAction implements ActionI{
+public class ChooseInitResources_ActionState extends ActionState {
 
     private Game game;
 
+    public ChooseInitResources_ActionState(Action action){
+        super(action);
+    }
+
     @Override
-    public ActionI execute(Game game, Packet packet) throws InvalidArgumentsException {
+    public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
         if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
 
-        if(packet.getInstructionCode() == CHOOSE_RES) return chooseResource(packet.getArgs());
+        if(packet.getInstructionCode() == CHOOSE_RES) chooseResource(packet.getArgs());
 
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
     }
 
-    private ActionI chooseResource(ArrayList<String> args) throws InvalidArgumentsException {
+    private void chooseResource(ArrayList<String> args) throws InvalidArgumentsException {
 
         Resource resource; //Expected argument for this operation
 
@@ -74,20 +77,18 @@ public class ChooseInitResourcesAction implements ActionI{
         //At this stage, extra res are not unified. Every element is a unit
 
         //If player already has the right amount of resources, the game shouldn't be in this state. Return the new state then.
-        if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith) return new ManageWarehouseAction(false);
+        if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith)
+            action.setActionState(new ManageWarehouse_ActionState(action, false));
 
         //Add the selected resource the player extras
         player.addExtra(resource);
 
-        //Check for return type
-        if(player.extraAmount() < allowedAmount)
-            return null; //No need to change state
-        else {
+        if(player.extraAmount() == allowedAmount) {
             //Add initial amount of faith (no need to check for position)
-            for(int i = 0; i < allowedFaith; ++i)
+            for (int i = 0; i < allowedFaith; ++i)
                 player.addFaith();
 
-            return new ManageWarehouseAction(false);
+            action.setActionState(new ManageWarehouse_ActionState(action, false));
         }
 
         //endregion

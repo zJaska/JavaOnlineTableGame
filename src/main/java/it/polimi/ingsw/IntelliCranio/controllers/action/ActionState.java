@@ -4,8 +4,15 @@ import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
-public interface ActionI {
+public abstract class ActionState {
 
-    public ActionI execute(Game game, Packet packet) throws InvalidArgumentsException;
+    protected Action action;
+
+    public ActionState(Action action) {
+        this.action = action;
+    }
+
+    public abstract void execute(Game game, Packet packet) throws InvalidArgumentsException;
+
 
 }

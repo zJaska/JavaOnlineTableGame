@@ -12,22 +12,26 @@ import java.util.ArrayList;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
-public class DiscardInitLeadersAction implements ActionI {
+public class DiscardInitLeaders_ActionState extends ActionState {
 
     private Game game;
 
+    public DiscardInitLeaders_ActionState(Action action) {
+        super(action);
+    }
+
     @Override
-    public ActionI execute(Game game, Packet packet) throws InvalidArgumentsException {
+    public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
         if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
 
-        if(packet.getInstructionCode() == DISCARD_LEAD) return discard(packet.getArgs());
+        if(packet.getInstructionCode() == DISCARD_LEAD) discard(packet.getArgs());
 
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
     }
 
-    private ActionI discard(ArrayList<String> args) throws InvalidArgumentsException {
+    private void discard(ArrayList<String> args) throws InvalidArgumentsException {
 
         LeadCard card; //Expected argument for this operation
 
@@ -64,16 +68,14 @@ public class DiscardInitLeadersAction implements ActionI {
         //region Execute operation
 
         //If player already has only two cards, the game shouldn't be in this state. Return the new state then.
-        if(player.getLeaders().size() == 2) return new ChooseInitResourcesAction();
+        if(player.getLeaders().size() == 2)
+            action.setActionState(new ChooseInitResources_ActionState(action));
 
         //Remove the selected card from player
         player.removeLeader(card);
 
-        //Check for return type
-        if(player.getLeaders().size() > 2)
-            return null; //No need to change state or reset the current one
-        else
-            return new ChooseInitResourcesAction(); //Return the new state to go to
+        if(player.getLeaders().size() == 2)
+            action.setActionState(new ChooseInitResources_ActionState(action));
 
         //endregion
 

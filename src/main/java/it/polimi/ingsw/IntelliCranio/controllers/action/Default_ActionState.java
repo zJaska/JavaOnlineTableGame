@@ -4,10 +4,13 @@ import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
-public class DefaultAction implements ActionI{
+public class Default_ActionState extends ActionState {
+
+    public Default_ActionState(Action action) {
+        super(action);
+    }
 
     @Override
-    public ActionI execute(Game game, Packet packet) throws InvalidArgumentsException {
-        return null;
+    public void execute(Game game, Packet packet) throws InvalidArgumentsException {
     }
 }

@@ -17,33 +17,34 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
 
-public class ManageWarehouseAction implements ActionI{
+public class ManageWarehouse_ActionState extends ActionState {
 
     private Game game;
     private boolean fromDefault;
 
-    public ManageWarehouseAction(boolean fromDefault) {
+    public ManageWarehouse_ActionState(Action action, boolean fromDefault) {
+        super(action);
         this.fromDefault = fromDefault;
     }
 
     @Override
-    public ActionI execute(Game game, Packet packet) throws InvalidArgumentsException {
+    public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
         if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
 
-        if(packet.getInstructionCode() == SWAP_LINES) return swapLines(packet.getArgs());
-        if(packet.getInstructionCode() == ADD_FROM_EXTRA) return addFromExtra(packet.getArgs());
-        if(packet.getInstructionCode() == REMOVE_FROM_DEPOT) return removeFromDepot(packet.getArgs());
-        if(packet.getInstructionCode() == DEPOT_TO_CARD) return depotToCard(packet.getArgs());
-        if(packet.getInstructionCode() == EXTRA_TO_CARD) return extraToCard(packet.getArgs());
-        if(packet.getInstructionCode() == CANCEL) return cancel();
-        if(packet.getInstructionCode() == CONFIRM) return confirm();
+        if(packet.getInstructionCode() == SWAP_LINES) swapLines(packet.getArgs());
+        if(packet.getInstructionCode() == ADD_FROM_EXTRA) addFromExtra(packet.getArgs());
+        if(packet.getInstructionCode() == REMOVE_FROM_DEPOT) removeFromDepot(packet.getArgs());
+        if(packet.getInstructionCode() == DEPOT_TO_CARD) depotToCard(packet.getArgs());
+        if(packet.getInstructionCode() == EXTRA_TO_CARD) extraToCard(packet.getArgs());
+        if(packet.getInstructionCode() == CANCEL) cancel();
+        if(packet.getInstructionCode() == CONFIRM) confirm();
 
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
     }
 
-    private ActionI swapLines(ArrayList<String> args) throws InvalidArgumentsException {
+    private void swapLines(ArrayList<String> args) throws InvalidArgumentsException {
 
         int first, second; //Expected arguments for this operation
 
@@ -87,12 +88,11 @@ public class ManageWarehouseAction implements ActionI{
         ArrayList<Resource> playerExtra = game.getCurrentPlayer().getExtraRes();
 
         playerWh.swapLines(first, second, playerExtra);
-        return null; //No need to change state
 
         //endregion
     }
 
-    private ActionI addFromExtra(ArrayList<String> args) throws InvalidArgumentsException {
+    private void addFromExtra(ArrayList<String> args) throws InvalidArgumentsException {
 
         Resource resource; //First Expected argument
         int depotLine; //Second Expected argument
@@ -152,12 +152,10 @@ public class ManageWarehouseAction implements ActionI{
 
         playerWh.addFromExtra(depotLine, resource, player);
 
-        return null; //No need to change state
-
         //endregion
     }
 
-    private ActionI removeFromDepot(ArrayList<String> args) throws InvalidArgumentsException {
+    private void removeFromDepot(ArrayList<String> args) throws InvalidArgumentsException {
 
         int depotLine; //Expected argument
 
@@ -202,12 +200,10 @@ public class ManageWarehouseAction implements ActionI{
 
         playerWh.removeToExtra(depotLine, player);
 
-        return null; //No need to change state
-
         //endregion
     }
 
-    private ActionI depotToCard(ArrayList<String> args) throws InvalidArgumentsException {
+    private void depotToCard(ArrayList<String> args) throws InvalidArgumentsException {
 
         int depotLine; //Expected first argument
 
@@ -271,12 +267,10 @@ public class ManageWarehouseAction implements ActionI{
         //Remove the resource from selected depot line
         playerWh.removeAmount(depotLine, 1);
 
-        return null; //No need to change state
-
         //endregion
     }
 
-    private ActionI extraToCard(ArrayList<String> args) throws InvalidArgumentsException {
+    private void extraToCard(ArrayList<String> args) throws InvalidArgumentsException {
 
         Resource resource; //Expected argument
 
@@ -337,12 +331,10 @@ public class ManageWarehouseAction implements ActionI{
         //Remove resource from extra res
         player.removeExtra(resource.getType(), 1);
 
-        return null; //No need to change state
-
         //endregion
     }
 
-    private ActionI cancel() throws InvalidArgumentsException {
+    private void cancel() throws InvalidArgumentsException {
 
         //region Conversion of args from packet
         //endregion
@@ -357,16 +349,17 @@ public class ManageWarehouseAction implements ActionI{
         //region Execute operation
 
         if(fromDefault)
-            return new DefaultAction(); //If i came in this state from default, go back to a default state
+            //If i came in this state from default, go back to a default state
+            action.setActionState(new Default_ActionState(action));
         else {
             //Todo: reset of model state
-            return null; //No need to change state
+            //No need to change state
         }
 
         //endregion
     }
 
-    private ActionI confirm() throws InvalidArgumentsException {
+    private void confirm() throws InvalidArgumentsException {
 
         //region Conversion of args from packet
         //endregion
@@ -385,7 +378,7 @@ public class ManageWarehouseAction implements ActionI{
 
         //Apply changes
 
-        return new DefaultAction(); //Go to this state
+        action.setActionState(new Default_ActionState(action)); //Go to this state
 
         //endregion
     }
