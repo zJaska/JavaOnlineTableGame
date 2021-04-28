@@ -187,11 +187,25 @@ public class Game{
         //Increment player Faith
         //Check every increment the position of the player on the faith track
 
-        player.incrementFaith();
+        player.addFaith();
 
         //Todo: Gestione posizioni e fine del gioco
 
         throw new UnsupportedOperationException();
+    }
+
+    public void addFaithToAll(int faithAmount) {
+
+        for(int i = 0; i < faithAmount; ++i) {
+            //Increment faith for every player other than current one
+            players.stream()
+                    .filter(player -> !player.equals(getCurrentPlayer()))
+                    .forEach(Player::addFaith);
+
+            //Check the positions on the faithtrack
+            faithTrack.checkStatus(players);
+        }
+
     }
 
     public void addPlayer(Player player, int turn) {

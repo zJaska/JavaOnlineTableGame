@@ -68,12 +68,13 @@ public class ChooseInitResourcesAction implements ActionI{
         //region Execute operation
 
         int allowedAmount = game.getInitRes(game.getCurrentPlayerIndex());
+        int allowedFaith = game.getInitFaith(game.getCurrentPlayerIndex());
         Player player = game.getCurrentPlayer();
 
         //At this stage, extra res are not unified. Every element is a unit
 
         //If player already has the right amount of resources, the game shouldn't be in this state. Return the new state then.
-        if(player.extraAmount() == allowedAmount) return new ManageWarehouseAction(false);
+        if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith) return new ManageWarehouseAction(false);
 
         //Add the selected resource the player extras
         player.addExtra(resource);
@@ -81,8 +82,13 @@ public class ChooseInitResourcesAction implements ActionI{
         //Check for return type
         if(player.extraAmount() < allowedAmount)
             return null; //No need to change state
-        else
+        else {
+            //Add initial amount of faith (no need to check for position)
+            for(int i = 0; i < allowedFaith; ++i)
+                player.addFaith();
+
             return new ManageWarehouseAction(false);
+        }
 
         //endregion
     }

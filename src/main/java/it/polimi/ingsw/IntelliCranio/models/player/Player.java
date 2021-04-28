@@ -111,7 +111,10 @@ public class Player {
 
     }
 
-    public void incrementFaith() {
+    /**
+     * Increment by 1 the position in the faithtrack
+     */
+    public void addFaith() {
         faithPosition++;
     }
 
@@ -119,9 +122,16 @@ public class Player {
         return faithPosition;
     }
 
-    //Todo
-    public PopeCard getPopeCard(int index) {
-        throw new UnsupportedOperationException();
+    /**
+     * Return the pope card given its section in faith track
+     * @param section the section in faith track
+     * @return The pope card of that section, or null if error
+     */
+    public PopeCard getPopeCard(int section) {
+        if(!(section < 0 || section >= popeCards.size()))
+            return popeCards.get(section);
+        else
+            return null;
     }
 
     public ArrayList<DevCard> getAllDevCards() {

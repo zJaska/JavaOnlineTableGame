@@ -1,12 +1,17 @@
 package it.polimi.ingsw.IntelliCranio.models;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.IntelliCranio.controllers.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.TreeMap;
+
+import static it.polimi.ingsw.IntelliCranio.models.cards.PopeCard.Status.*;
 
 public class FaithTrack {
 
@@ -36,6 +41,35 @@ public class FaithTrack {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void checkStatus(ArrayList<Player> players) {
+
+        //Check if: pope space
+        players.forEach(player -> {
+            int section = popeSpace(player.getFaithPosition()); //Get the section from player position
+
+            if(section != -1) {
+                //The player reached a pope space
+
+                //Update players pope card status
+                players.forEach(player1 -> {
+                    PopeCard popeCard = player1.getPopeCard(section); //Get the pope card of this section
+
+                    if(popeCard != null)
+                        //Set the status based on player current position
+                        if(isXSectionOrHigher(section, player1.getFaithPosition()))
+                            player1.getPopeCard(section).setStatus(ACTIVE);
+                        else
+                            player1.getPopeCard(section).setStatus(REMOVED);
+                });
+
+                //Check for game ending
+                if(player.getFaithPosition() == length - 1)
+                    GameManager.endingGame();
+            }
+        });
+
     }
 
     public int getTrackLength() {

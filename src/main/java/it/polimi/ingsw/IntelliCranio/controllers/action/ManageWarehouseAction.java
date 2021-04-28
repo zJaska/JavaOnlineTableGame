@@ -379,7 +379,11 @@ public class ManageWarehouseAction implements ActionI{
         //I get here if the argument is valid
 
         //region Execute operation
-        //Todo: apply surplus penalty
+
+        //Add faith to every other player other than current one
+        game.addFaithToAll(game.getCurrentPlayer().extraAmount());
+
+        //Apply changes
 
         return new DefaultAction(); //Go to this state
 

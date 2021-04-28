@@ -14,7 +14,7 @@ public class PopeCard extends Card{
         return status;
     }
 
-    //Se ACTIVE o REMOVED non può essere cambiato
+    //If ACTIVE or REMOVED, the status cannot be changed
     public void setStatus(Status status) {
         if(this.status==Status.INACTIVE)
             this.status = status;
