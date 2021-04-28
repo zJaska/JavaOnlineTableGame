@@ -47,26 +47,22 @@ public class SocketHandler {
     }
 
     public void send(Packet packet) {
-        synchronized (this) {
-            String tmp = new Gson().toJson(packet);
-            out.println(tmp);
-        }
+        String tmp = new Gson().toJson(packet);
+        out.println(tmp);
     }
 
     public Packet receive() throws IOException {
-        synchronized (this) {
-            String tmp;
-            try {
-                tmp = in.readLine();
-            } catch (SocketTimeoutException e) {
-                System.out.println("Timeout elapsed");
-                throw new SocketTimeoutException();
-            } catch (IOException e) {
-                System.out.println("Unable to read packet, probably the other end disconnected");
-                throw new IOException();
-            }
-
-            return (new Gson().fromJson(tmp,Packet.class));
+        String tmp;
+        try {
+            tmp = in.readLine();
+        } catch (SocketTimeoutException e) {
+            System.out.println("Timeout elapsed");
+            throw new SocketTimeoutException();
+        } catch (IOException e) {
+            System.out.println("Unable to read packet, probably the other end disconnected");
+            throw new IOException();
         }
+
+        return (new Gson().fromJson(tmp,Packet.class));
     }
 }

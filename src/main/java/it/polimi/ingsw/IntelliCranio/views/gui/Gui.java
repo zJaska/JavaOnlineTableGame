@@ -13,7 +13,7 @@ public class Gui implements View {
     private GuiScene scene;
     private GuiSceneFactory sceneFactory = new GuiSceneFactory();
 
-    public Pair<InstructionCode,ArrayList<String>> getInput() {
+    public Pair<InstructionCode,ArrayList<Object>> getInput() {
         return null;
     }
 

@@ -14,7 +14,7 @@ public class Net {
 
     public static final String TIMEOUT_MSG = "You took too much to answer, disconnecting";
 
-    public static Packet createPacketFromInput(Pair<Packet.InstructionCode, ArrayList<String>> input) {
+    public static Packet createPacketFromInput(Pair<Packet.InstructionCode, ArrayList<Object>> input) {
         return new Packet(input.getKey(), null, input.getValue());
     }
 

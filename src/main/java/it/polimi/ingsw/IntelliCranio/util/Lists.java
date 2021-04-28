@@ -41,4 +41,22 @@ public class Lists {
         result.add(var);
         return result;
     }
+
+    public static <T> ArrayList<Object> toObjectList(ArrayList<T> arr) {
+        ArrayList<Object> result = new ArrayList<>();
+        arr.forEach( x -> result.add(x));
+        return result;
+    }
+
+    public static <T> ArrayList<Object> toObjectList(String[] arr) {
+        ArrayList<Object> result = new ArrayList<>();
+        Arrays.stream(arr).forEach( x -> result.add(x));
+        return result;
+    }
+
+    public static <T> ArrayList<Object> toObjectList(String var) {
+        ArrayList<Object> result = new ArrayList<>();
+        result.add(var);
+        return result;
+    }
 }

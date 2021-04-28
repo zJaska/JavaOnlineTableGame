@@ -2,10 +2,13 @@ package it.polimi.ingsw.IntelliCranio.views.cli.scenes;
 
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.network.Packet.Response;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_NICKNAME;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
+import static it.polimi.ingsw.IntelliCranio.util.Lists.toObjectList;
 
 public class CliNicknameScene implements CliScene {
 
@@ -37,7 +40,7 @@ public class CliNicknameScene implements CliScene {
         return ACK;
     }
 
-    public InstructionCode getInstructionCode(ArrayList<String> input) {
-        return InstructionCode.CHOOSE_NICKNAME;
+    public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) {
+        return new Pair<InstructionCode, ArrayList<Object>> (CHOOSE_NICKNAME, toObjectList(input));
     }
 }

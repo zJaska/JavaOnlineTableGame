@@ -7,7 +7,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 
 public interface View {
-    Pair<InstructionCode,ArrayList<String>> getInput();
+    Pair<InstructionCode,ArrayList<Object>> getInput();
     void setScene(InstructionCode code);
     void displayError(Response response);
     void showCommunication(String msg);

@@ -7,13 +7,17 @@ import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliScene;
 
 public class CliSceneFactory {
 
+    private CliScene CliNicknameScene = new CliNicknameScene();
+    private CliScene CliChooseNumberPlayersScene = new CliChooseNumberPlayersScene();
+
     public CliScene getScene(InstructionCode code) {
         switch (code) {
             case CHOOSE_NICKNAME:
-                return new CliNicknameScene();
+                return CliNicknameScene;
             case CHOOSE_NUMBER_PLAYERS:
-                return new CliChooseNumberPlayersScene();
+                return CliChooseNumberPlayersScene;
+            default:
+                return null;
         }
-        return null;
     }
 }

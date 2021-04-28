@@ -2,7 +2,6 @@ package it.polimi.ingsw.IntelliCranio.controllers;
 
 import it.polimi.ingsw.IntelliCranio.controllers.action.Action;
 import it.polimi.ingsw.IntelliCranio.controllers.action.ActionState;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GameManager {
 
@@ -15,6 +14,6 @@ public class GameManager {
     Terminate the execution of this thread
      */
     public static void endingGame() {
-        throw new NotImplementedException();
+        System.exit(0);
     }
 }

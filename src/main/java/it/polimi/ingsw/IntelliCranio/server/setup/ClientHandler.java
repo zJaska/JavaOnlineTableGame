@@ -64,7 +64,7 @@ public class ClientHandler implements Runnable {
             chosen = false;
 
             try {
-                nickname = socketHandler.receive().getArgs().get(0);
+                nickname = (String) socketHandler.receive().getArgs().get(0);
                 String finalNickname = nickname;
 
                 if (playersNames.stream().anyMatch(x -> x.equals(finalNickname))) {
@@ -79,7 +79,7 @@ public class ClientHandler implements Runnable {
 
         playersNames.add(nickname);
 
-        socketHandler.send(new Packet(CHOOSE_NICKNAME, ACK,null));
+        //socketHandler.send(new Packet(CHOOSE_NICKNAME, ACK,null));
 
         System.out.println("Player connected: " + nickname);
 
@@ -111,10 +111,10 @@ public class ClientHandler implements Runnable {
         firstPlayer.getValue().send(new Packet(CHOOSE_NUMBER_PLAYERS, null,null));
         try {
 
-            int numPlayers = parseInt(firstPlayer.getValue().receive().getArgs().get(0));
+            int numPlayers = parseInt((String) firstPlayer.getValue().receive().getArgs().get(0));
 
             System.out.println("Received size");
-            firstPlayer.getValue().send(new Packet(CHOOSE_NUMBER_PLAYERS, ACK,null));
+            //firstPlayer.getValue().send(new Packet(CHOOSE_NUMBER_PLAYERS, ACK,null));
 
             numFirstPlayers--;
             new WaitingRoom(numPlayers, firstPlayer).run();
