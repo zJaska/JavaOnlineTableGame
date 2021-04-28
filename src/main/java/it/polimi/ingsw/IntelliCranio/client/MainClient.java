@@ -10,7 +10,6 @@ import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toObjectList;
 import static it.polimi.ingsw.IntelliCranio.util.Net.createPacketFromInput;
 
 public class MainClient {

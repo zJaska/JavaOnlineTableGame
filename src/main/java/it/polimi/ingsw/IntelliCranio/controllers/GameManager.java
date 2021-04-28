@@ -13,7 +13,8 @@ public class GameManager {
     Clear the backup memory from disk
     Terminate the execution of this thread
      */
+
     public static void endingGame() {
-        System.exit(0);
+        throw new UnsupportedOperationException();
     }
 }

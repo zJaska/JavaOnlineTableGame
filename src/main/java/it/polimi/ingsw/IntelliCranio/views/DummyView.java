@@ -7,9 +7,6 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toObjectList;
-
 public class DummyView extends Cli {
     private int count = 0;
 
@@ -23,7 +20,7 @@ public class DummyView extends Cli {
     public Pair<InstructionCode, ArrayList<Object>> getInput() {
         if (count < inputs.length) {
             System.out.println(inputs[count]);
-            return new Pair<InstructionCode, ArrayList<Object>>(null, toObjectList(inputs[count++]));
+            return new Pair<InstructionCode, ArrayList<Object>>(null, new ArrayList<>(Arrays.asList(inputs[count++])));
         }
 
         return null;

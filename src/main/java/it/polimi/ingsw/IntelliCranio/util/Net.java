@@ -5,10 +5,10 @@ import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.COMMUNICATION;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.DIE;
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
 
 public class Net {
 
@@ -19,7 +19,7 @@ public class Net {
     }
 
     public static void disconnectPlayer(SocketHandler socketHandler, String msg) {
-        socketHandler.send(new Packet(COMMUNICATION, null, toList(msg)));
+        socketHandler.send(new Packet(COMMUNICATION, null, new ArrayList<Object>(Arrays.asList(msg))));
         socketHandler.send(new Packet(DIE, null, null));
     }
 }

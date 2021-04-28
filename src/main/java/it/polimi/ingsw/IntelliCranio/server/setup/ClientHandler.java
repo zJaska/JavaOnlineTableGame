@@ -11,7 +11,6 @@ import java.net.SocketTimeoutException;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.util.Net.TIMEOUT_MSG;

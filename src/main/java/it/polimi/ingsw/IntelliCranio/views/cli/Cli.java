@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.ACK;
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
 
 public class Cli implements View {
 
@@ -26,7 +25,7 @@ public class Cli implements View {
         Response err = null;
 
         do {
-            input = toList(scanner.nextLine().split(" "));
+            input = new ArrayList<String>(Arrays.asList(scanner.nextLine().split(" ")));
 
             String firstWord = input.get(0);
             if (Arrays.stream(CliIdle.IDLE_COMMANDS).anyMatch(x -> x.equals(firstWord))) {

@@ -39,6 +39,7 @@ public class LeadCard extends Card{
         return isActive;
     }
 
+    public String getID() { return ID; }
 
     public Ability.AbilityType getAbilityType() {
         return abilityType;

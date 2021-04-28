@@ -29,8 +29,8 @@ public class CardGenerator {
                 for(int i = 0; i < 4; ++i)
                     devs.add(grid[row][col].get(i));
 
-        // Semplificazione matematica del ciclo for
-        //for (int i=0; i<48; ++i)
+        // Playing with math
+        // for (int i=0; i<48; ++i)
         //    devs.add(grid[i/16][(i/4)%4].get(i%4));
 
         cardFile.write(gson.toJson(devs));

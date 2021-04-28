@@ -6,11 +6,8 @@ import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
-import it.polimi.ingsw.IntelliCranio.network.Packet;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Lists {
@@ -31,36 +28,6 @@ public class Lists {
             result.add((T)temp);
         });
 
-        return result;
-    }
-
-    public static <T> ArrayList<T> toList(T[] arr) {
-        ArrayList<T> result = new ArrayList<T>();
-        Arrays.stream(arr).forEach(x -> { result.add(x); });
-        return result;
-    }
-
-    public static <T> ArrayList<T> toList(T var) {
-        ArrayList<T> result = new ArrayList<T>();
-        result.add(var);
-        return result;
-    }
-
-    public static <T> ArrayList<Object> toObjectList(ArrayList<T> arr) {
-        ArrayList<Object> result = new ArrayList<>();
-        arr.forEach( x -> result.add(x));
-        return result;
-    }
-
-    public static <T> ArrayList<Object> toObjectList(String[] arr) {
-        ArrayList<Object> result = new ArrayList<>();
-        Arrays.stream(arr).forEach( x -> result.add(x));
-        return result;
-    }
-
-    public static <T> ArrayList<Object> toObjectList(String var) {
-        ArrayList<Object> result = new ArrayList<>();
-        result.add(var);
         return result;
     }
 

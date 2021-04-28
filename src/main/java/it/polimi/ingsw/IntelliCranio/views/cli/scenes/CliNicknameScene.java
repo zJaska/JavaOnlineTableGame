@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_NICKNAME;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toObjectList;
 
 public class CliNicknameScene implements CliScene {
 
@@ -41,6 +40,6 @@ public class CliNicknameScene implements CliScene {
     }
 
     public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) {
-        return new Pair<InstructionCode, ArrayList<Object>> (CHOOSE_NICKNAME, toObjectList(input));
+        return new Pair<InstructionCode, ArrayList<Object>> (CHOOSE_NICKNAME, new ArrayList<Object>(input));
     }
 }

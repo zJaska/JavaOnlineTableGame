@@ -5,8 +5,8 @@ import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import static it.polimi.ingsw.IntelliCranio.util.Lists.toList;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.COMMUNICATION;
 
 public class WaitingRoom {
@@ -22,7 +22,7 @@ public class WaitingRoom {
     public WaitingRoom(int size, Pair<String,SocketHandler> firstPlayer) {
         this.size = size;
         players.add(firstPlayer);
-        firstPlayer.getValue().send(new Packet(COMMUNICATION, null, toList(new String[] {"Added to a lobby, waiting for other players..."})));
+        firstPlayer.getValue().send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Added to a lobby, waiting for other players..."))));
     }
 
     public void run() {
@@ -33,7 +33,7 @@ public class WaitingRoom {
             Pair<String,SocketHandler> newPlayer = ClientHandler.popWaitingPlayer();
 
             players.add(newPlayer);
-            newPlayer.getValue().send(new Packet(COMMUNICATION, null, toList(new String[] {"Added to a lobby, waiting for other players..."})));
+            newPlayer.getValue().send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Added to a lobby, waiting for other players..."))));
         }
 
         numLobbies--;
@@ -49,7 +49,7 @@ public class WaitingRoom {
         // Telling clients the game is starting
 
         players.forEach(x -> {
-            x.getValue().send(new Packet(COMMUNICATION, null, toList(new String[] {"Starting game..."})));
+            x.getValue().send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Starting game..."))));
         });
 
         // Create and start the gameManager
