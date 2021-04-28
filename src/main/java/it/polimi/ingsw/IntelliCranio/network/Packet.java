@@ -6,6 +6,8 @@ public class Packet {
 
     public enum InstructionCode {
         // Action codes
+        CANCEL,
+        CONFIRM,
         DISCARD_LEAD,
         CHOOSE_RES,
         SWAP_LINES,

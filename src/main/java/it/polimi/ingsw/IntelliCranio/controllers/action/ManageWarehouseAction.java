@@ -3,6 +3,7 @@ package it.polimi.ingsw.IntelliCranio.controllers.action;
 import com.google.gson.Gson;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
@@ -36,6 +37,8 @@ public class ManageWarehouseAction implements ActionI{
         if(packet.getInstructionCode() == REMOVE_FROM_DEPOT) return removeFromDepot(packet.getArgs());
         if(packet.getInstructionCode() == DEPOT_TO_CARD) return depotToCard(packet.getArgs());
         if(packet.getInstructionCode() == EXTRA_TO_CARD) return extraToCard(packet.getArgs());
+        if(packet.getInstructionCode() == CANCEL) return cancel();
+        if(packet.getInstructionCode() == CONFIRM) return confirm();
 
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
     }
@@ -111,8 +114,8 @@ public class ManageWarehouseAction implements ActionI{
 
         //I get here if there are no problems with arguments conversion
 
+        Player player = game.getCurrentPlayer();
         Warehouse playerWh = game.getCurrentPlayer().getWarehouse();
-        ArrayList<Resource> playerExtra = game.getCurrentPlayer().getExtraRes();
 
         //region Argument validation
 
@@ -125,16 +128,20 @@ public class ManageWarehouseAction implements ActionI{
         //Over Size Condition
         if(depotLine >= playerWh.getDepot().length) throw new InvalidArgumentsException(SELECTION_INVALID);
 
-        //Resource Not in Extra Condition
-        if(playerExtra.stream().noneMatch(exRes -> exRes.getType() == resource.getType()))
+        //Extra Empty Condition
+        if(!player.hasExtra())
+            throw new InvalidArgumentsException(SELECTION_INVALID);
+
+        //Resource Not in Extra Condition (blank or faith CAN NOT stay in extra resources)
+        if(!player.hasExtra(resource.getType()))
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //Not Same Resource Condition
-        if(playerWh.getDepot()[depotLine].getType() != resource.getType())
+        if(playerWh.getType(depotLine) != resource.getType())
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //Depot Line Full Condition
-        if(playerWh.getDepot()[depotLine].getAmount() == depotLine + 1)
+        if(playerWh.isFull(depotLine))
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //endregion
@@ -143,7 +150,7 @@ public class ManageWarehouseAction implements ActionI{
 
         //region Execute operation
 
-        playerWh.addFromExtra(depotLine, resource, playerExtra);
+        playerWh.addFromExtra(depotLine, resource, player);
 
         return null; //No need to change state
 
@@ -174,7 +181,7 @@ public class ManageWarehouseAction implements ActionI{
 
         //region Argument validation
 
-        //Negative index Condition
+        //Negative line Condition
         if(depotLine < 0) throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //Over Size Condition
@@ -182,7 +189,7 @@ public class ManageWarehouseAction implements ActionI{
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //Empty Condition
-        if(playerWh.getDepot()[depotLine] == null)
+        if(playerWh.isEmpty(depotLine))
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //endregion
@@ -191,9 +198,9 @@ public class ManageWarehouseAction implements ActionI{
 
         //region Execute operation
 
-        ArrayList<Resource> playerExtra = game.getCurrentPlayer().getExtraRes();
+        Player player = game.getCurrentPlayer();
 
-        playerWh.removeToExtra(depotLine, playerExtra);
+        playerWh.removeToExtra(depotLine, player);
 
         return null; //No need to change state
 
@@ -220,37 +227,28 @@ public class ManageWarehouseAction implements ActionI{
 
         //I get here if there are no problems with arguments conversion
 
+        Player player = game.getCurrentPlayer();
         Warehouse playerWh = game.getCurrentPlayer().getWarehouse();
-        Resource resource;
-        LeadCard card;
+        Resource resource; //Resource to get is depot is not empty
+        LeadCard card; //The card to put the resource
 
         //region Argument validation
-        Stream<LeadCard> playerLeaders = game.getCurrentPlayer().getLeaders().stream();
 
         //Invalid State Condition
         if(fromDefault) throw new InvalidArgumentsException(STATE_INVALID);
 
         //Depot Line Empty Condition
-        if(playerWh.getDepot()[depotLine] == null)
+        if(playerWh.isEmpty(depotLine))
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
         resource = playerWh.getDepot()[depotLine];
 
-        //region Card Not in Hand Condition
-
-        //Ability check
-        if(playerLeaders.noneMatch(leadCard -> leadCard.getAbilityType() == DEPOT))
+        //Card Not in Hand Condition
+        if(!player.hasLeader(DEPOT, resource.getType()))
             throw new InvalidArgumentsException(SELECTION_INVALID);
-
-        //ResourceType Check
-        if(playerLeaders.noneMatch(leadCard -> leadCard.getResourceType() == resource.getType()))
-            throw new InvalidArgumentsException(SELECTION_INVALID);
-        //endregion
 
         //Card Inactive Condition
-        card = playerLeaders
-                .filter(leadCard -> (leadCard.getAbilityType() == DEPOT && leadCard.getResourceType() == resource.getType()))
-                .findFirst().get();
+        card = player.getLeader(DEPOT, resource.getType());
 
         if(!card.isActive())
             throw new InvalidArgumentsException(SELECTION_INVALID);
@@ -268,7 +266,7 @@ public class ManageWarehouseAction implements ActionI{
 
         //Add a resource to the card
         DepotAbility depotAbility = (DepotAbility) card.getSpecialAbility();
-        depotAbility.addResource();
+        depotAbility.addResource(); //Resource type is unique for every card, no need to specify what to add
 
         //Remove the resource from selected depot line
         playerWh.removeAmount(depotLine, 1);
@@ -298,7 +296,7 @@ public class ManageWarehouseAction implements ActionI{
 
         //I get here if there are no problems with arguments conversion
 
-        ArrayList<Resource> playerExtra = game.getCurrentPlayer().getExtraRes();
+        Player player = game.getCurrentPlayer();
         LeadCard card;
 
         //region Argument validation
@@ -308,24 +306,16 @@ public class ManageWarehouseAction implements ActionI{
         if(fromDefault) throw new InvalidArgumentsException(STATE_INVALID);
 
         //Resource Not in Extra Condition
-        if(playerExtra.stream().noneMatch(res -> res.getType() == resource.getType()))
+        if(!player.hasExtra(resource.getType()))
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
-        //region Card Not in Hand Condition
+        //Card Not in Hand Condition
 
-        //Ability check
-        if(playerLeaders.noneMatch(leadCard -> leadCard.getAbilityType() == DEPOT))
+        if(!player.hasLeader(DEPOT, resource.getType()))
             throw new InvalidArgumentsException(SELECTION_INVALID);
-
-        //ResourceType Check
-        if(playerLeaders.noneMatch(leadCard -> leadCard.getResourceType() == resource.getType()))
-            throw new InvalidArgumentsException(SELECTION_INVALID);
-        //endregion
 
         //Card Inactive Condition
-        card = playerLeaders
-                .filter(leadCard -> (leadCard.getAbilityType() == DEPOT && leadCard.getResourceType() == resource.getType()))
-                .findFirst().get();
+        card = player.getLeader(DEPOT, resource.getType());
 
         if(!card.isActive())
             throw new InvalidArgumentsException(SELECTION_INVALID);
@@ -345,9 +335,7 @@ public class ManageWarehouseAction implements ActionI{
         depotAbility.addResource();
 
         //Remove resource from extra res
-        playerExtra.stream()
-                .filter(res -> res.getType() == resource.getType())
-                .findFirst().get().removeAmount(1);
+        player.removeExtra(resource.getType(), 1);
 
         return null; //No need to change state
 

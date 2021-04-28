@@ -3,10 +3,15 @@ package it.polimi.ingsw.IntelliCranio.models.player;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
 
 public class Player {
 
@@ -58,6 +63,54 @@ public class Player {
         return extraRes;
     }
 
+    /**
+     * Add a resource to the list, then unify it
+     * @param resource The resource to add
+     */
+    public void addExtra(Resource resource) {
+        extraRes.add(resource);
+        extraRes = Lists.unifyResourceAmounts(extraRes);
+    }
+
+    /**
+     * Add the specified amount of selected type.
+     * A new resource is added to the list, the list is then unified
+     *
+     * @param rt Type to add
+     * @param amount Amount to add
+     */
+    public void addExtra(FinalResource.ResourceType rt, int amount) {
+        extraRes.add(new Resource(rt, amount));
+        extraRes = Lists.unifyResourceAmounts(extraRes);
+    }
+
+
+    /**
+     * Try remove the specified amount from the selected type of resource.
+     * <p>
+     * If amount is bigger than actual resource amount, the difference is IGNORED
+     * and the resource gets completely removed from list.
+     * Resource gets removed if amount reaches 0
+     * <p>
+     *     If there is no such type "rt" in the list, this method does nothing
+     * </p>
+     * </p>
+     *
+     * @param rt Type of resource to remove
+     * @param amount Amount to remove from resource
+     */
+    public void removeExtra(FinalResource.ResourceType rt, int amount) {
+        if(hasExtra(rt)) {
+            Resource temp = getExtra(rt);
+
+            if(temp.removeAmount(amount) == -1) //Selected amount is bigger than actual amount
+                extraRes.remove(temp); //Remove the resource
+            else if(temp.getAmount() == 0) //Resource is now empty
+                extraRes.remove(temp); //Remove the resource
+        }
+
+    }
+
     public void incrementFaith() {
         faithPosition++;
     }
@@ -81,4 +134,110 @@ public class Player {
         return temp;
     }
 
+    //region Utility methods
+
+    //region hasLeader
+    /**
+     * The player has the selected card, matched by ID
+     * @param card The card to look for
+     * @return True if player has the card, false otherwise
+     */
+    public boolean hasLeader(LeadCard card) {
+        return leaders.stream().anyMatch(lead -> lead.getID().equals(card.getID()));
+    }
+
+    /**
+     * The player has at least one card of selected ability type
+     * @param at The ability type to look for
+     * @return True if player has the card, false otherwise
+     */
+    public boolean hasLeader(Ability.AbilityType at) {
+        return leaders.stream().anyMatch(lead -> lead.getAbilityType() == at);
+    }
+
+    /**
+     * The player has at least one card of selected resource type
+     * @param rt The resource type to look for
+     * @return True if player has the card, false otherwise
+     */
+    public boolean hasLeader(FinalResource.ResourceType rt) {
+        return leaders.stream().anyMatch(lead -> lead.getResourceType() == rt);
+    }
+
+    /**
+     * The player has the selected card, matched by both ability and resource type
+     * @param at The ability type to look for
+     * @param rt The resource type to look for
+     * @return True if player has the card, false otherwise
+     */
+    public boolean hasLeader(Ability.AbilityType at, FinalResource.ResourceType rt) {
+        return leaders.stream()
+                .anyMatch(lead -> (lead.getAbilityType() == at && lead.getResourceType() == rt));
+    }
+    //endregion
+
+    /**
+     * Return a specific card given its ability and resource type.
+     * Better used after "hasLeader" has been called,
+     * if there is no such card, return null.
+     * @param at The ability type to check
+     * @param rt The resource type to check
+     * @return The card matching both ability and resource type if present, null otherwise
+     */
+    public LeadCard getLeader(Ability.AbilityType at, FinalResource.ResourceType rt) {
+        if(hasLeader(at, rt)) //Double check to prevent exception throwing
+            return leaders.stream()
+                    .filter(lead -> (lead.getAbilityType() == at && lead.getResourceType() == rt))
+                    .findFirst().get();
+        else
+            return null;
+    }
+
+    public void removeLeader(LeadCard card) {
+        leaders.removeIf(lead -> lead.getID().equals(card.getID()));
+    }
+
+    /**
+     * Check if player extra resources is empty or not
+     * @return True if there is at least 1 element in the list, false otherwise
+     */
+    public boolean hasExtra() {
+        return extraRes.size() > 0;
+    }
+
+    /**
+     * Check if selected resource type is present in extra resources
+     * @param rt The type to check
+     * @return True if a resource of type rt is in the list, false otherwise
+     */
+    public boolean hasExtra(FinalResource.ResourceType rt) {
+        return extraRes.stream().anyMatch(res -> res.getType() == rt);
+    }
+
+    /**
+     * Try get a resource from extra resources given a specific type.
+     * Better if called after "hasExtra"
+     *
+     * @param rt The type to get from list
+     * @return The resource that match the type if present, null otherwise
+     */
+    public Resource getExtra(FinalResource.ResourceType rt) {
+        if(hasExtra(rt))
+            return extraRes.stream().filter(res -> res.getType() == rt).findFirst().get();
+        else
+            return null;
+    }
+
+    /**
+     *
+     * @return The amount of resources in extra resources list, 0 if empty
+     */
+    public int extraAmount() {
+        if(hasExtra())
+            return extraRes.stream().map(Resource::getAmount).reduce(Integer::sum).get();
+        else
+            return 0;
+    }
+
+    //endregion
 }

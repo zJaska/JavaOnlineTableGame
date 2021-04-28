@@ -1,6 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
@@ -67,22 +68,21 @@ public class ChooseInitResourcesAction implements ActionI{
         //region Execute operation
 
         int allowedAmount = game.getInitRes(game.getCurrentPlayerIndex());
-        ArrayList<Resource> playerResources = game.getCurrentPlayer().getExtraRes();
+        Player player = game.getCurrentPlayer();
+
+        //At this stage, extra res are not unified. Every element is a unit
 
         //If player already has the right amount of resources, the game shouldn't be in this state. Return the new state then.
-        if(playerResources.size() == allowedAmount) return new ManageWarehouseAction(false);
+        if(player.extraAmount() == allowedAmount) return new ManageWarehouseAction(false);
 
         //Add the selected resource the player extras
-        playerResources.add(resource);
+        player.addExtra(resource);
 
         //Check for return type
-        if(playerResources.size() < allowedAmount)
+        if(player.extraAmount() < allowedAmount)
             return null; //No need to change state
-        else {
-            //Resources are unified ONLY before going in warehouse
-            playerResources = Lists.unifyResourceAmounts(playerResources);
+        else
             return new ManageWarehouseAction(false);
-        }
 
         //endregion
     }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.player;
 
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
@@ -76,19 +77,14 @@ public class Warehouse {
      *
      * @param depotLine index of the depot array
      * @param resource the resource to take from extra resources
-     * @param extraRes list of resources of the player extra resources
+     * @param player The current player
      */
-    public void addFromExtra(int depotLine, Resource resource, ArrayList<Resource> extraRes) {
+    public void addFromExtra(int depotLine, Resource resource, Player player) {
 
         depot[depotLine].addAmount(1); //Add the amount to depot
 
-        //Get the correct amount from extra and reduce the amount by 1
-        extraRes.stream()
-                .filter(res -> res.getType() == resource.getType())
-                .findFirst().get().removeAmount(1);
-
-        //Remove the resource if amount is now 0
-        extraRes.removeIf(res -> res.getAmount() == 0);
+        //reduce the amount of the resource by 1
+        player.removeExtra(resource.getType(), 1);
 
     }
 
@@ -96,13 +92,12 @@ public class Warehouse {
      * Add a resource to the extra resources list. The list is then unified again.
      * Remove a single amount of that resource from selected depot line
      * @param depotLine index of the line in depot
-     * @param extraRes List of extra resources from current player
+     * @param player The current player
      */
-    public void removeToExtra(int depotLine, ArrayList<Resource> extraRes) {
+    public void removeToExtra(int depotLine, Player player) {
 
-        //Add to extra resources before removing. Prevent null check later.
-        extraRes.add(new Resource(depot[depotLine].getType(), 1));
-        extraRes = Lists.unifyResourceAmounts(extraRes);
+        //Add to extra resources before removing. Prevent null check on depot line later.
+        player.addExtra(depot[depotLine].getType(), 1);
 
         //Remove 1 resource from depot
         removeAmount(depotLine, 1);
@@ -160,5 +155,31 @@ public class Warehouse {
         if(depot[depotLine].getAmount() == 0)
             depot[depotLine] = null;
     }
+
+    //region Utility
+
+    /**
+     * Check if selected line in depot is full
+     * @param depotLine The line to check
+     * @return True if line is full, false otherwise
+     */
+    public boolean isFull(int depotLine) {
+        return depot[depotLine].getAmount() == depotLine + 1;
+    }
+
+    /**
+     * Check if selected line in depot is empty
+     * @param depotLine The line to check
+     * @return True if line is null, false otherwise
+     */
+    public boolean isEmpty(int depotLine) {
+        return depot[depotLine] == null;
+    }
+
+    public FinalResource.ResourceType getType(int depotLine) {
+        return depot[depotLine].getType();
+    }
+
+    //endregion
 
 }

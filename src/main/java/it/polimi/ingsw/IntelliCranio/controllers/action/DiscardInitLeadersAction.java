@@ -3,6 +3,7 @@ package it.polimi.ingsw.IntelliCranio.controllers.action;
 import com.google.gson.Gson;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
@@ -45,7 +46,7 @@ public class DiscardInitLeadersAction implements ActionI {
 
         //I get here if there are no problems with arguments conversion
 
-        ArrayList<LeadCard> playerCards = game.getCurrentPlayer().getLeaders();
+        Player player = game.getCurrentPlayer();
 
         //region Input validation
 
@@ -53,7 +54,7 @@ public class DiscardInitLeadersAction implements ActionI {
         if(card == null) throw new InvalidArgumentsException(NULL_ARG);
 
         //Not in hand Condition
-        if(playerCards.stream().noneMatch(pCard -> pCard.getID().equals(card.getID())))
+        if(!player.hasLeader(card))
             throw new InvalidArgumentsException(SELECTION_INVALID);
 
         //endregion
@@ -63,13 +64,13 @@ public class DiscardInitLeadersAction implements ActionI {
         //region Execute operation
 
         //If player already has only two cards, the game shouldn't be in this state. Return the new state then.
-        if(playerCards.size() == 2) return new ChooseInitResourcesAction();
+        if(player.getLeaders().size() == 2) return new ChooseInitResourcesAction();
 
         //Remove the selected card from player
-        playerCards.removeIf(pCard -> pCard.getID().equals(card.getID()));
+        player.removeLeader(card);
 
         //Check for return type
-        if(playerCards.size() > 2)
+        if(player.getLeaders().size() > 2)
             return null; //No need to change state or reset the current one
         else
             return new ChooseInitResourcesAction(); //Return the new state to go to
