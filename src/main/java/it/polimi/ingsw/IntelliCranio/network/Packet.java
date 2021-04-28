@@ -5,7 +5,16 @@ import java.util.ArrayList;
 public class Packet {
 
     public enum InstructionCode {
-        // Action codes
+        //Action Codes
+        DEFAULT,
+        DISCARD_INIT_LEAD,
+        CHOOSE_INIT_RES,
+        MNG_WARE,
+        RES_MARKET,
+        CARD_MARKET,
+        ACT_PROD,
+
+        // Instruction codes
         CANCEL,
         CONFIRM,
         DISCARD_LEAD,

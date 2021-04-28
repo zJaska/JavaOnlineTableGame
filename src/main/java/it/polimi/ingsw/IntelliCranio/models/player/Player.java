@@ -6,10 +6,12 @@ import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
 
@@ -187,6 +189,16 @@ public class Player {
     //endregion
 
     /**
+     * Get a card stored on server providing a matching object.
+     *
+     * @param card The card to get as original
+     * @return The server card matched by ID
+     */
+    public LeadCard getLeader(LeadCard card) {
+        return leaders.stream().filter(lead -> lead.getID().equals(card.getID())).findFirst().get();
+    }
+
+    /**
      * Return a specific card given its ability and resource type.
      * Better used after "hasLeader" has been called,
      * if there is no such card, return null.
@@ -247,6 +259,27 @@ public class Player {
             return extraRes.stream().map(Resource::getAmount).reduce(Integer::sum).get();
         else
             return 0;
+    }
+
+    public ArrayList<Resource> getAllResources() {
+
+        ArrayList<Resource> temp = new ArrayList<>();
+
+        //Warehouse
+        temp.addAll(warehouse.getAll());
+
+        //Strongbox
+        temp.addAll(strongbox.getAll());
+
+        //Leaders
+        temp.addAll( leaders.stream()
+                .filter(lead -> lead.getAbilityType() == DEPOT)
+                .map(LeadCard::getSpecialAbility)
+                .map(ability -> (DepotAbility)ability)
+                .map(DepotAbility::getDepot)
+                .collect(Collectors.toList()));
+
+        return Lists.unifyResourceAmounts(temp);
     }
 
     //endregion

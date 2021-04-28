@@ -49,5 +49,14 @@ public class Strongbox {
                 .removeAmount(amount);
     }
 
+    //region Utility
+
+    public ArrayList<Resource> getAll() {
+
+        return new ArrayList<>(resources);
+    }
+
+    //endregion
+
 
 }

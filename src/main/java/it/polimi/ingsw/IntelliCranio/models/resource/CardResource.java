@@ -6,12 +6,12 @@ public class CardResource {
 
     private CardType type;
     private int amount;
-    private int minLevelRequired;
+    private int level;
 
-    public CardResource(CardType type, int amount, int minLevelRequired) {
+    public CardResource(CardType type, int amount, int level) {
         this.type = type;
         this.amount = amount;
-        this.minLevelRequired = minLevelRequired;
+        this.level = level;
     }
 
     public CardType getType() {
@@ -22,7 +22,9 @@ public class CardResource {
         return amount;
     }
 
-    public int getMinLevelRequired() {
-        return minLevelRequired;
+    public void addAmount(int amount) { this.amount += amount; }
+
+    public int getLevel() {
+        return level;
     }
 }

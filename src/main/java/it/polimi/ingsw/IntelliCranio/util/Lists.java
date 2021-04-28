@@ -1,5 +1,9 @@
 package it.polimi.ingsw.IntelliCranio.util;
 
+import it.polimi.ingsw.IntelliCranio.controllers.GameManager;
+import it.polimi.ingsw.IntelliCranio.models.Game;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
@@ -42,6 +46,7 @@ public class Lists {
         return result;
     }
 
+<<<<<<< Updated upstream
     public static <T> ArrayList<Object> toObjectList(ArrayList<T> arr) {
         ArrayList<Object> result = new ArrayList<>();
         arr.forEach( x -> result.add(x));
@@ -58,5 +63,25 @@ public class Lists {
         ArrayList<Object> result = new ArrayList<>();
         result.add(var);
         return result;
+=======
+    public static ArrayList<CardResource> toCardResource(ArrayList<DevCard> cards) {
+
+        ArrayList<CardResource> temp = new ArrayList<>();
+
+        cards.forEach(devC -> {
+            //If a card of same type and level is already present, update its value
+            if(temp.stream().anyMatch(cardRes ->
+                    (cardRes.getType() == devC.getType() && cardRes.getLevel() == devC.getLevel())))
+                temp.stream()
+                        .filter(cardRes -> (cardRes.getType() == devC.getType() &&
+                                        cardRes.getLevel() == devC.getLevel()))
+                        .findFirst().get().addAmount(1);
+            else
+                //Add a new resource with that type and level
+                temp.add(new CardResource(devC.getType(), 1, devC.getLevel()));
+        });
+
+        return temp;
+>>>>>>> Stashed changes
     }
 }

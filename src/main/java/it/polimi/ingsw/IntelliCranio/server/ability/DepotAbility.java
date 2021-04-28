@@ -35,6 +35,10 @@ public class DepotAbility extends Ability{
             depot = null;
     }
 
+    public Resource getDepot() {
+        return depot;
+    }
+
     public boolean isEmpty() {
         return depot == null;
     }

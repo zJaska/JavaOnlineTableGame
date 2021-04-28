@@ -5,6 +5,7 @@ import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Warehouse {
@@ -178,6 +179,15 @@ public class Warehouse {
 
     public FinalResource.ResourceType getType(int depotLine) {
         return depot[depotLine].getType();
+    }
+
+    public ArrayList<Resource> getAll() {
+        ArrayList<Resource> temp = new ArrayList<>();
+
+        Arrays.stream(depot).forEach(res -> temp.add(res));
+
+        return temp;
+
     }
 
     //endregion

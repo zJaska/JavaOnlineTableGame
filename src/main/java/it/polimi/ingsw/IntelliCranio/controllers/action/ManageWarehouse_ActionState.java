@@ -344,7 +344,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         if(fromDefault)
             //If i came in this state from default, go back to a default state
-            action.setActionState(new Default_ActionState(action));
+            action.setActionState(new Default_ActionState(action), DEFAULT);
         else {
             //Todo: reset of model state
             //No need to change state
@@ -372,7 +372,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //Apply changes
 
-        action.setActionState(new Default_ActionState(action)); //Go to this state
+        action.setActionState(new Default_ActionState(action), DEFAULT); //Go to this state
 
         //endregion
     }

@@ -76,7 +76,7 @@ public class ChooseInitResources_ActionState extends ActionState {
 
         //If player already has the right amount of resources, the game shouldn't be in this state. Return the new state then.
         if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith)
-            action.setActionState(new ManageWarehouse_ActionState(action, false));
+            action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
 
         //Add the selected resource the player extras
         player.addExtra(resource);
@@ -86,7 +86,7 @@ public class ChooseInitResources_ActionState extends ActionState {
             for (int i = 0; i < allowedFaith; ++i)
                 player.addFaith();
 
-            action.setActionState(new ManageWarehouse_ActionState(action, false));
+            action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
         }
 
         //endregion
