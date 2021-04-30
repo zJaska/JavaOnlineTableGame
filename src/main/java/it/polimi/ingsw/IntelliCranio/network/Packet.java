@@ -1,5 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.network;
 
+import org.graalvm.compiler.api.replacements.Snippet;
+
 import java.util.ArrayList;
 
 public class Packet {
@@ -13,10 +15,12 @@ public class Packet {
         RES_MARKET,
         CARD_MARKET,
         ACT_PROD,
+        IDLE,
 
         // Instruction codes
         CANCEL,
         CONFIRM,
+        END_TURN,
         DISCARD_LEAD,
         CHOOSE_RES,
         SWAP_LINES,
@@ -24,6 +28,7 @@ public class Packet {
         REMOVE_FROM_DEPOT,
         DEPOT_TO_CARD,
         EXTRA_TO_CARD,
+        PLAY_LEADER,
 
 
         // Setup codes

@@ -30,6 +30,11 @@ public class Default_ActionState extends ActionState {
 
         if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
 
+        if(packet.getInstructionCode() == PLAY_LEADER) playLeader(packet.getArgs());
+        if(packet.getInstructionCode() == DISCARD_LEAD) discardLeader(packet.getArgs());
+        if(packet.getInstructionCode() == MNG_WARE) manageWarehouse();
+        if(packet.getInstructionCode() == CARD_MARKET) cardMarket();
+        if(packet.getInstructionCode() == RES_MARKET) resourceMarket();
 
         throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
     }
@@ -84,7 +89,7 @@ public class Default_ActionState extends ActionState {
         ArrayList<CardResource> cardRequirements = player.getLeader(card).getCardRequirements();
 
         cardRequirements.forEach(cReq -> {
-            //If not 0, the lead card has a specific level reuqirement
+            //If not 0, the lead card has a specific level requirement
             if(cReq.getLevel() != 0) {
                 //No specific match of type and level
                 if(playerDevCards.stream().noneMatch(pDev ->

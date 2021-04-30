@@ -15,10 +15,12 @@ public class CardMarket {
     private final int rows, cols;
     private ArrayList<DevCard>[][] marketGrid;
 
-    public CardMarket(int rows, int cols) {
+    public CardMarket(String path, int rows, int cols, boolean shuffle) {
         this.rows = rows;
         this.cols = cols;
         marketGrid = new ArrayList[rows][cols];
+
+        setup(path, shuffle);
     }
 
     /**
@@ -29,7 +31,7 @@ public class CardMarket {
      * @param path The path of the json config file to create the cards
      * @param shuffle Flag if grid has to be shuffled
      */
-    public void setup(String path, boolean shuffle) {
+    private void setup(String path, boolean shuffle) {
         //Creating the list for each group
         for (int row = 0; row < rows; ++row)
             for (int col = 0; col < cols; ++col)
@@ -150,6 +152,7 @@ public class CardMarket {
             marketGrid[row][col].remove(0);
     }
 
+    //Test
     public ArrayList<DevCard>[][] getMarketGrid() {
         return marketGrid;
     }

@@ -5,12 +5,15 @@ import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.network.Packet;
+import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
@@ -23,30 +26,50 @@ public class Player {
     private Warehouse warehouse;
     private Strongbox strongbox;
 
+    //not null
     private ArrayList<Resource> extraRes;
+
+    private ArrayList<DevCard>[] devSlots;
 
     private ArrayList<DevCard> firstSlot;
     private ArrayList<DevCard> secondSlot;
     private ArrayList<DevCard> thirdSlot;
+
     private ArrayList<LeadCard> leaders;
     private ArrayList<PopeCard> popeCards;
 
     private boolean hasPlayed;
 
-    public Player() {
+    private InstructionCode lastAction;
+
+    public Player(String nickname, int devSlotsAmount, int sectionsAmount) {
+
+        this.nickname = nickname;
+        faithPosition = 0;
+        warehouse = new Warehouse(3);
+        strongbox = new Strongbox();
+        extraRes = new ArrayList<>();
+
+        devSlots = new ArrayList[devSlotsAmount];
+        Arrays.stream(devSlots).forEach(slot -> slot = new ArrayList<>());
+
+        popeCards = new ArrayList<>();
+        for(int i = 0; i < sectionsAmount; ++i)
+            popeCards.add(new PopeCard());
+
+        hasPlayed = false;
+        lastAction = InstructionCode.DISCARD_INIT_LEAD;
+
 
     }
 
-    public Player(Warehouse warehouse) {
-        this.warehouse = warehouse;
-    }
+    public InstructionCode getLastAction() { return lastAction; }
+    public void setLastAction (InstructionCode action) { lastAction = action; }
+
+    public String getNickname() { return nickname; }
 
     public void setLeaders(ArrayList<LeadCard> cards) {
         leaders = cards;
-    }
-
-    public void setWarehouse(Warehouse warehouse){
-        this.warehouse = warehouse;
     }
 
     public ArrayList<LeadCard> getLeaders() {

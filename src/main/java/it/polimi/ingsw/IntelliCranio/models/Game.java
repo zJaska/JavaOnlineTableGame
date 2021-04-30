@@ -9,13 +9,14 @@ import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Game{
+public class Game {
 
     private int currentPlayerIndex; //0 - 3: The index of the player turn
     private FaithTrack faithTrack;
@@ -23,6 +24,25 @@ public class Game{
     private ResourceMarket resourceMarket;
     private ArrayList<Player> players = new ArrayList<>();
 
+    public Game () {
+
+    }
+
+    public Game(ArrayList<String> nicknames) {
+
+        currentPlayerIndex = 0;
+
+        faithTrack = new FaithTrack("src/main/resources/faithtrack_config.json");
+        cardMarket = new CardMarket("src/main/resources/devcards_config.json", 3, 4, true);
+        resourceMarket = new ResourceMarket(3, 4);
+
+        nicknames.forEach(nick -> players.add(new Player(nick, 3, 3)));
+
+        createLeaderCards("src/main/resources/leadcards_config.json", true);
+
+        shufflePlayers();
+
+    }
 
 
     //region GETTERS
@@ -130,9 +150,7 @@ public class Game{
             e.printStackTrace();
         }
 
-        leaders.forEach(card -> {
-            card.setupAbility();
-        });
+        leaders.forEach(LeadCard::setupAbility);
 
         assignCards(leaders, shuffle);
 
@@ -205,14 +223,17 @@ public class Game{
             //Check the positions on the faithtrack
             faithTrack.checkStatus(players);
         }
-
     }
 
+    //Remove me
     public void addPlayer(Player player, int turn) {
         //Bisogna fare un check sul numero di giocatori presenti
         players.add(turn, player);
     }
 
+    public void changeTurn() {
+        currentPlayerIndex++;
+    }
 
 
 }

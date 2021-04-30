@@ -3,7 +3,6 @@ package it.polimi.ingsw.IntelliCranio.models.market;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import org.junit.Test;
-import org.junit.jupiter.api.parallel.Resources;
 
 import java.util.ArrayList;
 
@@ -14,8 +13,8 @@ public class CardMarketTest {
 
     @Test
     public void getCard() {
-        CardMarket market = new CardMarket(3, 4);
-        market.setup("src/test/resources/devcards_config_test.json", false);
+        CardMarket market = new CardMarket("src/test/resources/devcards_config_test.json", 3, 4, false);
+        //market.setup("src/test/resources/devcards_config_test.json", false);
 
         //Region used to create a test card
         String cardID = "developmentcard_front_g_1_1";
@@ -88,8 +87,8 @@ public class CardMarketTest {
 
     @Test
     public void removeCard() {
-        CardMarket market = new CardMarket(3, 4);
-        market.setup("src/test/resources/devcards_config_test.json", false);
+        CardMarket market = new CardMarket("src/test/resources/devcards_config_test.json", 3, 4, false);
+        //market.setup("src/test/resources/devcards_config_test.json", false);
 
         //region Create Test Card
         String cardID = "developmentcard_front_g_1_2";
