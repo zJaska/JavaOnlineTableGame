@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class CardMarket {
+public class CardMarket implements Serializable {
 
     private final int rows, cols;
     private ArrayList<DevCard>[][] marketGrid;

@@ -3,10 +3,11 @@ package it.polimi.ingsw.IntelliCranio.models.player;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Strongbox {
+public class Strongbox implements Serializable {
 
     private ArrayList<Resource> resources = new ArrayList<>();
 

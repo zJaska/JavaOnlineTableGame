@@ -2,7 +2,9 @@ package it.polimi.ingsw.IntelliCranio.models.resource;
 
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard.CardType;
 
-public class CardResource {
+import java.io.Serializable;
+
+public class CardResource implements Serializable {
 
     private CardType type;
     private int amount;

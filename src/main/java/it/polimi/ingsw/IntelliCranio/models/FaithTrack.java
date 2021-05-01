@@ -5,6 +5,7 @@ import it.polimi.ingsw.IntelliCranio.controllers.GameManager;
 import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,7 +14,7 @@ import java.util.TreeMap;
 
 import static it.polimi.ingsw.IntelliCranio.models.cards.PopeCard.Status.*;
 
-public class FaithTrack {
+public class FaithTrack implements Serializable {
 
     private int length;
     private TreeMap<Integer, Integer> vpTiles;

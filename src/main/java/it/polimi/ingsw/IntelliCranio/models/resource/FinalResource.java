@@ -1,6 +1,8 @@
 package it.polimi.ingsw.IntelliCranio.models.resource;
 
-public class FinalResource {
+import java.io.Serializable;
+
+public class FinalResource implements Serializable {
 
     public enum ResourceType {STONE, SHIELD, SERVANT, COIN, FAITH, BLANK}
 

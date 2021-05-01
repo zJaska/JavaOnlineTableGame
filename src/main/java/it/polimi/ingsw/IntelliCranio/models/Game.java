@@ -15,8 +15,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
-public class Game {
+public class Game implements Serializable {
+
+    private UUID uuid;
 
     private int currentPlayerIndex; //0 - 3: The index of the player turn
     private FaithTrack faithTrack;
@@ -29,6 +32,8 @@ public class Game {
     }
 
     public Game(ArrayList<String> nicknames) {
+
+        uuid = UUID.randomUUID();
 
         currentPlayerIndex = 0;
 
@@ -46,6 +51,12 @@ public class Game {
 
 
     //region GETTERS
+
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
     /**
      *  Get the amount of resources a player can take at the start of
      *  the game given the current player index
@@ -196,7 +207,8 @@ public class Game {
             int randIndex = random.ints(0, players.size()).findFirst().getAsInt();
 
             temp.add(players.get(randIndex));
-        } while ((temp.size() != players.size()));
+            players.remove(randIndex);
+        } while (players.size() > 0);
 
         players = temp;
     }

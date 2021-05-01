@@ -4,11 +4,12 @@ import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Warehouse {
+public class Warehouse implements Serializable {
 
     private Resource[] depot; //First element is top line (1 resource only), every other element is one resource bigger
 

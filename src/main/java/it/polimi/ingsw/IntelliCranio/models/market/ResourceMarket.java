@@ -4,9 +4,10 @@ import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ResourceMarket {
+public class ResourceMarket implements Serializable {
 
     public final int ROWS;
     public final int COLUMNS;

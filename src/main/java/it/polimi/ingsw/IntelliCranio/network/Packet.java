@@ -1,7 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.network;
 
-import org.graalvm.compiler.api.replacements.Snippet;
-
 import java.util.ArrayList;
 
 public class Packet {

@@ -11,6 +11,7 @@ import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
 
-public class Player {
+public class Player implements Serializable {
 
     private String nickname;
     private int faithPosition;
