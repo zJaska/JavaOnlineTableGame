@@ -6,6 +6,7 @@ import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
 
@@ -37,13 +38,40 @@ public class DiscardInitLeaders_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-        if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
+        if(args.size() == 0) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+        if(args.size() > 1) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         try {
             card = (LeadCard) args.get(0);
-        } catch (Exception e) {
-            throw new InvalidArgumentsException(TYPE_MISMATCH);
+        } catch (Exception ex) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
+
+            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
+            errorMessage += "\nElement expected: Leader Card";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
         }
         //endregion
 
@@ -54,11 +82,27 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         //region Input validation
 
         //Null Condition
-        if(card == null) throw new InvalidArgumentsException(NULL_ARG);
+        if(card == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
+
+            String errorMessage = "OOOPS, something went wrong! Server received a null element";
+            errorMessage += "\nElement expected: Leader Card";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //Not in hand Condition
-        if(!player.hasLeader(card))
-            throw new InvalidArgumentsException(SELECTION_INVALID);
+        if(!player.hasLeader(card)) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! Server received a card you don't have";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //endregion
 
@@ -75,6 +119,9 @@ public class DiscardInitLeaders_ActionState extends ActionState {
 
         if(player.getLeaders().size() == 2)
             action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);
+
+
+        Save.saveGame(game); //Save the state of the game
 
         //endregion
 
