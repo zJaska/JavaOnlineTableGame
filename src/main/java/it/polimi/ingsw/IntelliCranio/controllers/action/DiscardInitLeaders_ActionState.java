@@ -25,11 +25,21 @@ public class DiscardInitLeaders_ActionState extends ActionState {
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
-        if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
+        if(packet == null || packet.getInstructionCode() == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(CODE_NULL);
+            String errorMessage = "OOOPS, something went wrong! No action received";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
 
-        if(packet.getInstructionCode() == DISCARD_LEAD) discard(packet.getArgs());
-
-        throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
+        switch (packet.getInstructionCode()) {
+            case DISCARD_LEAD: discard(packet.getArgs()); return;
+            default:
+                InvalidArgumentsException e = new InvalidArgumentsException(CODE_NOT_ALLOWED);
+                String errorMessage = "OOOPS, something went wrong! Action invalid in current state";
+                e.setErrorMessage(errorMessage);
+                throw e; //Code in packet is not allowed in this state
+        }
     }
 
     private void discard(ArrayList<Object> args) throws InvalidArgumentsException {
@@ -109,6 +119,8 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         //I get here if the argument is valid
 
         //region Execute operation
+
+        player.setLastAction(DISCARD_INIT_LEAD);
 
         //If player already has only two cards, the game shouldn't be in this state. Return the new state then.
         if(player.getLeaders().size() == 2)

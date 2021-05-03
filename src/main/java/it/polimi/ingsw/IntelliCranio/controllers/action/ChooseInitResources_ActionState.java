@@ -6,6 +6,7 @@ import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
 
@@ -25,11 +26,21 @@ public class ChooseInitResources_ActionState extends ActionState {
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
-        if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
+        if(packet == null || packet.getInstructionCode() == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(CODE_NULL);
+            String errorMessage = "OOOPS, something went wrong! No action received";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
 
-        if(packet.getInstructionCode() == CHOOSE_RES) chooseResource(packet.getArgs());
-
-        throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
+        switch (packet.getInstructionCode()) {
+            case CHOOSE_RES: chooseResource(packet.getArgs()); return;
+            default:
+                InvalidArgumentsException e = new InvalidArgumentsException(CODE_NOT_ALLOWED);
+                String errorMessage = "OOOPS, something went wrong! Action invalid in current state";
+                e.setErrorMessage(errorMessage);
+                throw e; //Code in packet is not allowed in this state
+        }
     }
 
     private void chooseResource(ArrayList<Object> args) throws InvalidArgumentsException {
@@ -38,13 +49,40 @@ public class ChooseInitResources_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-        if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
+        if(args.size() == 0) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+        if(args.size() > 1) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         try {
             resource = (Resource) args.get(0);
-        } catch (Exception e) {
-            throw new InvalidArgumentsException(TYPE_MISMATCH);
+        } catch (Exception ex) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
+
+            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
+            errorMessage += "\nElement expected: Resource";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
         }
         //endregion
 
@@ -53,14 +91,41 @@ public class ChooseInitResources_ActionState extends ActionState {
         //region Argument validation
 
         //Null Condition
-        if(resource == null) throw new InvalidArgumentsException(NULL_ARG);
+        if(resource == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
+
+            String errorMessage = "OOOPS, something went wrong! Server received a null element";
+            errorMessage += "\nElement expected: Resource";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //Blank or Faith Condition
-        if(resource.getType() == BLANK || resource.getType() == FAITH)
-            throw new InvalidArgumentsException(SELECTION_INVALID);
+        if(resource.getType() == BLANK || resource.getType() == FAITH) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
-        //Excessive amount Condition
-        if(resource.getAmount() > 1) throw new InvalidArgumentsException(VALUE_INVALID);
+            String errorMessage = "OOOPS, something went wrong! Received an invalid type for the resource";
+            errorMessage += "\nType Received: " + resource.getType().toString();
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+
+        //Invalid amount Condition
+        if(resource.getAmount() != 1) {
+            InvalidArgumentsException e = new InvalidArgumentsException(VALUE_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! Selected amount is invalid";
+            errorMessage += "\nAmount Received: " + resource.getAmount();
+            errorMessage += "\nAmount Expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //endregion
 
@@ -68,9 +133,12 @@ public class ChooseInitResources_ActionState extends ActionState {
 
         //region Execute operation
 
+        Player player = game.getCurrentPlayer();
+
+        player.setLastAction(CHOOSE_INIT_RES);
+
         int allowedAmount = game.getInitRes(game.getCurrentPlayerIndex());
         int allowedFaith = game.getInitFaith(game.getCurrentPlayerIndex());
-        Player player = game.getCurrentPlayer();
 
         //At this stage, extra res are not unified. Every element is a unit
 
@@ -88,6 +156,8 @@ public class ChooseInitResources_ActionState extends ActionState {
 
             action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
         }
+
+        Save.saveGame(game);
 
         //endregion
     }
