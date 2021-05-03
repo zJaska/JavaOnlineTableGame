@@ -135,16 +135,16 @@ public class ChooseInitResources_ActionState extends ActionState {
 
         Player player = game.getCurrentPlayer();
 
-        player.setLastAction(CHOOSE_INIT_RES);
-
         int allowedAmount = game.getInitRes(game.getCurrentPlayerIndex());
         int allowedFaith = game.getInitFaith(game.getCurrentPlayerIndex());
 
         //At this stage, extra res are not unified. Every element is a unit
 
         //If player already has the right amount of resources, the game shouldn't be in this state. Return the new state then.
-        if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith)
+        if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith) {
             action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
+            player.setLastAction(MNG_WARE);
+        }
 
         //Add the selected resource the player extras
         player.addExtra(resource);
@@ -155,6 +155,7 @@ public class ChooseInitResources_ActionState extends ActionState {
                 player.addFaith();
 
             action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
+            player.setLastAction(MNG_WARE);
         }
 
         Save.saveGame(game);

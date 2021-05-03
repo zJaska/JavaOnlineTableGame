@@ -9,6 +9,7 @@ import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,15 +29,25 @@ public class Default_ActionState extends ActionState {
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
-        if(packet == null || packet.getInstructionCode() == null) throw new InvalidArgumentsException(CODE_NULL);
+        if(packet == null || packet.getInstructionCode() == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(CODE_NULL);
+            String errorMessage = "OOOPS, something went wrong! No action received";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
 
-        if(packet.getInstructionCode() == PLAY_LEADER) playLeader(packet.getArgs());
-        if(packet.getInstructionCode() == DISCARD_LEAD) discardLeader(packet.getArgs());
-        if(packet.getInstructionCode() == MNG_WARE) manageWarehouse();
-        if(packet.getInstructionCode() == CARD_MARKET) cardMarket();
-        if(packet.getInstructionCode() == RES_MARKET) resourceMarket();
-
-        throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
+        switch (packet.getInstructionCode()) {
+            case PLAY_LEADER: playLeader(packet.getArgs()); return;
+            case DISCARD_LEAD: discardLeader(packet.getArgs()); return;
+            case MNG_WARE: manageWarehouse(); return;
+            case CARD_MARKET: cardMarket(); return;
+            case RES_MARKET: resourceMarket(); return;
+            default:
+                InvalidArgumentsException e = new InvalidArgumentsException(CODE_NOT_ALLOWED);
+                String errorMessage = "OOOPS, something went wrong! Action invalid in current state";
+                e.setErrorMessage(errorMessage);
+                throw e; //Code in packet is not allowed in this state
+        }
     }
 
     private void playLeader(ArrayList<Object> args) throws InvalidArgumentsException {
@@ -44,13 +55,40 @@ public class Default_ActionState extends ActionState {
         LeadCard card; //The argument expected
 
         //region Conversion of args from packet
-        if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-        if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
+        if(args.size() == 0) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+        if(args.size() > 1) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         try {
             card = (LeadCard) args.get(0);
-        } catch (Exception e) {
-            throw new InvalidArgumentsException(TYPE_MISMATCH);
+        } catch (Exception ex) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
+
+            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
+            errorMessage += "\nElement expected: Leader Card";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
         }
         //endregion
 
@@ -61,10 +99,27 @@ public class Default_ActionState extends ActionState {
         //region Argument validation
 
         //Null Condition
-        if(card == null) throw new InvalidArgumentsException(NULL_ARG);
+        if(card == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
+
+            String errorMessage = "OOOPS, something went wrong! Server received a null element";
+            errorMessage += "\nElement expected: Leader Card";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //Not in Hand Condition
-        if(!player.hasLeader(card)) throw new InvalidArgumentsException(SELECTION_INVALID);
+        if(!player.hasLeader(card)) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! Server received a card you don't have";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         AtomicBoolean error = new AtomicBoolean(false);
 
@@ -82,7 +137,12 @@ public class Default_ActionState extends ActionState {
 
             });
 
-        if(error.get()) throw new InvalidArgumentsException(SELECTION_INVALID);
+        if(error.get()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You don't have enough resources to activate this card";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
 
         //Card Requirements Condition
         ArrayList<CardResource> playerDevCards = Lists.toCardResource(player.getAllDevCards());
@@ -105,7 +165,12 @@ public class Default_ActionState extends ActionState {
             }
         });
 
-        if(error.get()) throw new InvalidArgumentsException(SELECTION_INVALID);
+        if(error.get()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You don't have enough development cards to activate this card";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
 
         //endregion
 
@@ -114,6 +179,7 @@ public class Default_ActionState extends ActionState {
         //region Execute operation
 
         player.getLeader(card).activateCard();
+        Save.saveGame(game);
 
         //endregion
     }
@@ -123,13 +189,40 @@ public class Default_ActionState extends ActionState {
         LeadCard card; //Expected argument
 
         //region Conversion of args from packet
-        if(args.size() == 0) throw new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-        if(args.size() > 1) throw new InvalidArgumentsException(TOO_MANY_ARGS);
+        if(args.size() == 0) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+        if(args.size() > 1) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
+
+            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
+            errorMessage += "\nArguments received: " + args.size();
+            errorMessage += "\nArguments expected: 1";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         try {
             card = (LeadCard) args.get(0);
-        } catch (Exception e) {
-            throw new InvalidArgumentsException(TYPE_MISMATCH);
+        } catch (Exception ex) {
+            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
+
+            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
+            errorMessage += "\nElement expected: Leader Card";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
         }
         //endregion
 
@@ -140,13 +233,38 @@ public class Default_ActionState extends ActionState {
         //region Argument validation
 
         //Null Condition
-        if(card == null) throw new InvalidArgumentsException(NULL_ARG);
+        if(card == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
+
+            String errorMessage = "OOOPS, something went wrong! Server received a null element";
+            errorMessage += "\nElement expected: Leader Card";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //Not in Hand
-        if(!player.hasLeader(card)) throw new InvalidArgumentsException(SELECTION_INVALID);
+        if(!player.hasLeader(card)) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! Server received a card you don't have";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //Already Active
-        if(player.getLeader(card).isActive()) throw new InvalidArgumentsException(SELECTION_INVALID);
+        if(player.getLeader(card).isActive()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! The card seems to be active";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
 
         //endregion
 
@@ -155,6 +273,9 @@ public class Default_ActionState extends ActionState {
         //region Execute operation
 
         player.removeLeader(card);
+        player.addFaith();
+
+        Save.saveGame(game);
 
         //endregion
     }
@@ -173,6 +294,8 @@ public class Default_ActionState extends ActionState {
 
         //region Execute operation
         action.setActionState(new ManageWarehouse_ActionState(action, true), MNG_WARE);
+        game.getCurrentPlayer().setLastAction(MNG_WARE);
+        Save.saveGame(game);
         //endregion
     }
 
@@ -190,6 +313,8 @@ public class Default_ActionState extends ActionState {
 
         //region Execute operation
         action.setActionState(new CardMarket_ActionState(action), CARD_MARKET);
+        game.getCurrentPlayer().setLastAction(CARD_MARKET);
+        Save.saveGame(game);
         //endregion
     }
 
@@ -207,6 +332,8 @@ public class Default_ActionState extends ActionState {
 
         //region Execute operation
         action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
+        game.getCurrentPlayer().setLastAction(RES_MARKET);
+        Save.saveGame(game);
         //endregion
     }
 
@@ -224,6 +351,8 @@ public class Default_ActionState extends ActionState {
 
         //region Execute operation
         action.setActionState(new ActivateProduction_ActionState(action), ACT_PROD);
+        game.getCurrentPlayer().setLastAction(ACT_PROD);
+        Save.saveGame(game);
         //endregion
     }
 

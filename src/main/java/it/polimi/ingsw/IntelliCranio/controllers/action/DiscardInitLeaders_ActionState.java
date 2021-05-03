@@ -120,17 +120,19 @@ public class DiscardInitLeaders_ActionState extends ActionState {
 
         //region Execute operation
 
-        player.setLastAction(DISCARD_INIT_LEAD);
-
         //If player already has only two cards, the game shouldn't be in this state. Return the new state then.
-        if(player.getLeaders().size() == 2)
+        if(player.getLeaders().size() == 2) {
             action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);
+            player.setLastAction(CHOOSE_INIT_RES);
+        }
 
         //Remove the selected card from player
         player.removeLeader(card);
 
-        if(player.getLeaders().size() == 2)
+        if(player.getLeaders().size() == 2) {
             action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);
+            player.setLastAction(CHOOSE_INIT_RES);
+        }
 
 
         Save.saveGame(game); //Save the state of the game
