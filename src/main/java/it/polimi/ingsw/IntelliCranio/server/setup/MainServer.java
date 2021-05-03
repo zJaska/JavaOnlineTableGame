@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class MainServer {
     private static final int PORT = 1051;
-    private ArrayList<Game> currentGames = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT);

@@ -5,7 +5,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 
-public class CliIdle {
+public class CliIdleScene implements CliScene {
 
     public static final String[] IDLE_COMMANDS = new String[] {
       "/help", "/showPlayer", "/showWarehouse", "/showStrongbox", "/showFaithTrack"
@@ -52,4 +52,12 @@ public class CliIdle {
                 break;
         }
     }
+
+    public void displayOptions() { }
+
+    public String checkSyntax(ArrayList<String> input) {
+        return "Command not found";
+    }
+
+    public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) { return null; }
 }

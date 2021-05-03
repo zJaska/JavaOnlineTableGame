@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.server.setup;
 
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.PingingDevice;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
@@ -8,6 +9,8 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
@@ -24,6 +27,8 @@ public class ClientHandler implements Runnable {
     // Vector is used because it's thread-safe
     private static Vector<Pair<String,SocketHandler>> waitingPlayers = new Vector<>();
     private static Vector<String> playersNames = new Vector<>();
+    private static ArrayList<Game> currentGames = new ArrayList<>();
+
     private static int numFirstPlayers = 0;
 
     private static Semaphore playerReady = new Semaphore(0);
@@ -69,6 +74,7 @@ public class ClientHandler implements Runnable {
                 if (playersNames.stream().anyMatch(x -> x.equals(finalNickname))) {
                     chosen = true;
                     socketHandler.send(new Packet(CHOOSE_NICKNAME, NICKNAME_TAKEN,null));
+                    socketHandler.send(new Packet(COMMUNICATION, null,new ArrayList<>(Arrays.asList("Nickname already taken, choose another one"))));
                 }
             } catch (IOException e) {
                 disconnectPlayer(socketHandler,TIMEOUT_MSG);

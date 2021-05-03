@@ -13,6 +13,7 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.DIE;
 public class Net {
 
     public static final String TIMEOUT_MSG = "You took too much to answer, disconnecting";
+    public static final String HURRYUP_MSG = "HURRY UP! You are running out of time!";
 
     public static Packet createPacketFromInput(Pair<Packet.InstructionCode, ArrayList<Object>> input) {
         return new Packet(input.getKey(), null, input.getValue());

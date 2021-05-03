@@ -1,5 +1,10 @@
 package it.polimi.ingsw.IntelliCranio.client;
 
+import it.polimi.ingsw.IntelliCranio.models.FaithTrack;
+import it.polimi.ingsw.IntelliCranio.models.Game;
+import it.polimi.ingsw.IntelliCranio.models.market.CardMarket;
+import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.Packet.*;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
@@ -9,7 +14,10 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.Semaphore;
+
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
 
 public class RunningNetwork implements Runnable {
 
@@ -49,6 +57,12 @@ public class RunningNetwork implements Runnable {
             case COMMUNICATION:
                 view.showCommunication((String) pack.getArgs().get(0));
                 return null;
+            case GAME:
+                MainClient.game = (Game) pack.getArgs().get(0);
+                return null;
+            case IDLE:
+                view.setScene(IDLE);
+                return null;
             case DIE:
                 System.exit(-101);
             default:
@@ -65,5 +79,4 @@ public class RunningNetwork implements Runnable {
 
         return tmp;
     }
-
 }

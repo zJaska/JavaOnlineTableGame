@@ -1,13 +1,9 @@
 package it.polimi.ingsw.IntelliCranio.views.cli.scenes;
 
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
-import it.polimi.ingsw.IntelliCranio.network.Packet.Response;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_NICKNAME;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
@@ -18,39 +14,19 @@ public class CliChooseNumberPlayersScene implements CliScene {
         System.out.println("Choose the number of players of the party (2 to 4): ");
     }
 
-    public void displayError (Response response) {
-        if (response == null || response == ACK)
-            return;
-
-        switch (response) {
-            case OUT_OF_BOUNDS:
-                System.out.println("ERROR, choose between 2 and 4: ");
-                break;
-            case BAD_ARGUMENTS_NUMBER:
-                System.out.println("ERROR, only 1 argument expected");
-                break;
-            case NOT_A_NUMBER:
-                System.out.println("ERROR, you must input a number: ");
-                break;
-            default:
-                System.out.println("Choose the number of players of the party (2 to 4): (an error has occurred)");
-                break;
-        }
-    }
-
-    public Response isSyntaxCorrect(ArrayList<String> input) {
+    public String checkSyntax(ArrayList<String> input) {
         if (input.size() != 1)
-            return Response.BAD_ARGUMENTS_NUMBER;
+            return "ERROR, only 1 argument expected";
 
         try {
             int num = parseInt(input.get(0));
             if (num >= 2 && num <= 4)
-                return ACK;
+                return "";
             else
-                return Response.OUT_OF_BOUNDS;
+                return "ERROR, choose between 2 and 4: ";
         } catch (NumberFormatException e) { }
 
-        return Response.NOT_A_NUMBER;
+        return "ERROR, you must input a number: ";
     }
 
     public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) {

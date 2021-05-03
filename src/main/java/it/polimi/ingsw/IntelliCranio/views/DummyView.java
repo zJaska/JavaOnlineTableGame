@@ -19,6 +19,9 @@ public class DummyView extends Cli {
     @Override
     public Pair<InstructionCode, ArrayList<Object>> getInput() {
         if (count < inputs.length) {
+            try { Thread.sleep(3000); }
+            catch (InterruptedException e) { }
+
             System.out.println(inputs[count]);
             return new Pair<InstructionCode, ArrayList<Object>>(null, new ArrayList<>(Arrays.asList(inputs[count++])));
         }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.client;
 
+import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.views.DummyView;
@@ -10,16 +11,20 @@ import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
 import static it.polimi.ingsw.IntelliCranio.util.Net.createPacketFromInput;
+import static java.lang.Integer.parseInt;
 
 public class MainClient {
+
+    public static Game game;
 
     private static SocketHandler socketHandler;
     private static View view;
 
     public static void main(String[] args) {
-        view = askView();
-        // view = getDummyView(parseInt(args[0]));
+        //view = askView();
+        view = getDummyView(parseInt(args[0]));
 
         try { socketHandler = new SocketHandler("localhost",1051); }
         catch (IOException e) { return ; }
@@ -31,8 +36,6 @@ public class MainClient {
 
         while (true) {
             pack = RunningNetwork.getData();
-
-            view.displayError(pack.getResponse());
 
             view.setScene(pack.getInstructionCode());
 

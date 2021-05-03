@@ -9,6 +9,5 @@ import java.util.ArrayList;
 public interface View {
     Pair<InstructionCode,ArrayList<Object>> getInput();
     void setScene(InstructionCode code);
-    void displayError(Response response);
     void showCommunication(String msg);
 }

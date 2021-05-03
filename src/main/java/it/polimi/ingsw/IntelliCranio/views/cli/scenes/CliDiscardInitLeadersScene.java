@@ -1,7 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.views.cli.scenes;
 
-import it.polimi.ingsw.IntelliCranio.client.MainClient;
-import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.Packet.*;
 import javafx.util.Pair;
 
@@ -14,12 +12,8 @@ public class CliDiscardInitLeadersScene implements CliScene {
 
     }
 
-    public void displayError(Response error) {
-
-    }
-
-    public Response isSyntaxCorrect(ArrayList<String> input) {
-        return null;
+    public String checkSyntax(ArrayList<String> input) {
+        return "NONOONO";
     }
 
     public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) {

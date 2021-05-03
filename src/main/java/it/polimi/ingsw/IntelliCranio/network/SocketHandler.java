@@ -65,4 +65,8 @@ public class SocketHandler {
 
         return (new Gson().fromJson(tmp,Packet.class));
     }
+
+    public void clear() {
+        throw new UnsupportedOperationException();
+    }
 }

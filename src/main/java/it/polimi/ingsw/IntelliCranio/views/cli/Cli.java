@@ -3,7 +3,7 @@ package it.polimi.ingsw.IntelliCranio.views.cli;
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.network.Packet.Response;
 import it.polimi.ingsw.IntelliCranio.views.View;
-import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliIdle;
+import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliIdleScene;
 import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliScene;
 import javafx.util.Pair;
 
@@ -22,21 +22,22 @@ public class Cli implements View {
 
     public Pair<InstructionCode,ArrayList<Object>> getInput() {
         ArrayList<String> input = null;
-        Response err = null;
+        String errmsg = "";
 
         do {
             input = new ArrayList<String>(Arrays.asList(scanner.nextLine().split(" ")));
 
             String firstWord = input.get(0);
-            if (Arrays.stream(CliIdle.IDLE_COMMANDS).anyMatch(x -> x.equals(firstWord))) {
-                CliIdle.displayIdleCommand(input);
+            if (Arrays.stream(CliIdleScene.IDLE_COMMANDS).anyMatch(x -> x.equals(firstWord))) {
+                CliIdleScene.displayIdleCommand(input);
                 return null;
             }
 
-            err = scene.isSyntaxCorrect(input);
-            scene.displayError(err);
+            errmsg = scene.checkSyntax(input);
+            if (errmsg != "")
+                System.out.println(errmsg);
 
-        } while (err != ACK);
+        } while (errmsg != "");
 
         return scene.createData(input);
     }
@@ -46,16 +47,6 @@ public class Cli implements View {
             return;
         scene = sceneFactory.getScene(code);
         scene.displayOptions();
-    }
-
-    public void displayError(Response response) {
-        if (scene == null)
-            return;
-        if (response == ACK) {
-            System.out.println("Operation done!");
-            return;
-        }
-        scene.displayError(response);
     }
 
     public void showCommunication(String msg) {

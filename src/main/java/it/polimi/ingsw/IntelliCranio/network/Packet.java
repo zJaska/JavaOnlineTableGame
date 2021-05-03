@@ -34,6 +34,7 @@ public class Packet {
         CHOOSE_NUMBER_PLAYERS,
 
         // Logic codes
+        GAME,
         COMMUNICATION,
         DIE,
         PING
