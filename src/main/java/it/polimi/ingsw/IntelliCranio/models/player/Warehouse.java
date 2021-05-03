@@ -191,6 +191,21 @@ public class Warehouse implements Serializable {
 
     }
 
+    /**
+     * Check if some resource is already present in a different line respect the one to add the new resource
+     * @param depotLine The line to put the resource
+     * @param resource The resource to add
+     * @return True if the resource is already present in a different line, false otherwise
+     */
+    public boolean isPresent(int depotLine, Resource resource) {
+        for(int i = 0; i < depot.length; ++i)
+            if(i != depotLine)
+                if(depot[i].getType() == resource.getType())
+                    return true;
+
+        return false;
+    }
+
     //endregion
 
 }

@@ -273,6 +273,17 @@ public class ManageWarehouse_ActionState extends ActionState {
             throw e;
         }
 
+        //Resource present in a different line
+        if(playerWh.isPresent(depotLine, resource)) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! The depot already has this resource in another line";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+
         //Depot Line Full Condition
         if(playerWh.isFull(depotLine)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
