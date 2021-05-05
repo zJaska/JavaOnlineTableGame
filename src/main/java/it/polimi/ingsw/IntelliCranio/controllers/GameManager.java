@@ -64,18 +64,14 @@ public class GameManager implements Runnable {
 
     private void playGame() {
 
-
         //Game lifecycle
         while (true) {
 
-            Player currentPlayer = game.getCurrentPlayer();
-
             //region Setup turn
-            ArrayList<Object> args = new ArrayList<>();
-            args.add(game);
-            args.add("Received Game");
-            Packet gamePacket = new Packet(GAME, null, args);
-            network.send(currentPlayer.getNickname(), gamePacket);
+            Packet gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
+            network.sendAll(gamePacket);
+
+            Player currentPlayer = game.getCurrentPlayer();
 
             String message = "---> It's " + currentPlayer.getNickname() + "'s turn";
             network.sendAll(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(message))));
@@ -149,9 +145,9 @@ public class GameManager implements Runnable {
                         Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ackMessage)));
                         network.send(currentPlayer.getNickname(), ackMessagePacket);
 
-
-                        if(game.endTurn)
-                            endTurn(currentPlayer);
+                        //Send updated game
+                        gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
+                        network.sendAll(gamePacket);
 
                     } catch (InvalidArgumentsException e) {
 
@@ -167,6 +163,11 @@ public class GameManager implements Runnable {
                     //Player decided to end its turn
                     endTurn(currentPlayer);
                 }
+
+                //Check if action was an automatic ending turn
+                if(game.endTurn)
+                    endTurn(currentPlayer);
+
             }
         }
 

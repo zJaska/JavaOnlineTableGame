@@ -45,7 +45,7 @@ public class SocketHandler {
     }
 
     public void send (Packet packet) {
-        try { out.writeObject(packet); }
+        try { out.writeObject(packet); out.reset(); }
         catch (IOException e) {
             e.printStackTrace();
             System.err.println("Unable to send the object for network problems");
