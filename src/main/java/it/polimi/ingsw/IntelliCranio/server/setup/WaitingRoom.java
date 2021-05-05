@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.server.setup;
 
+import it.polimi.ingsw.IntelliCranio.controllers.GameManager;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import javafx.util.Pair;
@@ -53,5 +54,6 @@ public class WaitingRoom {
         });
 
         // Create and start the gameManager
+        new Thread(new GameManager(true, players)).start();
     }
 }

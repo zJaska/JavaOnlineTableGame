@@ -13,6 +13,4 @@ public abstract class ActionState {
     }
 
     public abstract void execute(Game game, Packet packet) throws InvalidArgumentsException;
-
-
 }

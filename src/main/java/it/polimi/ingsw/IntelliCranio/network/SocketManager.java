@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 public class SocketManager implements NetworkManagerI {
 
-    private TreeMap<String, SocketHandler> players;
+    private TreeMap<String, SocketHandler> players = new TreeMap<>();
 
     /**
      * The constructor trasforms 'players' in a dictionary.
@@ -28,12 +28,14 @@ public class SocketManager implements NetworkManagerI {
         try {
             players.get(name).send(packet);
         } catch (NullPointerException e) {
-            System.out.println("Cannot send to " + name);
+            System.out.println("(NPE) Cannot send to " + name);
         }
     }
 
     public void sendAll(Packet packet) {
-        players.values().forEach(x -> x.send(packet));
+        for (SocketHandler x : players.values()) {
+            x.send(packet);
+        };
     }
 
     public Packet receive(String name) throws IOException {
@@ -57,5 +59,9 @@ public class SocketManager implements NetworkManagerI {
      */
     public void clear() {
         players.values().forEach(x -> x.clear());
+    }
+
+    public void disconnect (String name) {
+        players.get(name).close();
     }
 }

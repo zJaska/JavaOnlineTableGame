@@ -1,6 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.client;
 
 import it.polimi.ingsw.IntelliCranio.models.Game;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.views.DummyView;
@@ -23,8 +24,8 @@ public class MainClient {
     private static View view;
 
     public static void main(String[] args) {
-        //view = askView();
-        view = getDummyView(parseInt(args[0]));
+        view = askView();
+        //view = getDummyView(parseInt(args[0]));
 
         try { socketHandler = new SocketHandler("localhost",1051); }
         catch (IOException e) { return ; }

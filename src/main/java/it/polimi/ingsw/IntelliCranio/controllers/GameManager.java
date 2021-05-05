@@ -1,12 +1,12 @@
 package it.polimi.ingsw.IntelliCranio.controllers;
 
-import it.polimi.ingsw.IntelliCranio.controllers.action.Action;
-import it.polimi.ingsw.IntelliCranio.controllers.action.ActionState;
+import it.polimi.ingsw.IntelliCranio.controllers.action.*;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.network.NetworkManagerI;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
+import it.polimi.ingsw.IntelliCranio.network.SocketManager;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Net;
 import javafx.util.Pair;
@@ -16,6 +16,7 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
@@ -24,7 +25,7 @@ public class GameManager implements Runnable {
 
     private Game game;
 
-    private Action action;
+    private Action action = new Action();
     private boolean newGame;
 
     private NetworkManagerI network;
@@ -39,6 +40,9 @@ public class GameManager implements Runnable {
     public GameManager(boolean newGame, ArrayList<Pair<String, SocketHandler>> playerConnections) {
         this.newGame = newGame;
 
+        game = new Game(playerConnections.stream().map(x -> x.getKey()).collect(Collectors.toCollection(ArrayList::new)));
+
+        network = new SocketManager(playerConnections);
     }
 
     public static void endingGame() {
@@ -56,6 +60,8 @@ public class GameManager implements Runnable {
 
     private void playGame() {
 
+        network.sendAll(new Packet(GAME, null, new ArrayList<>(Arrays.asList(game))));
+
         while (true) {
 
             //Setup turno
@@ -67,8 +73,18 @@ public class GameManager implements Runnable {
             Packet startPacket = new Packet(currentPlayer.getLastAction(), null, new ArrayList<>());
             network.send(currentPlayer.getNickname(), startPacket);
 
+            // Set the action state based on the player's last action
+            ActionState state = new Default_ActionState(action);
+            if (currentPlayer.getLastAction() == DISCARD_INIT_LEAD)
+                state = new DiscardInitLeaders_ActionState(action);
+            if (currentPlayer.getLastAction() == CHOOSE_INIT_RES)
+                state = new ChooseInitResources_ActionState(action);
+
+            action.setActionState(state, currentPlayer.getLastAction());
+
             boolean hurryUp = false;
 
+            // Turn cycle
             while (true) {
 
                 // Check if the turn has changed
@@ -77,7 +93,7 @@ public class GameManager implements Runnable {
 
                 // Update game objects in all clients, to ensure consistency of data and to make the game
                 // people see changes in others' turns
-                network.sendAll(new Packet(GAME, null, new ArrayList<>(Arrays.asList(game))));
+
 
                 Packet packet = null;
 
@@ -88,6 +104,7 @@ public class GameManager implements Runnable {
 
                     if (hurryUp) {
                         network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, null, new ArrayList<Object>(Arrays.asList(Net.TIMEOUT_MSG))));
+                        network.disconnect(currentPlayer.getNickname());
                         game.changeTurn();
                     } else {
                         network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, null, new ArrayList<Object>(Arrays.asList(Net.HURRYUP_MSG))));
@@ -109,7 +126,10 @@ public class GameManager implements Runnable {
                     try {
                         action.execute(game, packet);
 
-                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
+                        if (action.getActionCode() == END_TURN) {
+                            endTurn(currentPlayer);
+                        } else
+                            network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
 
                     } catch (InvalidArgumentsException e) {
 
@@ -118,15 +138,19 @@ public class GameManager implements Runnable {
 
                         network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, e.getCode(), errorArgs));
                     }
+
                 } else {
-
-                    //Ending turn operations
-
-                    network.send(currentPlayer.getNickname(), new Packet(IDLE, null, null));
-                    game.changeTurn();
+                   endTurn(currentPlayer);
                 }
+
+                network.sendAll(new Packet(GAME, null, new ArrayList<>(Arrays.asList(game))));
             }
         }
 
+    }
+
+    private void endTurn (Player currentPlayer) {
+        network.send(currentPlayer.getNickname(), new Packet(IDLE, null, null));
+        game.changeTurn();
     }
 }

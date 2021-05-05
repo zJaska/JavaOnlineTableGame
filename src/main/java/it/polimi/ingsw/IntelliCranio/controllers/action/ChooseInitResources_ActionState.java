@@ -144,6 +144,7 @@ public class ChooseInitResources_ActionState extends ActionState {
         if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith) {
             action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
             player.setLastAction(MNG_WARE);
+            return;
         }
 
         //Add the selected resource the player extras

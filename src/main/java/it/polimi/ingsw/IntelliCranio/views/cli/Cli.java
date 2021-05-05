@@ -2,6 +2,7 @@ package it.polimi.ingsw.IntelliCranio.views.cli;
 
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.network.Packet.Response;
+import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.views.View;
 import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliIdleScene;
 import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliScene;
@@ -22,24 +23,26 @@ public class Cli implements View {
 
     public Pair<InstructionCode,ArrayList<Object>> getInput() {
         ArrayList<String> input = null;
-        String errmsg = "";
+        Pair<InstructionCode,ArrayList<Object>> data;
 
         do {
             input = new ArrayList<String>(Arrays.asList(scanner.nextLine().split(" ")));
 
             String firstWord = input.get(0);
             if (Arrays.stream(CliIdleScene.IDLE_COMMANDS).anyMatch(x -> x.equals(firstWord))) {
-                CliIdleScene.displayIdleCommand(input);
+                CliIdleScene.displayIdleCommand(input, scene);
                 return null;
             }
 
-            errmsg = scene.checkSyntax(input);
-            if (errmsg != "")
-                System.out.println(errmsg);
+            data = null;
+            try { data = scene.createData(input); }
+            catch (InvalidArgumentsException e) {
+                System.out.println(e.getErrorMessage());
+            }
 
-        } while (errmsg != "");
+        } while (data == null);
 
-        return scene.createData(input);
+        return data;
     }
 
     public void setScene(InstructionCode code) {

@@ -11,6 +11,10 @@ public class InvalidArgumentsException extends Exception{
         this.code = code;
     }
 
+    public InvalidArgumentsException(String msg) {
+        this.errorMessage = msg;
+    }
+
     public Response getCode() {
         return code;
     }

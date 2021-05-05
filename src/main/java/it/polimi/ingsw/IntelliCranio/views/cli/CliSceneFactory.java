@@ -9,6 +9,8 @@ public class CliSceneFactory {
     private CliScene CliChooseNumberPlayersScene = new CliChooseNumberPlayersScene();
     private CliScene CliDiscardInitLeadersScene = new CliDiscardInitLeadersScene();
     private CliScene CliIdleScene = new CliIdleScene();
+    private CliScene CliChooseInitResScene = new CliChooseInitResScene();
+    private CliScene CliDefaultScene = new CliDefaultScene();
 
     public CliScene getScene(InstructionCode code) {
         switch (code) {
@@ -16,10 +18,14 @@ public class CliSceneFactory {
                 return CliNicknameScene;
             case CHOOSE_NUMBER_PLAYERS:
                 return CliChooseNumberPlayersScene;
-            case DISCARD_LEAD:
+            case DISCARD_INIT_LEAD:
                 return CliDiscardInitLeadersScene;
             case IDLE:
                 return CliIdleScene;
+            case CHOOSE_INIT_RES:
+                return CliChooseInitResScene;
+            case DEFAULT:
+                return CliDefaultScene;
             default:
                 return null;
         }

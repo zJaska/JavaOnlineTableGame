@@ -7,11 +7,11 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 public class SocketHandler {
-    private BufferedReader in;
-    private PrintWriter out;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     private Socket socket;
 
-    public static final int TIMEOUT = 10*1000;
+    public static final int TIMEOUT = 1000*1000;
 
     public SocketHandler(String ip, int port) throws IOException {
         try {
@@ -25,48 +25,66 @@ public class SocketHandler {
     }
 
     public SocketHandler(Socket socket) throws IOException {
+        this.socket = socket;
         setup(socket);
     }
 
     private void setup(Socket socket) throws IOException {
         try {
+
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+
             socket.setSoTimeout(TIMEOUT);
 
-            // Creating reader
-            InputStreamReader isr = new InputStreamReader(socket.getInputStream());
-            in = new BufferedReader(isr);
-
-            // Creating writer
-            OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
-            BufferedWriter bw = new BufferedWriter(osw);
-            out = new PrintWriter(bw, true);
         } catch (IOException e) {
-            System.out.println("Unable to setup connection");
+            e.printStackTrace();
+            System.out.println("Unable to setup input and output streams");
             throw new IOException();
         }
     }
 
-    public void send(Packet packet) {
-        String tmp = new Gson().toJson(packet);
-        out.println(tmp);
+    public void send (Packet packet) {
+        try { out.writeObject(packet); }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Unable to send the object for network problems");
+        } catch (Exception e) {
+            System.err.println("Unable to send packet, problems with object serialization");
+        }
     }
 
     public Packet receive() throws IOException {
-        String tmp;
+        Packet tmp = null;
         try {
-            tmp = in.readLine();
+            tmp = (Packet) in.readObject();
         } catch (SocketTimeoutException e) {
             System.out.println("Timeout elapsed");
             throw new SocketTimeoutException();
         } catch (IOException e) {
             System.out.println("Unable to read packet, probably the other end disconnected");
             throw new IOException();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Unable to read the packet, there are problem with serialization");
         }
 
-        return (new Gson().fromJson(tmp,Packet.class));
+        return tmp;
     }
 
     public void clear() {
         throw new UnsupportedOperationException();
+    }
+
+    public void close() {
+        try {
+            out.close();
+            in.close();
+            socket.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Failed to close the socket");
+        }
     }
 }

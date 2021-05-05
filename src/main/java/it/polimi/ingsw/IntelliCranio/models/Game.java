@@ -244,7 +244,7 @@ public class Game implements Serializable {
     }
 
     public void changeTurn() {
-        currentPlayerIndex++;
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 
 
