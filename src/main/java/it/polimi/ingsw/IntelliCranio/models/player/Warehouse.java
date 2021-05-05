@@ -179,7 +179,9 @@ public class Warehouse implements Serializable {
     }
 
     public FinalResource.ResourceType getType(int depotLine) {
-        return depot[depotLine].getType();
+        if(depot[depotLine] != null)
+            return depot[depotLine].getType();
+        return null;
     }
 
     public ArrayList<Resource> getAll() {

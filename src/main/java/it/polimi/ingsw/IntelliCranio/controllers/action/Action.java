@@ -20,6 +20,23 @@ public class Action {
         this.actionCode = actionCode;
     }
 
+    public void restoreState(InstructionCode actionCode) {
+
+        switch (actionCode) {
+            case DISCARD_INIT_LEAD:
+                actionState = new DiscardInitLeaders_ActionState(this);
+                this.actionCode = actionCode;
+                break;
+            case CHOOSE_INIT_RES:
+                actionState = new ChooseInitResources_ActionState(this);
+                this.actionCode = actionCode;
+                break;
+            default:
+                actionState = new Default_ActionState(this);
+                this.actionCode = actionCode;
+        }
+    }
+
     public InstructionCode getActionCode(){
         return actionCode;
     }
