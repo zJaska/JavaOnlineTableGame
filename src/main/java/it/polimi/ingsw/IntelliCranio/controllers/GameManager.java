@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,10 @@ public class GameManager implements Runnable {
     public GameManager(boolean newGame, ArrayList<Pair<String, SocketHandler>> playerConnections) {
         this.newGame = newGame;
 
-        game = new Game(playerConnections.stream().map(x -> x.getKey()).collect(Collectors.toCollection(ArrayList::new)));
+        ArrayList<String> nicknames = new ArrayList<>();
+        nicknames.addAll(playerConnections.stream().map(Pair::getKey).collect(Collectors.toList()));
+
+        game = new Game(nicknames);
 
         network = new SocketManager(playerConnections);
     }
@@ -60,20 +64,27 @@ public class GameManager implements Runnable {
 
     private void playGame() {
 
-        network.sendAll(new Packet(GAME, null, new ArrayList<>(Arrays.asList(game))));
 
+        //Game lifecycle
         while (true) {
-
-            //Setup turno
 
             Player currentPlayer = game.getCurrentPlayer();
 
-            network.sendAll(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("---> It's " + currentPlayer.getNickname() + "'s turn"))));
+            //region Setup turn
+            ArrayList<Object> args = new ArrayList<>();
+            args.add(game);
+            args.add("Received Game");
+            Packet gamePacket = new Packet(GAME, null, args);
+            network.send(currentPlayer.getNickname(), gamePacket);
 
+            String message = "---> It's " + currentPlayer.getNickname() + "'s turn";
+            network.sendAll(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(message))));
+
+            //Force client to set the correct scene
             Packet startPacket = new Packet(currentPlayer.getLastAction(), null, new ArrayList<>());
             network.send(currentPlayer.getNickname(), startPacket);
 
-            // Set the action state based on the player's last action
+            //region Set the action state based on the player's last action
             ActionState state = new Default_ActionState(action);
             if (currentPlayer.getLastAction() == DISCARD_INIT_LEAD)
                 state = new DiscardInitLeaders_ActionState(action);
@@ -81,6 +92,9 @@ public class GameManager implements Runnable {
                 state = new ChooseInitResources_ActionState(action);
 
             action.setActionState(state, currentPlayer.getLastAction());
+            //endregion
+
+            //endregion
 
             boolean hurryUp = false;
 
@@ -88,7 +102,7 @@ public class GameManager implements Runnable {
             while (true) {
 
                 // Check if the turn has changed
-                if (game.getCurrentPlayer() != currentPlayer)
+                if (!game.getCurrentPlayer().equals(currentPlayer))
                     break;
 
                 // Update game objects in all clients, to ensure consistency of data and to make the game
@@ -103,33 +117,41 @@ public class GameManager implements Runnable {
                 } catch (SocketTimeoutException e) {
 
                     if (hurryUp) {
-                        network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, null, new ArrayList<Object>(Arrays.asList(Net.TIMEOUT_MSG))));
+                        Packet sendPacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(Net.TIMEOUT_MSG)));
+                        network.send(currentPlayer.getNickname(), sendPacket);
                         network.disconnect(currentPlayer.getNickname());
                         game.changeTurn();
                     } else {
-                        network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, null, new ArrayList<Object>(Arrays.asList(Net.HURRYUP_MSG))));
+                        Packet sendPacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(Net.HURRYUP_MSG)));
+                        network.send(currentPlayer.getNickname(), sendPacket);
                         hurryUp = true;
                     }
 
                 } catch (IOException e) {
-                    game.changeTurn();
+                    game.changeTurn(); //Change turn upon disconnection
                 }
 
-                // If no packet has been received, for any reaason, don't do the action
+                // If no packet has been received, for any reason, don't do the action
                 if (packet == null)
-                    continue;
+                    continue; //Goto Turn cycle
 
                 hurryUp = false;
 
                 // Do the action
                 if(packet.getInstructionCode() != END_TURN) {
                     try {
-                        action.execute(game, packet);
+                        action.execute(game, packet); //Execute the content of the packet received
 
-                        if (action.getActionCode() == END_TURN) {
+                        //Send ACK for action to player
+                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
+
+                        String ackMessage = "Action Accepted";
+                        Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ackMessage)));
+                        network.send(currentPlayer.getNickname(), ackMessagePacket);
+
+
+                        if(game.endTurn)
                             endTurn(currentPlayer);
-                        } else
-                            network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
 
                     } catch (InvalidArgumentsException e) {
 
@@ -137,13 +159,14 @@ public class GameManager implements Runnable {
                         errorArgs.add(e.getErrorMessage());
 
                         network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, e.getCode(), errorArgs));
+                        //Resend action to reset client scene
+                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
+
                     }
-
                 } else {
-                   endTurn(currentPlayer);
+                    //Player decided to end its turn
+                    endTurn(currentPlayer);
                 }
-
-                network.sendAll(new Packet(GAME, null, new ArrayList<>(Arrays.asList(game))));
             }
         }
 

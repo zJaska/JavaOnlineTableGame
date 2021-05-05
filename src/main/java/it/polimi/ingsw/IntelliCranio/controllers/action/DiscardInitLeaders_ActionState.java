@@ -124,13 +124,13 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         if(player.getLeaders().size() == 2) {
 
             if (game.getInitRes(game.getCurrentPlayerIndex()) == 0) {
-                action.setActionState(null, END_TURN);
+                game.endTurn = true;
                 player.setLastAction(DEFAULT);
-                return;
+            } else {
+                action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);
+                player.setLastAction(CHOOSE_INIT_RES);
             }
 
-            action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);
-            player.setLastAction(CHOOSE_INIT_RES);
             return;
         }
 
@@ -140,7 +140,7 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         if(player.getLeaders().size() == 2) {
 
             if (game.getInitRes(game.getCurrentPlayerIndex()) == 0) {
-                action.setActionState(null, END_TURN);
+                game.endTurn = true;
                 player.setLastAction(DEFAULT);
             } else {
                 action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);

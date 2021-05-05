@@ -27,6 +27,9 @@ public class Game implements Serializable {
     private ResourceMarket resourceMarket;
     private ArrayList<Player> players = new ArrayList<>();
 
+    public boolean endTurn = false;
+
+
     public Game () {
 
     }
@@ -245,6 +248,7 @@ public class Game implements Serializable {
 
     public void changeTurn() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        endTurn = false;
     }
 
 

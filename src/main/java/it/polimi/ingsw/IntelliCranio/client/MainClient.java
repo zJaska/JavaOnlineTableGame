@@ -44,6 +44,7 @@ public class MainClient {
         }
     }
 
+
     private static View askView() {
         String tmp;
         do {
