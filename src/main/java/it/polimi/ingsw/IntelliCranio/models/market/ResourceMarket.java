@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.market;
 
+import com.sun.rowset.internal.Row;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
@@ -49,23 +50,70 @@ public class ResourceMarket implements Serializable {
 
     /**
      *  This method return a row of my resourceMarket
+     * and updates its model
      * @param row
      * @return a row of resource market
      */
     public ArrayList<FinalResource> selectRow(int row) {
-        return Lists.unifyResourceAmounts(Arrays.asList(marbleGrid[row].clone()));
+        ArrayList<FinalResource> rowResources = new ArrayList<>(); //List to return
+
+        //region Take the resources and add to return list
+        for(int col = 0; col < COLUMNS; ++col)
+            rowResources.add(marbleGrid[row][col]);
+        //endregion
+
+        //region Update the grid
+
+        //Take the first element (from SX) of the row and temporary store it
+        FinalResource tempExtraMarble = marbleGrid[row][0];
+
+        //Left-Shift the row
+        for(int col = 1; col < COLUMNS - 1; ++col)
+            marbleGrid[row][col - 1] = marbleGrid[row][col];
+
+        //Add the extra marble at the end of the row
+        marbleGrid[row][COLUMNS - 1] = extraMarble;
+
+        //Set the extra marble with the stored temp resource pushed out from row
+        extraMarble = tempExtraMarble;
+
+        //endregion
+
+        return Lists.unifyResourceAmounts(rowResources);
     }
 
     /**
      * This method return a column of my resourceMarket
+     * and updates its model
      * @param column
      * @return a column of my resourceMarket
      */
     public ArrayList<FinalResource> selectColumn(int column) {
-        ArrayList<FinalResource> list = new ArrayList<>();
-        for (int r=0; r<ROWS; r++)
-            list.add(marbleGrid[r][column]);
-        return Lists.unifyResourceAmounts(list);
+        ArrayList<FinalResource> colResources = new ArrayList<>();
+
+        //region Take the resources and add to return list
+        for(int row = 0; row < ROWS; ++row)
+            colResources.add(marbleGrid[row][column]);
+        //endregion
+
+        //region Update the grid
+
+        //Take the first element (from TOP) of the column and temporary store it
+        FinalResource tempExtraMarble = marbleGrid[0][column];
+
+        //Top-Shift the column
+        for(int row = 1; row < ROWS - 1; ++row)
+            marbleGrid[row - 1][column] = marbleGrid[row][column];
+
+        //Add the extra marble at the end of the column
+        marbleGrid[ROWS - 1][column] = extraMarble;
+
+        //Set the extra marble with the stored temp resource pushed out from column
+        extraMarble = tempExtraMarble;
+
+        //endregion
+
+        return Lists.unifyResourceAmounts(colResources);
     }
 
     // NEEDED ONLY TO TEST
