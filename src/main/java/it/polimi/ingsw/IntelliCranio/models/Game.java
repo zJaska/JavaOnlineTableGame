@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Game implements Serializable {
 
@@ -126,6 +127,14 @@ public class Game implements Serializable {
      */
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public Player getPlayer(String nickname) {
+        try {
+            return players.stream().filter(x -> x.getNickname().equals(nickname)).findAny().get();
+        } catch (Exception e) { }
+
+        return null;
     }
 
     /**

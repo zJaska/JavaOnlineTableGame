@@ -18,9 +18,7 @@ public class Warehouse implements Serializable {
      *
      * @param dim the dimension of the depot
      */
-    public Warehouse(int dim) {
-        depot = new Resource[dim];
-    }
+    public Warehouse(int dim) { depot = new Resource[dim]; }
 
 
     public Resource[] getDepot() {
@@ -49,7 +47,7 @@ public class Warehouse implements Serializable {
         //region Check for surplus
 
         //Surplus on first index after swapping
-        if(depot[first].getAmount() > first + 1) {
+        if(depot[first] != null && depot[first].getAmount() > first + 1) {
             //Add to extra a new resource of the same type and with amount
             //given by difference between resource amount and depot capacity
             playerExtra.add(new Resource(depot[first].getType(), depot[first].getAmount() - (first + 1)));
@@ -57,7 +55,7 @@ public class Warehouse implements Serializable {
         }
 
         //Surplus on second index after swapping
-        if(depot[second].getAmount() > second + 1) {
+        if(depot[second] != null && depot[second].getAmount() > second + 1) {
             //Add to extra a new resource of the same type and with amount
             //given by difference between resource amount and depot capacity
             playerExtra.add(new Resource(depot[second].getType(), depot[second].getAmount() - (second + 1)));
@@ -190,7 +188,6 @@ public class Warehouse implements Serializable {
         Arrays.stream(depot).forEach(res -> temp.add(res));
 
         return temp;
-
     }
 
     /**

@@ -20,19 +20,33 @@ public class Packet implements Serializable {
         CANCEL,
         CONFIRM,
         END_TURN,
+
         DISCARD_LEAD,
+
+        PLAY_LEADER,
+
         CHOOSE_RES,
+
         SWAP_LINES,
         ADD_FROM_EXTRA,
         REMOVE_FROM_DEPOT,
         DEPOT_TO_CARD,
         EXTRA_TO_CARD,
-        PLAY_LEADER,
+
+        SELECT_ROW,
+        SELECT_COLUMN,
+
+        RES_FROM_DEPOT,
+        RES_FROM_STRONG,
+        RES_FROM_CARD,
+        SELECT_SLOT,
+        SELECT_CARD,
 
 
         // Setup codes
         CHOOSE_NICKNAME,
         CHOOSE_NUMBER_PLAYERS,
+        NICKNAME,
 
         // Logic codes
         GAME,

@@ -2,11 +2,13 @@ package it.polimi.ingsw.IntelliCranio.views.cli.scenes;
 
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.CliUtil;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_NICKNAME;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_NUMBER_PLAYERS;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static java.lang.Integer.parseInt;
 
@@ -19,16 +21,8 @@ public class CliChooseNumberPlayersScene implements CliScene {
         if (input.size() != 1)
             throw new InvalidArgumentsException("ERROR, only 1 argument expected");
 
-        int num = 0;
-        try {
-            num = parseInt(input.get(0));
-        } catch (NumberFormatException e) {
-            throw new InvalidArgumentsException("ERROR, you must input a number: ");
-        }
+        int num = CliUtil.checkInt(input.get(0),2,4);
 
-        if (num < 2 || num > 4)
-            throw new InvalidArgumentsException("ERROR, choose between 2 and 4: ");
-
-        return new Pair<InstructionCode, ArrayList<Object>> (CHOOSE_NICKNAME, new ArrayList<Object>(input));
+        return new Pair<InstructionCode, ArrayList<Object>> (CHOOSE_NUMBER_PLAYERS, new ArrayList<Object>(input));
     }
 }

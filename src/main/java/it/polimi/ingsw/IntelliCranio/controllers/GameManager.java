@@ -80,15 +80,7 @@ public class GameManager implements Runnable {
             Packet startPacket = new Packet(currentPlayer.getLastAction(), null, new ArrayList<>());
             network.send(currentPlayer.getNickname(), startPacket);
 
-            //region Set the action state based on the player's last action
-            ActionState state = new Default_ActionState(action);
-            if (currentPlayer.getLastAction() == DISCARD_INIT_LEAD)
-                state = new DiscardInitLeaders_ActionState(action);
-            if (currentPlayer.getLastAction() == CHOOSE_INIT_RES)
-                state = new ChooseInitResources_ActionState(action);
-
-            action.setActionState(state, currentPlayer.getLastAction());
-            //endregion
+            action.restoreState(currentPlayer.getLastAction());
 
             //endregion
 
@@ -138,12 +130,13 @@ public class GameManager implements Runnable {
                     try {
                         action.execute(game, packet); //Execute the content of the packet received
 
-                        //Send ACK for action to player
-                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
-
                         String ackMessage = "Action Accepted";
                         Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ackMessage)));
                         network.send(currentPlayer.getNickname(), ackMessagePacket);
+
+                        // Send next action to the player
+                        if (!game.endTurn)
+                            network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
 
                         //Send updated game
                         gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));

@@ -17,8 +17,8 @@ public class SocketHandler {
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
-            System.out.println("Unable to setup connection");
-            throw new IOException();
+            System.err.println("Unable to setup connection");
+            throw e;
         }
 
         setup(socket);
@@ -38,16 +38,17 @@ public class SocketHandler {
             socket.setSoTimeout(TIMEOUT);
 
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Unable to setup input and output streams");
-            throw new IOException();
+            System.err.println("Unable to setup input and output streams");
+            throw e;
         }
     }
 
     public void send (Packet packet) {
-        try { out.writeObject(packet); out.reset(); }
+        try {
+            out.reset();
+            out.writeObject(packet);
+        }
         catch (IOException e) {
-            e.printStackTrace();
             System.err.println("Unable to send the object for network problems");
         } catch (Exception e) {
             System.err.println("Unable to send packet, problems with object serialization");
@@ -59,14 +60,13 @@ public class SocketHandler {
         try {
             tmp = (Packet) in.readObject();
         } catch (SocketTimeoutException e) {
-            System.out.println("Timeout elapsed");
-            throw new SocketTimeoutException();
+            System.err.println("Timeout elapsed");
+            throw e;
         } catch (IOException e) {
-            System.out.println("Unable to read packet, probably the other end disconnected");
-            throw new IOException();
+            System.err.println("Unable to read packet, probably the other end disconnected");
+            throw e;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Unable to read the packet, there are problem with serialization");
+            System.err.println("Unable to read the packet, there are problem with serialization");
         }
 
         return tmp;
@@ -83,7 +83,6 @@ public class SocketHandler {
             socket.close();
         }
         catch (Exception e) {
-            e.printStackTrace();
             System.err.println("Failed to close the socket");
         }
     }

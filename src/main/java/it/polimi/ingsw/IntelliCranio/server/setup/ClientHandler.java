@@ -84,7 +84,7 @@ public class ClientHandler implements Runnable {
 
         playersNames.add(nickname);
 
-        //socketHandler.send(new Packet(CHOOSE_NICKNAME, ACK,null));
+        socketHandler.send(new Packet(NICKNAME, null, new ArrayList<>(Arrays.asList(nickname))));
 
         System.out.println("Player connected: " + nickname);
 

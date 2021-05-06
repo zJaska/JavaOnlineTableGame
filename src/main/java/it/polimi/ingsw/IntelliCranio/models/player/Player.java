@@ -32,10 +32,6 @@ public class Player implements Serializable {
 
     private ArrayList<DevCard>[] devSlots;
 
-    private ArrayList<DevCard> firstSlot;
-    private ArrayList<DevCard> secondSlot;
-    private ArrayList<DevCard> thirdSlot;
-
     private ArrayList<LeadCard> leaders;
     private ArrayList<PopeCard> popeCards;
 
@@ -163,9 +159,8 @@ public class Player implements Serializable {
     public ArrayList<DevCard> getAllDevCards() {
         ArrayList<DevCard> temp = new ArrayList<>();
 
-        temp.addAll(firstSlot);
-        temp.addAll(secondSlot);
-        temp.addAll(thirdSlot);
+        for (ArrayList<DevCard> devSlot : devSlots)
+            temp.addAll(devSlot);
 
         return temp;
     }

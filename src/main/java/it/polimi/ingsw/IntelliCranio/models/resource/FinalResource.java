@@ -23,4 +23,9 @@ public class FinalResource implements Serializable {
     public int getAmount() {
         return amount;
     }
+
+    @Override
+    public String toString() {
+        return "{" + getType().toString().substring(0,2) + "," + getAmount() + "}";
+    }
 }

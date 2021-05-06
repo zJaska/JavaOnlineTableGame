@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class DevCard extends Card {
 
-    public enum CardType { GREEN, YELLOW, PURPLE, BLUE}
+    public enum CardType { GREEN, BLUE, YELLOW, PURPLE }
 
     private CardType type;
     private int level;
@@ -48,5 +48,4 @@ public class DevCard extends Card {
     public ArrayList<FinalResource> getProduct() {
         return product;
     }
-
 }

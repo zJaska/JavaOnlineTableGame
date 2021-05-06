@@ -65,4 +65,16 @@ public class LeadCard extends Card{
     public void activateCard() {
         isActive = true;
     }
+
+    @Override
+    public String toString() {
+        return "LeadCard{" +
+                "isActive=" + isActive +
+                //", cardRequirements=" + cardRequirements +
+                //", resourceRequirements=" + resourceRequirements +
+                ", abilityType=" + abilityType +
+                ", resourceType=" + resourceType +
+                //", specialAbility=" + specialAbility +
+                '}';
+    }
 }

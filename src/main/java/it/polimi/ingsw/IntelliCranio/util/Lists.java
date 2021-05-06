@@ -23,8 +23,13 @@ public class Lists {
     public static <T extends FinalResource> ArrayList<T> unifyResourceAmounts(List<T> list) {
         ArrayList<T> result = new ArrayList<>();
 
-        list.stream().map(FinalResource::getType).distinct().forEach(resType -> {
-            Resource temp = new Resource(resType, list.stream().filter(res -> res.getType() == resType).map(FinalResource::getAmount).reduce(Integer::sum).get());
+        if (list == null)
+            return result;
+
+        list.stream().filter(x -> x != null).map(FinalResource::getType).distinct().forEach(resType -> {
+            Resource temp = new Resource(resType,
+                    list.stream().filter(res -> res != null && res.getType() == resType)
+                            .map(FinalResource::getAmount).reduce(Integer::sum).get());
             result.add((T)temp);
         });
 

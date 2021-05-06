@@ -7,9 +7,12 @@ import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.views.DummyView;
 import it.polimi.ingsw.IntelliCranio.views.View;
 import it.polimi.ingsw.IntelliCranio.views.cli.Cli;
+import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliIdleScene;
 import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
@@ -19,11 +22,16 @@ import static java.lang.Integer.parseInt;
 public class MainClient {
 
     public static Game game;
+    public static String nickname;
 
     private static SocketHandler socketHandler;
     private static View view;
 
     public static void main(String[] args) {
+        game = new Game(new ArrayList<>(Arrays.asList("icci","pippi")));
+        nickname = "icci";
+        CliIdleScene.showCardMarket();
+
         view = askView();
         //view = getDummyView(parseInt(args[0]));
 

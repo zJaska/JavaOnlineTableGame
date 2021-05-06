@@ -16,6 +16,8 @@ class ResourceMarketTest {
 
     @Test
     void setup() {
+        // Todo: the constructor changed, need to review this test
+
         ResourceMarket market = new ResourceMarket(3,4);
         ArrayList<Resource> resources = new ArrayList<>(Arrays.asList(
                 new Resource(FinalResource.ResourceType.BLANK,4),
@@ -25,7 +27,6 @@ class ResourceMarketTest {
                 new Resource(FinalResource.ResourceType.COIN,2),
                 new Resource(FinalResource.ResourceType.FAITH,1)
         ));
-        market.setup(resources);
 
         ArrayList<FinalResource> list = new ArrayList<>();
         for (int r=0; r<3; r++) {

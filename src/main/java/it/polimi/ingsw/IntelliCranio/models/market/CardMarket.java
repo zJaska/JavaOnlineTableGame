@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class CardMarket implements Serializable {
 
-    private final int rows, cols;
+    public final int rows, cols;
     private ArrayList<DevCard>[][] marketGrid;
 
     public CardMarket(String path, int rows, int cols, boolean shuffle) {
@@ -157,4 +157,5 @@ public class CardMarket implements Serializable {
     public ArrayList<DevCard>[][] getMarketGrid() {
         return marketGrid;
     }
+
 }

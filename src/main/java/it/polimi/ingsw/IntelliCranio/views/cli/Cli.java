@@ -49,7 +49,9 @@ public class Cli implements View {
         if (sceneFactory.getScene(code) == scene)
             return;
         scene = sceneFactory.getScene(code);
-        scene.displayOptions();
+
+        if (code != InstructionCode.IDLE)
+            scene.displayOptions();
     }
 
     public void showCommunication(String msg) {

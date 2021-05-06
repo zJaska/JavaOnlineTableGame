@@ -21,6 +21,17 @@ public class ResourceMarket implements Serializable {
         marbleGrid = new FinalResource[rows][columns];
         ROWS = rows;
         COLUMNS = columns;
+
+        ArrayList<Resource> resources = new ArrayList<>(Arrays.asList(
+                new Resource(FinalResource.ResourceType.BLANK,4),
+                new Resource(FinalResource.ResourceType.SHIELD,2),
+                new Resource(FinalResource.ResourceType.STONE,2),
+                new Resource(FinalResource.ResourceType.SERVANT,2),
+                new Resource(FinalResource.ResourceType.COIN,2),
+                new Resource(FinalResource.ResourceType.FAITH,1)
+        ));
+
+        setup(resources);
     }
 
     //Todo
@@ -114,6 +125,20 @@ public class ResourceMarket implements Serializable {
         //endregion
 
         return Lists.unifyResourceAmounts(colResources);
+    }
+
+    public FinalResource[][] getGridCopy() {
+        FinalResource[][] newGrid = new FinalResource[ROWS][COLUMNS];
+
+        for (int i=0; i<ROWS; i++)
+            for (int j=0; j<COLUMNS; j++)
+                newGrid[i][j] = new FinalResource(marbleGrid[i][j].getType(), marbleGrid[i][j].getAmount());
+
+        return newGrid;
+    }
+
+    public FinalResource getExtraMarbleCopy() {
+        return new FinalResource(getExtraMarble().getType(), getExtraMarble().getAmount());
     }
 
     // NEEDED ONLY TO TEST

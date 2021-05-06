@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
@@ -26,8 +27,7 @@ public class RunningNetwork implements Runnable {
 
     private static Semaphore dataReady = new Semaphore(0);
 
-    private static ArrayList<Packet> packets = new ArrayList<>();
-    private static Packet input;
+    private static Vector<Packet> packets = new Vector<>();
 
     public RunningNetwork(SocketHandler socketHandler, View view) {
         this.socketHandler = socketHandler;
@@ -36,7 +36,7 @@ public class RunningNetwork implements Runnable {
 
     public void run() {
         while (true) {
-            input = receivePacket();
+            Packet input = receivePacket();
 
             if (input != null) {
                 packets.add(input);
@@ -52,6 +52,9 @@ public class RunningNetwork implements Runnable {
         catch (IOException e) { System.exit(-100); }
 
         switch (pack.getInstructionCode()) {
+            case NICKNAME:
+                MainClient.nickname = (String) pack.getArgs().get(0);
+                return null;
             case PING:
                 return null;
             case COMMUNICATION:
