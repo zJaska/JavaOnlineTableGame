@@ -46,7 +46,7 @@ public class CliManageWarehouseScene implements CliScene {
 
     private Pair<InstructionCode, ArrayList<Object>> addFromExtra(ArrayList<String> input) throws InvalidArgumentsException {
         if (input.size() == 1) {
-            System.out.print("Choose the type of resource from the extra pool and the line of the warehouse where you want to put it");
+            System.out.println("Choose the type of resource from the extra pool and the line of the warehouse where you want to put it");
             return null;
         }
         if (input.size() != 3)
@@ -63,7 +63,7 @@ public class CliManageWarehouseScene implements CliScene {
 
     private Pair<InstructionCode, ArrayList<Object>> removeFromWarehouse(ArrayList<String> input) throws InvalidArgumentsException {
         if (input.size() == 1) {
-            System.out.print("Choose the line of the warehouse from which you want to put a resource in the extra pool");
+            System.out.println("Choose the line of the warehouse from which you want to put a resource in the extra pool");
             return null;
         }
         if (input.size() != 2)
@@ -76,7 +76,7 @@ public class CliManageWarehouseScene implements CliScene {
 
     private Pair<InstructionCode, ArrayList<Object>> warehouseToCard(ArrayList<String> input) throws InvalidArgumentsException {
         if (input.size() == 1) {
-            System.out.print("Choose the line of the warehouse from which you want to put a resource in the relative leader card");
+            System.out.println("Choose the line of the warehouse from which you want to put a resource in the relative leader card");
             return null;
         }
         if (input.size() != 2)
@@ -89,7 +89,7 @@ public class CliManageWarehouseScene implements CliScene {
 
     private Pair<InstructionCode, ArrayList<Object>> extraToCard(ArrayList<String> input) throws InvalidArgumentsException {
         if (input.size() == 1) {
-            System.out.print("Choose the resource type that you want to put in the leader card");
+            System.out.println("Choose the resource type that you want to put in the leader card");
             return null;
         }
         if (input.size() != 2)

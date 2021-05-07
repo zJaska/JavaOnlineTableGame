@@ -43,6 +43,10 @@ public class CliIdleScene implements CliScene {
         int cont = 1;
         for (Resource res : resources)
             System.out.println(cont++ + ") " + (res == null ? "empty" : res));
+
+        System.out.println("Extra resources: ");
+        game.getPlayer(MainClient.nickname).getExtraRes()
+                .forEach(x -> System.out.println(x));
     }
 
     public static void showStrongbox() {

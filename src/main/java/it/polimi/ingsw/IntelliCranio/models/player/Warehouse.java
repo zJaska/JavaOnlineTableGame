@@ -146,6 +146,8 @@ public class Warehouse implements Serializable {
      * @return True if line is full, false otherwise
      */
     public boolean isFull(int depotLine) {
+        if (depot[depotLine] == null)
+            return false;
         return depot[depotLine].getAmount() == depotLine + 1;
     }
 
@@ -181,7 +183,7 @@ public class Warehouse implements Serializable {
     public boolean isPresent(int depotLine, Resource resource) {
         for(int i = 0; i < depot.length; ++i)
             if(i != depotLine)
-                if(depot[i].getType() == resource.getType())
+                if(depot[i] != null && depot[i].getType() == resource.getType())
                     return true;
 
         return false;

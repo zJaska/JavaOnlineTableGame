@@ -28,10 +28,6 @@ public class MainClient {
     private static View view;
 
     public static void main(String[] args) {
-        game = new Game(new ArrayList<>(Arrays.asList("icci","pippi")));
-        nickname = "icci";
-        CliIdleScene.showCardMarket();
-
         view = askView();
         //view = getDummyView(parseInt(args[0]));
 
