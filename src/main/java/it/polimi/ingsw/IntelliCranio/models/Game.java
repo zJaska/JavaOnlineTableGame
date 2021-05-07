@@ -260,5 +260,12 @@ public class Game implements Serializable {
         endTurn = false;
     }
 
-
+    public void loadGame(Game newGame) {
+        currentPlayerIndex = newGame.getCurrentPlayerIndex();
+        players = newGame.getPlayers();
+        faithTrack = newGame.getFaithTrack();
+        resourceMarket = newGame.getResourceMarket();
+        cardMarket = newGame.getCardMarket();
+        endTurn = newGame.endTurn;
+    }
 }

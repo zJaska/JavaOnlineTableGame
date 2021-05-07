@@ -386,7 +386,7 @@ public class ManageWarehouse_ActionState extends ActionState {
         //region Execute operation
 
         //Reset the game status
-        game = Save.loadGame(game.getUuid());
+        game.loadGame(Save.loadGame(game.getUuid()));
 
         if(prevState == DEFAULT) {
             //If i came in this state from default, go back to a default state,
