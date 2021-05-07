@@ -293,7 +293,7 @@ public class Default_ActionState extends ActionState {
         //I get here if the argument is valid
 
         //region Execute operation
-        action.setActionState(new ManageWarehouse_ActionState(action, true), MNG_WARE);
+        action.setActionState(new ManageWarehouse_ActionState(action, DEFAULT), MNG_WARE);
         game.getCurrentPlayer().setLastAction(MNG_WARE);
         Save.saveGame(game);
         //endregion

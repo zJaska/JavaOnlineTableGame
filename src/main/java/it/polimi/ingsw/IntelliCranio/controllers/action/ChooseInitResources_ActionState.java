@@ -1,6 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
@@ -96,7 +95,7 @@ public class ChooseInitResources_ActionState extends ActionState {
 
         //If player already has the right amount of resources, the game shouldn't be in this state. Return the new state then.
         if(player.extraAmount() == allowedAmount && player.getFaithPosition() == allowedFaith) {
-            action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
+            action.setActionState(new ManageWarehouse_ActionState(action, CHOOSE_INIT_RES), MNG_WARE);
             player.setLastAction(MNG_WARE);
             return;
         }
@@ -109,7 +108,7 @@ public class ChooseInitResources_ActionState extends ActionState {
             for (int i = 0; i < allowedFaith; ++i)
                 player.addFaith();
 
-            action.setActionState(new ManageWarehouse_ActionState(action, false), MNG_WARE);
+            action.setActionState(new ManageWarehouse_ActionState(action, CHOOSE_INIT_RES), MNG_WARE);
             player.setLastAction(MNG_WARE);
         }
 

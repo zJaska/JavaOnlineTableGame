@@ -5,6 +5,8 @@ import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.network.Packet;
+import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType;
 import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.BLANK;
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.FAITH;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_INIT_RES;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.DEFAULT;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
 
@@ -279,6 +283,18 @@ public class Checks {
             String errorMessage = "OOOPS, something went wrong! Selected amount is invalid";
             errorMessage += "\nSelected amount: " + selected;
             errorMessage += "\nExpected amount: " + expected;
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+    }
+
+    public static void invalidState(InstructionCode state, InstructionCode invalid) throws InvalidArgumentsException {
+        if(state == invalid) {
+            InvalidArgumentsException e = new InvalidArgumentsException(STATE_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! Operation not allowed in current state";
 
             e.setErrorMessage(errorMessage);
 

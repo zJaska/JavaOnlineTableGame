@@ -22,11 +22,11 @@ import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*
 public class ManageWarehouse_ActionState extends ActionState {
 
     private Game game;
-    private boolean fromDefault;
+    private Packet.InstructionCode prevState;
 
-    public ManageWarehouse_ActionState(Action action, boolean fromDefault) {
+    public ManageWarehouse_ActionState(Action action, Packet.InstructionCode prevState) {
         super(action);
-        this.fromDefault = fromDefault;
+        this.prevState = prevState;
     }
 
     @Override
@@ -275,15 +275,8 @@ public class ManageWarehouse_ActionState extends ActionState {
         //region Argument validation
 
         //Invalid State Condition
-        if(fromDefault) {
-            InvalidArgumentsException e = new InvalidArgumentsException(STATE_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Adding resource to card is not allowed in this state";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.invalidState(prevState, CHOOSE_INIT_RES);
+        Checks.invalidState(prevState, DEFAULT);
 
         //Depot Line Empty Condition
         Checks.depotEmpty(playerWh, depotLine);
@@ -350,15 +343,8 @@ public class ManageWarehouse_ActionState extends ActionState {
         Stream<LeadCard> playerLeaders = game.getCurrentPlayer().getLeaders().stream();
 
         //Invalid State Condition
-        if(fromDefault) {
-            InvalidArgumentsException e = new InvalidArgumentsException(STATE_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Adding resource to card is not allowed in this state";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.invalidState(prevState, CHOOSE_INIT_RES);
+        Checks.invalidState(prevState, DEFAULT);
 
         //Extra Empty Condition
         Checks.extraEmpty(player);
@@ -402,8 +388,9 @@ public class ManageWarehouse_ActionState extends ActionState {
         //Reset the game status
         game = Save.loadGame(game.getUuid());
 
-        if(fromDefault) {
-            //If i came in this state from default, go back to a default state
+        if(prevState == DEFAULT) {
+            //If i came in this state from default, go back to a default state,
+            //else stay in this action state by doing nothing
             action.setActionState(new Default_ActionState(action), DEFAULT);
             game.getCurrentPlayer().setLastAction(DEFAULT); //This change affect the model
             Save.saveGame(game); //Save this small change
@@ -418,11 +405,17 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //Add faith to every other player other than current one
         game.addFaithToAll(game.getCurrentPlayer().extraAmount());
+        game.getCurrentPlayer().resetExtra();
 
         //Apply changes
 
-        action.setActionState(new Default_ActionState(action), DEFAULT); //Go to this state
-        game.getCurrentPlayer().setLastAction(DEFAULT);
+        if(prevState == CHOOSE_INIT_RES) {
+            game.getCurrentPlayer().setLastAction(DEFAULT);
+            game.endTurn = true;
+        } else {
+            action.setActionState(new Default_ActionState(action), DEFAULT); //Go to this state
+            game.getCurrentPlayer().setLastAction(DEFAULT);
+        }
 
         //SAVE THE NEW STATUS
         Save.saveGame(game);

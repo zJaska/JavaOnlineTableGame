@@ -280,6 +280,10 @@ public class Player implements Serializable {
             return 0;
     }
 
+    public void resetExtra() {
+        extraRes = new ArrayList<>();
+    }
+
     public ArrayList<Resource> getAllResources() {
 
         ArrayList<Resource> temp = new ArrayList<>();
