@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.server.setup;
 
+import it.polimi.ingsw.IntelliCranio.controllers.GameManager;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.PingingDevice;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
@@ -11,6 +12,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
@@ -26,8 +28,7 @@ public class ClientHandler implements Runnable {
 
     // Vector is used because it's thread-safe
     private static Vector<Pair<String,SocketHandler>> waitingPlayers = new Vector<>();
-    private static Vector<String> playersNames = new Vector<>();
-    private static ArrayList<Game> currentGames = new ArrayList<>();
+    private static Vector<String> playersTempNames = new Vector<>();
 
     private static int numFirstPlayers = 0;
 
@@ -56,6 +57,10 @@ public class ClientHandler implements Runnable {
         return null;
     }
 
+    public static void removePlayerNames (List<String> names) {
+        playersTempNames.removeAll(names);
+    }
+
     public void run() {
 
         // Start communication: choose nickname
@@ -71,7 +76,8 @@ public class ClientHandler implements Runnable {
                 nickname = (String) socketHandler.receive().getArgs().get(0);
                 String finalNickname = nickname;
 
-                if (playersNames.stream().anyMatch(x -> x.equals(finalNickname))) {
+                if (playersTempNames.stream().anyMatch(x -> x.equals(finalNickname)) ||
+                        (MainServer.getAllPlayers().stream().anyMatch(x -> x.equals(finalNickname)) && MainServer.getManager(finalNickname).isOnline(finalNickname))) {
                     chosen = true;
                     socketHandler.send(new Packet(CHOOSE_NICKNAME, NICKNAME_TAKEN,null));
                     socketHandler.send(new Packet(COMMUNICATION, null,new ArrayList<>(Arrays.asList("Nickname already taken, choose another one"))));
@@ -82,7 +88,7 @@ public class ClientHandler implements Runnable {
             }
         } while (chosen);
 
-        playersNames.add(nickname);
+        playersTempNames.add(nickname);
 
         socketHandler.send(new Packet(NICKNAME, null, new ArrayList<>(Arrays.asList(nickname))));
 
@@ -92,12 +98,22 @@ public class ClientHandler implements Runnable {
 
         new Thread(new PingingDevice(socketHandler)).start();
 
+        // Checking if the player has a running game
+
+        if (MainServer.getAllPlayers().contains(nickname)) {
+            socketHandler.send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Joining the running game..."))));
+            MainServer.getManager(nickname).reconnectPlayer(nickname, socketHandler);
+            return;
+        }
+
+
         // Asking if he wants to play alone
+
         socketHandler.send(new Packet(WANNA_PLAY_ALONE, null, null));
         try {
-            if (socketHandler.receive().getInstructionCode() == ALONE) {
-                // Todo: create the game managaer for the solo play
-            }
+            if (socketHandler.receive().getInstructionCode() == ALONE)
+                MainServer.startManager(null, new ArrayList<>(Arrays.asList(new Pair<>(nickname, socketHandler))));
+
         } catch (IOException e) {
             disconnectPlayer(socketHandler,TIMEOUT_MSG);
             return;
@@ -137,7 +153,7 @@ public class ClientHandler implements Runnable {
         } catch (SocketTimeoutException e) {
 
             numFirstPlayers--;
-            playersNames.remove(firstPlayer.getKey());
+            playersTempNames.remove(firstPlayer.getKey());
             disconnectPlayer(firstPlayer.getValue(),TIMEOUT_MSG);
 
             if (waitingPlayers.size() >= 1) {
@@ -149,6 +165,7 @@ public class ClientHandler implements Runnable {
 
         }
         catch (IOException e) {
+            playersTempNames.remove(firstPlayer.getKey());
             numFirstPlayers--;
             return;
         }

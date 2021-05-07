@@ -8,15 +8,14 @@ import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.network.SocketManager;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.server.setup.MainServer;
 import it.polimi.ingsw.IntelliCranio.util.Net;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Dictionary;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
@@ -25,31 +24,45 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 public class GameManager implements Runnable {
 
     private Game game;
-
     private Action action = new Action();
-    private boolean newGame;
 
     private NetworkManagerI network;
+    private TreeMap<String, Boolean> onlinePlayers = new TreeMap<>();
 
-
-    public GameManager(boolean newGame, ArrayList<Pair<String, SocketHandler>> playerConnections) {
-        this.newGame = newGame;
-
+    public GameManager(UUID uuid, ArrayList<Pair<String, SocketHandler>> playerConnections) {
         ArrayList<String> nicknames = new ArrayList<>();
         nicknames.addAll(playerConnections.stream().map(Pair::getKey).collect(Collectors.toList()));
 
-        game = new Game(nicknames);
-
         network = new SocketManager(playerConnections);
+
+        if (uuid == null) {
+            game = new Game(nicknames);
+            playerConnections.forEach(x -> onlinePlayers.put(x.getKey(), true));
+        }
+        else {
+            game = Save.loadGame(uuid);
+            playerConnections.forEach(x -> onlinePlayers.put(x.getKey(), false));
+        }
     }
 
-    /*Idea: Static because can be called anytime in the game without reference to this object
+    public void reconnectPlayer(String nickname, SocketHandler socketHandler) {
+        network.connect(nickname, socketHandler);
+        onlinePlayers.put(nickname, true);
+    }
+
+    public boolean isOnline(String nickname) {
+        return onlinePlayers.get(nickname);
+    }
+
+    /*Idea:
     Interrupt all the inputs from client and display the results and the winner.
     Disconnect from the clients
     Clear the backup memory from disk
     Terminate the execution of this thread
      */
-    public static void endingGame() {
+    public void endingGame() {
+        MainServer.forgetManager(game.getUuid(), new ArrayList<>(game.getPlayers().stream().map(Player::getNickname).collect(Collectors.toList())));
+
         throw new UnsupportedOperationException();
     }
 
@@ -66,6 +79,11 @@ public class GameManager implements Runnable {
 
         //Game lifecycle
         while (true) {
+
+            if (!onlinePlayers.get(game.getCurrentPlayer().getNickname())) {
+                game.changeTurn();
+                continue;
+            }
 
             //region Setup turn
             Packet gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
@@ -109,6 +127,7 @@ public class GameManager implements Runnable {
                         network.send(currentPlayer.getNickname(), sendPacket);
                         network.disconnect(currentPlayer.getNickname());
                         game.changeTurn();
+                        onlinePlayers.put(currentPlayer.getNickname(), false);
                     } else {
                         Packet sendPacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(Net.HURRYUP_MSG)));
                         network.send(currentPlayer.getNickname(), sendPacket);
@@ -117,6 +136,7 @@ public class GameManager implements Runnable {
 
                 } catch (IOException e) {
                     game.changeTurn(); //Change turn upon disconnection
+                    onlinePlayers.put(currentPlayer.getNickname(), false);
                 }
 
                 // If no packet has been received, for any reason, don't do the action

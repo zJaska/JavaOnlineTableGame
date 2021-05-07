@@ -34,7 +34,8 @@ public class SocketManager implements NetworkManagerI {
 
     public void sendAll(Packet packet) {
         for (SocketHandler x : players.values()) {
-            x.send(packet);
+            if (x != null)
+                x.send(packet);
         };
     }
 
@@ -54,9 +55,6 @@ public class SocketManager implements NetworkManagerI {
         return null;
     }
 
-    /**
-     * Flushes the buffers of each player.
-     */
     public void clear() {
         players.values().forEach(x -> x.clear());
     }
@@ -64,4 +62,6 @@ public class SocketManager implements NetworkManagerI {
     public void disconnect (String name) {
         players.get(name).close();
     }
+
+    public void connect (String name, SocketHandler socketHandler) { players.put(name, socketHandler); }
 }

@@ -7,5 +7,6 @@ public interface NetworkManagerI {
     void sendAll (Packet packet);
     Packet receive (String name) throws IOException;
     void disconnect(String name);
+    void connect(String name, SocketHandler socketHandler);
     void clear();
 }

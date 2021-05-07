@@ -7,6 +7,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.COMMUNICATION;
 
@@ -53,7 +54,7 @@ public class WaitingRoom {
             x.getValue().send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Starting game..."))));
         });
 
-        // Create and start the gameManager
-        new Thread(new GameManager(true, players)).start();
+        ClientHandler.removePlayerNames(players.stream().map(Pair::getKey).collect(Collectors.toList()));
+        MainServer.startManager(null, players);
     }
 }

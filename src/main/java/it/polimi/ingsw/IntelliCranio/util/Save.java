@@ -13,8 +13,8 @@ import java.util.UUID;
 
 public class Save {
 
-    private static final String pathPrefix = "src/main/resources/saved_games/";
-    private static final String databasePath = "src/main/resources/database.json";
+    public static final String pathPrefix = "src/main/resources/saved_games/";
+    public static final String databasePath = "src/main/resources/database.json";
 
     /**
      * Serialize the game to file using unique IDs.
@@ -139,10 +139,11 @@ public class Save {
         file.delete();
 
         //Remove from database and save the updated one
+        /*
         HashMap<String, UUID> database = getDatabase();
         database.entrySet().removeIf(e -> e.getValue().equals(uuid));
         saveDatabase(database);
-
+        */
 
     }
 

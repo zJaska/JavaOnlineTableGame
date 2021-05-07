@@ -30,10 +30,7 @@ public class Game implements Serializable {
 
     public boolean endTurn = false;
 
-
-    public Game () {
-
-    }
+    public Game () { }
 
     public Game(ArrayList<String> nicknames) {
 
@@ -261,6 +258,7 @@ public class Game implements Serializable {
     }
 
     public void loadGame(Game newGame) {
+        uuid = newGame.getUuid();
         currentPlayerIndex = newGame.getCurrentPlayerIndex();
         players = newGame.getPlayers();
         faithTrack = newGame.getFaithTrack();

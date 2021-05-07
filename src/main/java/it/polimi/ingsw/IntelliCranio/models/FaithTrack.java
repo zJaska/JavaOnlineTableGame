@@ -66,8 +66,8 @@ public class FaithTrack implements Serializable {
                 });
 
                 //Check for game ending
-                if(player.getFaithPosition() == length - 1)
-                    GameManager.endingGame();
+                //if(player.getFaithPosition() == length - 1)
+                //    GameManager.endingGame();
             }
         });
 
