@@ -1,6 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.models.market;
 
-import com.sun.rowset.internal.Row;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;

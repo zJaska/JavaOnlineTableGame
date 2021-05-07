@@ -1,6 +1,5 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
@@ -9,6 +8,8 @@ import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.Checks;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
@@ -61,28 +62,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() < 2) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 2";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 2) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 2";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 2);
 
         try{
             first = (int)args.get(0);
@@ -107,37 +87,16 @@ public class ManageWarehouse_ActionState extends ActionState {
         //region Argument validation
 
         //Same Line Condition
-        if(first == second) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected lines are the same";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.sameLine(first, second);
 
         //Negative Line Condition
-        if(first < 0 || second < 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! One or more lines selected are negative";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.negativeLine(first);
+        Checks.negativeLine(second);
 
         //Over Size Condition
-        if(first >= playerWh.getDepot().length || second >= playerWh.getDepot().length) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! One or more lines selected exceed depot size";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.overSizeLine(first, playerWh.getDepot().length);
+        Checks.overSizeLine(second, playerWh.getDepot().length);
+        
         //endregion
 
         //I get here if the argument is valid
@@ -146,7 +105,10 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         ArrayList<Resource> playerExtra = game.getCurrentPlayer().getExtraRes();
 
-        playerWh.swapLines(first, second, playerExtra);
+        //Add all the surplus from swap
+        playerExtra.addAll(playerWh.swapLines(first, second));
+
+        playerExtra = Lists.unifyResourceAmounts(playerExtra); //Unify all the extra res for future usage
 
         //NO SAVE FOR THIS ACTION
 
@@ -160,28 +122,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() < 2) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 2";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 2) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 2";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 2);
 
         try {
             resource = (Resource) args.get(0);
@@ -207,93 +148,29 @@ public class ManageWarehouse_ActionState extends ActionState {
         //region Argument validation
 
         //Null Condition
-        if(resource == null) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
-
-            String errorMessage = "OOOPS, something went wrong! Server received a null element";
-            errorMessage += "\nElement expected: Leader Card";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.nullElement(resource, "Resource");
+        Checks.nullElement(resource.getType(), "Type of Resource");
 
         //Negative Line Condition
-        if(depotLine < 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected depot line is negative";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.negativeLine(depotLine);
 
         //Over Size Condition
-        if(depotLine >= playerWh.getDepot().length) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected line is over depot size";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.overSizeLine(depotLine, playerWh.getDepot().length);
 
         //Extra Empty Condition
-        if(!player.hasExtra()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Your extra resources slot is empty";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.extraEmpty(player);
 
         //Resource Not in Extra Condition (blank or faith CAN NOT stay in extra resources)
-        if(!player.hasExtra(resource.getType())) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+        Checks.notInExtra(player, resource.getType());
 
-            String errorMessage = "OOOPS, something went wrong! The type selected is not present in your extra resources slot";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //Not Same Resource Condition
-        if(playerWh.getType(depotLine) != resource.getType()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! The type to add is not the same as the one in selected depot line";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        //Not Same Resource Condition (if WH is null, action is VALID)
+        Checks.notSameResource(playerWh.getType(depotLine), resource.getType(), true);
 
         //Resource present in a different line
-        if(playerWh.isPresent(depotLine, resource)) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! The depot already has this resource in another line";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.resInDifferentLine(playerWh, depotLine, resource);
 
         //Depot Line Full Condition
-        if(playerWh.isFull(depotLine)) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! The selected depot line is already full";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.depotFull(playerWh, depotLine);
 
         //endregion
 
@@ -301,7 +178,9 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //region Execute operation
 
-        playerWh.addFromExtra(depotLine, resource, player);
+        //Add a single amount of selected resource in selected depot and remove it from extra
+        playerWh.add(depotLine, resource);
+        player.removeExtra(resource.getType(), 1);
 
         //NO SAVE FOR THIS
 
@@ -314,28 +193,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() == 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 1);
 
         try {
             depotLine = (int) args.get(0);
@@ -358,37 +216,13 @@ public class ManageWarehouse_ActionState extends ActionState {
         //region Argument validation
 
         //Negative line Condition
-        if(depotLine < 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected depot line is negative";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.negativeLine(depotLine);
 
         //Over Size Condition
-        if(depotLine >= playerWh.getDepot().length) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected depot line is over the depot size";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.overSizeLine(depotLine, playerWh.getDepot().length);
 
         //Empty Condition
-        if(playerWh.isEmpty(depotLine)) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected depot line is empty";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.depotEmpty(playerWh, depotLine);
 
         //endregion
 
@@ -396,8 +230,13 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //region Execute operation
 
+        //Remove a single amount from depot and add it to extra resources
+
+        Resource res = playerWh.getDepot()[depotLine];
         Player player = game.getCurrentPlayer();
-        playerWh.removeToExtra(depotLine, player);
+
+        playerWh.remove(depotLine);
+        player.addExtra(res.getType(), 1);
 
         //NO SAVE FOR THIS
 
@@ -410,28 +249,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() == 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 1);
 
         try {
             depotLine = (int) args.get(0);
@@ -468,53 +286,20 @@ public class ManageWarehouse_ActionState extends ActionState {
         }
 
         //Depot Line Empty Condition
-        if(playerWh.isEmpty(depotLine)) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected depot line is empty";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.depotEmpty(playerWh, depotLine);
 
         resource = playerWh.getDepot()[depotLine];
 
         //Card Not in Hand Condition
-        if(!player.hasLeader(DEPOT, resource.getType())) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+        Checks.notInHand(player, DEPOT, resource.getType());
 
-            String errorMessage = "OOOPS, something went wrong! None of your cards meet the resource requirement";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //Card Inactive Condition
         card = player.getLeader(DEPOT, resource.getType());
 
-        if(!card.isActive()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+        //Card Inactive Condition
+        Checks.inactiveCard(card);
 
-            String errorMessage = "OOOPS, something went wrong! Your card is not active";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //Card Depot Full
-        if(((DepotAbility)card.getSpecialAbility()).isFull()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! The depot of the card is already full";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
+        //Card Depot Full Condition
+        Checks.cardDepotFull(card);
 
         //endregion
 
@@ -527,7 +312,7 @@ public class ManageWarehouse_ActionState extends ActionState {
         depotAbility.addResource(); //Resource type is unique for every card, no need to specify what to add
 
         //Remove the resource from selected depot line
-        playerWh.removeAmount(depotLine, 1);
+        playerWh.remove(depotLine);
 
         //NO SAVE FOR THIS
 
@@ -540,28 +325,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() == 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 1);
 
         try {
             resource = (Resource) args.get(0);
@@ -597,62 +361,21 @@ public class ManageWarehouse_ActionState extends ActionState {
         }
 
         //Extra Empty Condition
-        if(!player.hasExtra()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Your extra resources slot is empty";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.extraEmpty(player);
 
         //Resource Not in Extra Condition
-        if(!player.hasExtra(resource.getType())) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected resource is not present in extra resources slot";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.notInExtra(player, resource.getType());
 
         //Card Not in Hand Condition
+        Checks.notInHand(player, DEPOT, resource.getType());
 
-        if(!player.hasLeader(DEPOT, resource.getType())) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! None of your cards meet the selected resource requirement";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //Card Inactive Condition
         card = player.getLeader(DEPOT, resource.getType());
 
-        if(!card.isActive()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! The card is not active";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        //Card Inactive Condition
+        Checks.inactiveCard(card);
 
         //Card Depot is full
-        if(((DepotAbility)card.getSpecialAbility()).isFull()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! The depot of the card is already full";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.cardDepotFull(card);
 
         //endregion
 
@@ -674,16 +397,6 @@ public class ManageWarehouse_ActionState extends ActionState {
 
     private void cancel() throws InvalidArgumentsException {
 
-        //region Conversion of args from packet
-        //endregion
-
-        //I get here if there are no problems with arguments conversion
-
-        //region Argument validation
-        //endregion
-
-        //I get here if the argument is valid
-
         //region Execute operation
 
         //Reset the game status
@@ -700,16 +413,6 @@ public class ManageWarehouse_ActionState extends ActionState {
     }
 
     private void confirm() throws InvalidArgumentsException {
-
-        //region Conversion of args from packet
-        //endregion
-
-        //I get here if there are no problems with arguments conversion
-
-        //region Argument validation
-        //endregion
-
-        //I get here if the argument is valid
 
         //region Execute operation
 

@@ -30,27 +30,30 @@ public class Warehouse implements Serializable {
      * Swap two lines in the depot and add the resource surplus
      * to player extra resources.
      * Set the amount to depot line capacity
-     *
-     * @param first first index of depot line
+     *  @param first first index of depot line
      * @param second second index of depot line
-     * @param playerExtra pool of the player extra resources
+     * @return
      */
-    public void swapLines(int first, int second, ArrayList<Resource> playerExtra) {
+    public ArrayList<Resource> swapLines(int first, int second) {
 
+        //region Swap
         Resource temp; //To store a resource from depot before swapping
 
         temp = depot[first]; //Store the first index selected
 
         depot[first] = depot[second]; //Add resource from second index to first one
         depot[second] = temp; //Complete the swap
+        //endregion
 
         //region Check for surplus
+
+        ArrayList<Resource> extra = new ArrayList<>();
 
         //Surplus on first index after swapping
         if(depot[first] != null && depot[first].getAmount() > first + 1) {
             //Add to extra a new resource of the same type and with amount
             //given by difference between resource amount and depot capacity
-            playerExtra.add(new Resource(depot[first].getType(), depot[first].getAmount() - (first + 1)));
+            extra.add(new Resource(depot[first].getType(), depot[first].getAmount() - (first + 1)));
             depot[first].setAmount(first + 1);
         }
 
@@ -58,51 +61,17 @@ public class Warehouse implements Serializable {
         if(depot[second] != null && depot[second].getAmount() > second + 1) {
             //Add to extra a new resource of the same type and with amount
             //given by difference between resource amount and depot capacity
-            playerExtra.add(new Resource(depot[second].getType(), depot[second].getAmount() - (second + 1)));
+            extra.add(new Resource(depot[second].getType(), depot[second].getAmount() - (second + 1)));
             depot[second].setAmount(second+1);
         }
 
-        //Unify the extra resources before returning
-        playerExtra = Lists.unifyResourceAmounts(playerExtra);
-
         //endregion
 
-    }
-
-    /**
-     *
-     * Increment the value of a resource in depot and remove one
-     * from the extra resources list.
-     * Remove the resource from list if value reduced to 0
-     *
-     * @param depotLine index of the depot array
-     * @param resource the resource to take from extra resources
-     * @param player The current player
-     */
-    public void addFromExtra(int depotLine, Resource resource, Player player) {
-
-        depot[depotLine].addAmount(1); //Add the amount to depot
-
-        //reduce the amount of the resource by 1
-        player.removeExtra(resource.getType(), 1);
+        //Return extra resources
+        return extra;
 
     }
 
-    /**
-     * Add a resource to the extra resources list. The list is then unified again.
-     * Remove a single amount of that resource from selected depot line
-     * @param depotLine index of the line in depot
-     * @param player The current player
-     */
-    public void removeToExtra(int depotLine, Player player) {
-
-        //Add to extra resources before removing. Prevent null check on depot line later.
-        player.addExtra(depot[depotLine].getType(), 1);
-
-        //Remove 1 resource from depot
-        removeAmount(depotLine, 1);
-
-    }
 
     /**
      * <summary>
@@ -144,16 +113,29 @@ public class Warehouse implements Serializable {
     }
 
     /**
-     * Remove the specified amount from selected line. If the amount of resources is 0, depot line is set to null.
+     * Remove a single amount from selected line. If the amount of resources is 0, depot line is set to null.
      * @param depotLine Index of the depot
-     * @param amount Amount of resources to remove
      */
-    public void removeAmount(int depotLine, int amount) {
-        depot[depotLine].removeAmount(amount);
+    public void remove(int depotLine) {
+        if(!isEmpty(depotLine))
+            depot[depotLine].removeAmount(1);
 
         //Set the line to null if there are no resources there
         if(depot[depotLine].getAmount() == 0)
             depot[depotLine] = null;
+    }
+
+    /**
+     * Add a single amount in specified line. Add a new resource with amount 1 if line is empty.
+     * @param depotLine Line of depot to add a resource
+     * @param resource The resource to add if line is empty
+     */
+    public void add(int depotLine, Resource resource) {
+        if(isEmpty(depotLine))
+            depot[depotLine] = new Resource(resource.getType(), 1);
+        else if(!isFull(depotLine))
+            depot[depotLine].addAmount(1);
+
     }
 
     //region Utility
