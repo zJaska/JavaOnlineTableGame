@@ -12,6 +12,8 @@ import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.BLANK;
+import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.FAITH;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
 
@@ -250,6 +252,33 @@ public class Checks {
 
             String errorMessage = "OOOPS, something went wrong! The depot of the card is already full";
             errorMessage += "\nSelected card ID: " + card.getID();
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+    }
+
+    public static void invalidResource(ResourceType selected, ResourceType invalid) throws InvalidArgumentsException{
+        if(selected == invalid) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! Received an invalid type for the resource";
+            errorMessage += "\nType Received: " + selected;
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+    }
+
+    public static void invalidAmount(int selected, int expected) throws InvalidArgumentsException {
+        if(selected != expected) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! Selected amount is invalid";
+            errorMessage += "\nSelected amount: " + selected;
+            errorMessage += "\nExpected amount: " + expected;
 
             e.setErrorMessage(errorMessage);
 

@@ -6,6 +6,7 @@ import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.Checks;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
@@ -48,28 +49,7 @@ public class DiscardInitLeaders_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() == 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 1);
 
         try {
             card = (LeadCard) args.get(0);
@@ -92,27 +72,10 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         //region Input validation
 
         //Null Condition
-        if(card == null) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
-
-            String errorMessage = "OOOPS, something went wrong! Server received a null element";
-            errorMessage += "\nElement expected: Leader Card";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.nullElement(card, "Leader Card");
 
         //Not in hand Condition
-        if(!player.hasLeader(card)) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Server received a card you don't have";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.notInHand(player, card);
 
         //endregion
 
@@ -123,6 +86,7 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         //If player already has only two cards, the game shouldn't be in this state. Return the new state then.
         if(player.getLeaders().size() == 2) {
 
+            //Check for automatic end turn
             if (game.getInitRes(game.getCurrentPlayerIndex()) == 0) {
                 game.endTurn = true;
                 player.setLastAction(DEFAULT);
@@ -139,6 +103,7 @@ public class DiscardInitLeaders_ActionState extends ActionState {
 
         if(player.getLeaders().size() == 2) {
 
+            //Check for automatic end turn
             if (game.getInitRes(game.getCurrentPlayerIndex()) == 0) {
                 game.endTurn = true;
                 player.setLastAction(DEFAULT);

@@ -6,6 +6,7 @@ import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.Checks;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
@@ -49,28 +50,7 @@ public class ChooseInitResources_ActionState extends ActionState {
 
         //region Conversion of args from packet
 
-        if(args.size() == 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 1);
 
         try {
             resource = (Resource) args.get(0);
@@ -91,41 +71,15 @@ public class ChooseInitResources_ActionState extends ActionState {
         //region Argument validation
 
         //Null Condition
-        if(resource == null) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
-
-            String errorMessage = "OOOPS, something went wrong! Server received a null element";
-            errorMessage += "\nElement expected: Resource";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.nullElement(resource, "Resource");
+        Checks.nullElement(resource.getType(), "Type of Resource");
 
         //Blank or Faith Condition
-        if(resource.getType() == BLANK || resource.getType() == FAITH) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+        Checks.invalidResource(resource.getType(), BLANK);
+        Checks.invalidResource(resource.getType(), FAITH);
 
-            String errorMessage = "OOOPS, something went wrong! Received an invalid type for the resource";
-            errorMessage += "\nType Received: " + resource.getType().toString();
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //Invalid amount Condition
-        if(resource.getAmount() != 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(VALUE_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Selected amount is invalid";
-            errorMessage += "\nAmount Received: " + resource.getAmount();
-            errorMessage += "\nAmount Expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        //Invalid amount Condition (Unnecessary)
+        Checks.invalidAmount(resource.getAmount(), 1);
 
         //endregion
 
