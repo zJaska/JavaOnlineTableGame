@@ -2,16 +2,21 @@ package it.polimi.ingsw.IntelliCranio.views.cli.scenes;
 
 import it.polimi.ingsw.IntelliCranio.client.MainClient;
 import it.polimi.ingsw.IntelliCranio.models.Game;
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard.CardType;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.player.Strongbox;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet.*;
+import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.CliUtil;
 import javafx.util.Pair;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,7 +27,7 @@ public class CliIdleScene implements CliScene {
 
     public static final String[] IDLE_COMMANDS = new String[] {
       "/help", "/showWarehouse", "/showStrongbox", "/showCardMarket", "/showResourceMarket",
-            "/showFaithTrack", "/display", "/resourceTypes", "/showLeaders"
+            "/showFaithTrack", "/display", "/resourceTypes", "/showLeaders", "/showDevCards"
     };
 
     private static void help(ArrayList<String> input) {
@@ -35,26 +40,42 @@ public class CliIdleScene implements CliScene {
         scene.displayOptions();
     }
 
+    /**
+     *
+     * @param input The command the calls the method. If null, shows the player's warehouse.
+     *              Otherwise, input.get(1) should be the nickname of a player.
+     */
+    public static void showWarehouse(ArrayList<String> input) throws InvalidArgumentsException {
+        _showWarehouse(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+    }
     public static void showWarehouse() {
-        Game game = MainClient.game;
-
-        System.out.println("Warehouse:");
-        Resource[] resources = game.getPlayer(MainClient.nickname).getWarehouse().getDepot();
+        _showWarehouse(MainClient.game.getPlayer(MainClient.nickname));
+    }
+    private static void _showWarehouse(Player player) {
+        System.out.println("Warehouse (" + player.getNickname() + "):");
+        Resource[] resources = player.getWarehouse().getDepot();
         int cont = 1;
         for (Resource res : resources)
             System.out.println(cont++ + ") " + (res == null ? "empty" : res));
 
-        System.out.println("Extra resources: ");
-        game.getPlayer(MainClient.nickname).getExtraRes()
-                .forEach(x -> System.out.println(x));
+        System.out.print("Extra resources: ");
+        player.getExtraRes().forEach(x -> System.out.print(x + " "));
+        System.out.println();
     }
 
+    /**
+     *
+     * @param input The command that calls the method. input.get(1) should be the nickname of a player.
+     */
+    public static void showStrongbox(ArrayList<String> input) throws InvalidArgumentsException {
+        _showStrongbox(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+    }
     public static void showStrongbox() {
-        Game game = MainClient.game;
-        Strongbox box = game.getPlayer(MainClient.nickname).getStrongbox();
-
-        System.out.println("Strongbox: ");
-        box.getAll().forEach(System.out::println);
+        _showStrongbox(MainClient.game.getPlayer(MainClient.nickname));
+    }
+    private static void _showStrongbox(Player player) {
+        System.out.println("Strongbox (" + player.getNickname() + "): ");
+        player.getStrongbox().getAll().forEach(System.out::println);
     }
 
     public static void showResourceMarket() {
@@ -142,17 +163,55 @@ public class CliIdleScene implements CliScene {
     public static void showFaithTrack() {
         Game game = MainClient.game;
 
+        System.out.println("Faith track:");
 
+        game.getPlayers().forEach(x -> {
+            System.out.println(x.getNickname() + ": \t{" +
+                    "index: " + x.getFaithPosition() + ",\t" +
+                    "pope cards: [" + x.getPopeCards().stream().map(card -> card.getStatus().toString()).reduce("", (s1,s2) -> s1 + " " + s2) + " ]\t");
+        });
+
+        System.out.print("Pope spaces: ");
+        game.getFaithTrack().getPopeSpacesCopy().forEach(x -> System.out.print(x + " "));
+        System.out.println();
+
+        System.out.print("Start of vatican sections: ");
+        game.getFaithTrack().getStartOfVaticanSectionsCopy().forEach(x -> System.out.print(x + " "));
+        System.out.println();
     }
 
+    /**
+     *
+     * @param input The command the calls the method. If null, shows the player's warehouse.
+     *              Otherwise, input.get(1) should be the nickname of a player.
+     */
+    public static void showLeaders(ArrayList<String> input) throws InvalidArgumentsException {
+        _showLeaders(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+    }
     public static void showLeaders() {
-        Game game = MainClient.game;
-
-        System.out.println("Leader cards: ");
-        ArrayList<LeadCard> leaders = game.getPlayer(MainClient.nickname).getLeaders();
+        _showLeaders(MainClient.game.getPlayer(MainClient.nickname));
+    }
+    private static void _showLeaders(Player player) {
+        ArrayList<LeadCard> leaders = player.getLeaders();
+        System.out.println("Leader cards (" + player.getNickname() + "): (requirements: {type, amount, level})");
         leaders.forEach(x -> {
-            System.out.println((leaders.indexOf(x) + 1) + ") " + x);
+            if (player.getNickname().equals(MainClient.nickname) || x.isActive())
+                System.out.println((leaders.indexOf(x) + 1) + ") " + x);
         });
+    }
+    
+    public static void showDevCards(ArrayList<String> input) throws InvalidArgumentsException {
+        _showDevCards(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+    }
+    public static void showDevCards() {
+        _showDevCards(MainClient.game.getPlayer(MainClient.nickname));
+    }
+    private static void _showDevCards(Player player) {
+        System.out.println("Development cards (" + player.getNickname() + "):");
+        int i=1;
+        for (DevCard card : player.getFirstDevCards()) {
+            System.out.println(i++ + ") " + card);
+        }
     }
 
     public static void showResourceTypes() {
@@ -163,7 +222,7 @@ public class CliIdleScene implements CliScene {
         System.out.println();
     }
 
-    public static void displayIdleCommand(ArrayList<String> input, CliScene scene) {
+    public static void displayIdleCommand(ArrayList<String> input, CliScene scene) throws InvalidArgumentsException {
         switch (input.get(0)) {
             case "/help":
                 help(input);
@@ -172,10 +231,10 @@ public class CliIdleScene implements CliScene {
                 display(input,scene);
                 break;
             case "/showWarehouse":
-                showWarehouse();
+                showWarehouse(input);
                 break;
             case "/showStrongbox":
-                showStrongbox();
+                showStrongbox(input);
                 break;
             case "/showResourceMarket":
                 showResourceMarket();
@@ -190,7 +249,10 @@ public class CliIdleScene implements CliScene {
                 showResourceTypes();
                 break;
             case "/showLeaders":
-                showLeaders();
+                showLeaders(input);
+                break;
+            case "/showDevCards":
+                showDevCards(input);
                 break;
         }
     }

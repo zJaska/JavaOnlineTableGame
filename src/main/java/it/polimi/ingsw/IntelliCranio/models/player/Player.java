@@ -48,7 +48,8 @@ public class Player implements Serializable {
         extraRes = new ArrayList<>();
 
         devSlots = new ArrayList[devSlotsAmount];
-        Arrays.stream(devSlots).forEach(slot -> slot = new ArrayList<>());
+        for (int i=0; i<devSlotsAmount; i++)
+            devSlots[i] = new ArrayList<>();
 
         popeCards = new ArrayList<>();
         for(int i = 0; i < sectionsAmount; ++i)
@@ -156,6 +157,8 @@ public class Player implements Serializable {
             return null;
     }
 
+    public ArrayList<PopeCard> getPopeCards() { return popeCards; }
+
     public ArrayList<DevCard> getAllDevCards() {
         ArrayList<DevCard> temp = new ArrayList<>();
 
@@ -163,6 +166,14 @@ public class Player implements Serializable {
             temp.addAll(devSlot);
 
         return temp;
+    }
+
+    public DevCard[] getFirstDevCards() {
+        DevCard[] cards = new DevCard[devSlots.length];
+        int i=0;
+        for (ArrayList<DevCard> devSlot : devSlots)
+            cards[i++] = (devSlot.size() > 0) ? devSlot.get(0) : null;
+        return cards;
     }
 
     //region Utility methods

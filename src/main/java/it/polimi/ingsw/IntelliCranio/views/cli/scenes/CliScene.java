@@ -9,6 +9,5 @@ import java.util.ArrayList;
 public interface CliScene {
 
     void displayOptions();
-
     Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) throws InvalidArgumentsException;
 }

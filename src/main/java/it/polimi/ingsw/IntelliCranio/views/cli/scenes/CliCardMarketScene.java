@@ -16,8 +16,6 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class CliCardMarketScene implements CliScene {
 
-    private ArrayList<String> containers = new ArrayList<>(Arrays.asList("warehouse", "strongbox", "card"));
-
     public void displayOptions() {
         System.out.println("CARD MARKET ACTIONS: ");
         System.out.println("-) selectCard <number> <number>");
@@ -25,6 +23,7 @@ public class CliCardMarketScene implements CliScene {
         System.out.println("-) selectSlot <number>");
         System.out.println("-) cancel");
         System.out.println("-) confirm");
+        CliIdleScene.showCardMarket();
     }
 
     private Pair<InstructionCode, ArrayList<Object>> selectCard(ArrayList<String> input) throws InvalidArgumentsException {
@@ -46,26 +45,7 @@ public class CliCardMarketScene implements CliScene {
         );
     }
 
-    private Pair<InstructionCode, ArrayList<Object>> resFrom(ArrayList<String> input) throws InvalidArgumentsException {
-        if (input.size() == 1) {
-            System.out.println("Choose the resource type and the amount that you want to use to buy the card from 'warehouse', 'strongbox' or 'card'");
-            return null;
-        }
-        if (input.size() != 4)
-            throw new InvalidArgumentsException("ERROR: you must input only 3 arguments");
 
-        if (!containers.contains(input.get(1)))
-            throw new InvalidArgumentsException("ERROR: container must be one of the following: " +
-                    containers.stream().reduce("", (x,y) -> x + " " + y));
-
-        ResourceType resType = CliUtil.checkResourceType(input.get(2));
-        int amount = CliUtil.checkInt(input.get(3),1,1000);
-
-        return new Pair<>(
-                (input.get(1) == "warehouse") ? RES_FROM_DEPOT : (input.get(1) == "strongbox") ? RES_FROM_STRONG : RES_FROM_CARD,
-                new ArrayList<>(Arrays.asList(new Resource(resType, amount)))
-        );
-    }
 
     private Pair<InstructionCode, ArrayList<Object>> selectSlot(ArrayList<String> input) throws InvalidArgumentsException {
 
@@ -90,7 +70,7 @@ public class CliCardMarketScene implements CliScene {
             case "selectCard":
                 return selectCard(input);
             case "putRes":
-                return resFrom(input);
+                return CliUtil.resFrom(input);
             case "selectSlot":
                 return selectSlot(input);
             case "confirm":

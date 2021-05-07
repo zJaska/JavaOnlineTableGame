@@ -105,4 +105,18 @@ public class FaithTrack implements Serializable {
         return vpTiles.get(space);
     }
 
+
+    // View purposes only
+
+    public ArrayList<Integer> getPopeSpacesCopy() {
+        ArrayList<Integer> copy = new ArrayList<>();
+        popeSpaces.forEach(x -> copy.add(Integer.valueOf(x)));
+        return copy;
+    }
+
+    public ArrayList<Integer> getStartOfVaticanSectionsCopy() {
+        ArrayList<Integer> copy = new ArrayList<>();
+        startOfVaticanSections.forEach(x -> copy.add(Integer.valueOf(x)));
+        return copy;
+    }
 }

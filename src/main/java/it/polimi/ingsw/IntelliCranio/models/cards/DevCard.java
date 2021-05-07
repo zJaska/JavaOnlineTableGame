@@ -48,4 +48,16 @@ public class DevCard extends Card {
     public ArrayList<FinalResource> getProduct() {
         return product;
     }
+
+    @Override
+    public String toString() {
+        return "DevCard {" +
+                "vp=" + vp +
+                ", type=" + type +
+                ", level=" + level +
+                ", cardCost=[ " + cardCost.stream().map(FinalResource::toString).reduce("", (x,y) -> x + " " + y) + "]" +
+                ", productionCost=" + productionCost.stream().map(FinalResource::toString).reduce("", (x,y) -> x + " " + y) + "]" +
+                ", product=" + product.stream().map(FinalResource::toString).reduce("", (x,y) -> x + " " + y) + "]" +
+                " }";
+    }
 }

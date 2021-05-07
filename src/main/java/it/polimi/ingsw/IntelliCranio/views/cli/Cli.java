@@ -22,15 +22,20 @@ public class Cli implements View {
     CliSceneFactory sceneFactory = new CliSceneFactory();
 
     public Pair<InstructionCode,ArrayList<Object>> getInput() {
-        ArrayList<String> input = null;
+        ArrayList<String> input;
         Pair<InstructionCode,ArrayList<Object>> data;
 
         do {
-            input = new ArrayList<String>(Arrays.asList(scanner.nextLine().split(" ")));
+            do {
+                input = new ArrayList<String>(Arrays.asList(scanner.nextLine().split(" ")));
+            } while (input.size() == 0 || input.get(0) == "");
 
             String firstWord = input.get(0);
             if (Arrays.stream(CliIdleScene.IDLE_COMMANDS).anyMatch(x -> x.equals(firstWord))) {
-                CliIdleScene.displayIdleCommand(input, scene);
+                try { CliIdleScene.displayIdleCommand(input, scene); }
+                catch (InvalidArgumentsException e) {
+                    System.out.println(e.getErrorMessage());
+                }
                 return null;
             }
 

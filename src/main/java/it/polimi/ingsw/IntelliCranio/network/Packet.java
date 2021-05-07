@@ -46,7 +46,10 @@ public class Packet implements Serializable {
         // Setup codes
         CHOOSE_NICKNAME,
         CHOOSE_NUMBER_PLAYERS,
+        WANNA_PLAY_ALONE,
         NICKNAME,
+        ALONE,
+        MULTIPLAYER,
 
         // Logic codes
         GAME,
@@ -70,12 +73,7 @@ public class Packet implements Serializable {
         STATE_INVALID,
 
         // Setup network errors
-        NICKNAME_TAKEN,
-
-        // Setup syntax errors
-        BAD_ARGUMENTS_NUMBER,
-        OUT_OF_BOUNDS,
-        NOT_A_NUMBER
+        NICKNAME_TAKEN
     }
 
     private InstructionCode instructionCode;

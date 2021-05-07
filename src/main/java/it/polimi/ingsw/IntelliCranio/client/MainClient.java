@@ -1,7 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.client;
 
 import it.polimi.ingsw.IntelliCranio.models.Game;
-import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.views.DummyView;
@@ -15,9 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
 import static it.polimi.ingsw.IntelliCranio.util.Net.createPacketFromInput;
-import static java.lang.Integer.parseInt;
 
 public class MainClient {
 
@@ -28,6 +25,11 @@ public class MainClient {
     private static View view;
 
     public static void main(String[] args) {
+        /*
+        game = new Game(new ArrayList<>(Arrays.asList("icci","pippi")));
+        nickname = "icci";
+        CliIdleScene.showDevCards();*/
+
         view = askView();
         //view = getDummyView(parseInt(args[0]));
 

@@ -29,4 +29,8 @@ public class CardResource implements Serializable {
     public int getLevel() {
         return level;
     }
+
+    public String toString() {
+        return "{" + type + ", " + amount + ", " + level + "}";
+    }
 }

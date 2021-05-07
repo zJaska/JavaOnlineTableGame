@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.cards;
 
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType;
 import it.polimi.ingsw.IntelliCranio.server.ability.AbilityFactory;
@@ -68,13 +69,13 @@ public class LeadCard extends Card{
 
     @Override
     public String toString() {
-        return "LeadCard{" +
-                "isActive=" + isActive +
-                //", cardRequirements=" + cardRequirements +
-                //", resourceRequirements=" + resourceRequirements +
-                ", abilityType=" + abilityType +
-                ", resourceType=" + resourceType +
-                //", specialAbility=" + specialAbility +
-                '}';
+        return "LeadCard {" +
+                "vp=" + vp +
+                ",\tactive=" + isActive +
+                ",\tability: {" + abilityType +
+                ", " + resourceType + "}, " +
+                ((cardRequirements != null) ? "\tcard requirements: [" + cardRequirements.stream().map(CardResource::toString).reduce("", (x,y) -> x + " " + y) + " ]" : "") +
+                ((resourceRequirements != null) ? "\tresource requirements: [" + resourceRequirements.stream().map(FinalResource::toString).reduce("", (x, y) -> x + " " + y) + " ]" : "") +
+                " }";
     }
 }

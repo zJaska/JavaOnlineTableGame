@@ -130,6 +130,10 @@ public class GameManager implements Runnable {
                     try {
                         action.execute(game, packet); //Execute the content of the packet received
 
+                        //Send updated game
+                        gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
+                        network.sendAll(gamePacket);
+
                         String ackMessage = "Action Accepted";
                         Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ackMessage)));
                         network.send(currentPlayer.getNickname(), ackMessagePacket);
@@ -137,10 +141,6 @@ public class GameManager implements Runnable {
                         // Send next action to the player
                         if (!game.endTurn)
                             network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
-
-                        //Send updated game
-                        gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
-                        network.sendAll(gamePacket);
 
                     } catch (InvalidArgumentsException e) {
 

@@ -92,6 +92,16 @@ public class ClientHandler implements Runnable {
 
         new Thread(new PingingDevice(socketHandler)).start();
 
+        // Asking if he wants to play alone
+        socketHandler.send(new Packet(WANNA_PLAY_ALONE, null, null));
+        try {
+            if (socketHandler.receive().getInstructionCode() == ALONE) {
+                // Todo: create the game managaer for the solo play
+            }
+        } catch (IOException e) {
+            disconnectPlayer(socketHandler,TIMEOUT_MSG);
+            return;
+        }
 
         // Adding the player to a lobby
 
