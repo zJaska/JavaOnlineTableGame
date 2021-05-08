@@ -377,4 +377,16 @@ public class Checks {
         }
     }
 
+    public static void hasPlayed(Player player) throws InvalidArgumentsException {
+        if(player.hasPlayed) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! You can only perform one action per turn";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+    }
+
 }

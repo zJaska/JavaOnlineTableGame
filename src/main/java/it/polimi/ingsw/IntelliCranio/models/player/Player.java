@@ -35,7 +35,7 @@ public class Player implements Serializable {
     private ArrayList<LeadCard> leaders;
     private ArrayList<PopeCard> popeCards;
 
-    private boolean hasPlayed;
+    public boolean hasPlayed;
 
     private InstructionCode lastAction;
 

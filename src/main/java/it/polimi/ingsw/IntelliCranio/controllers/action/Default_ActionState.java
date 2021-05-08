@@ -43,6 +43,7 @@ public class Default_ActionState extends ActionState {
             case MNG_WARE: manageWarehouse(); return;
             case CARD_MARKET: cardMarket(); return;
             case RES_MARKET: resourceMarket(); return;
+            case ACT_PROD: activateProduction(); return;
             default:
                 InvalidArgumentsException e = new InvalidArgumentsException(CODE_NOT_ALLOWED);
                 String errorMessage = "OOOPS, something went wrong! Action invalid in current state";
@@ -162,16 +163,24 @@ public class Default_ActionState extends ActionState {
         //endregion
     }
 
-    private void cardMarket() {
+    private void cardMarket() throws InvalidArgumentsException {
+
+        Player currentPlayer = game.getCurrentPlayer();
+
+        Checks.hasPlayed(currentPlayer); //Throw exception if player already did a turn action
 
         //region Execute operation
         action.setActionState(new CardMarket_ActionState(action), CARD_MARKET);
-        game.getCurrentPlayer().setLastAction(CARD_MARKET);
+        currentPlayer.setLastAction(CARD_MARKET);
         Save.saveGame(game);
         //endregion
     }
 
-    private void resourceMarket() {
+    private void resourceMarket() throws InvalidArgumentsException {
+
+        Player currentPlayer = game.getCurrentPlayer();
+
+        Checks.hasPlayed(currentPlayer); //Throw exception if player already did a turn action
 
         //region Execute operation
         action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
@@ -180,9 +189,11 @@ public class Default_ActionState extends ActionState {
         //endregion
     }
 
-    private void activateProduction() {
+    private void activateProduction() throws InvalidArgumentsException {
 
-        //I get here if the argument is valid
+        Player currentPlayer = game.getCurrentPlayer();
+
+        Checks.hasPlayed(currentPlayer); //Throw exception if player already did a turn action
 
         //region Execute operation
         action.setActionState(new ActivateProduction_ActionState(action), ACT_PROD);
