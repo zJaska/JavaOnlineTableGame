@@ -71,7 +71,7 @@ public class Checks {
         if(line < 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
-            String errorMessage = "OOOPS, something went wrong! One or more lines selected are negative";
+            String errorMessage = "OOOPS, something went wrong! One or more values selected are negative";
 
             e.setErrorMessage(errorMessage);
 
@@ -83,9 +83,9 @@ public class Checks {
         if(line >= size) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
-            String errorMessage = "OOOPS, something went wrong! One or more lines selected exceed depot size";
-            errorMessage += "\nSelected line: " + (line + 1);
-            errorMessage += "\nDepot size: " + size;
+            String errorMessage = "OOOPS, something went wrong! One or more values selected exceed maximum size";
+            errorMessage += "\nSelected value: " + (line + 1);
+            errorMessage += "\nMax size: " + size;
 
             e.setErrorMessage(errorMessage);
 
@@ -387,6 +387,61 @@ public class Checks {
 
             throw e;
         }
+    }
+
+    public static void hasSelected(boolean hasSelected) throws InvalidArgumentsException {
+
+        if(hasSelected) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You have already selected something";
+
+            throw e;
+        }
+
+    }
+
+    public static void notSelected(boolean hasSelected) throws InvalidArgumentsException {
+
+        if(!hasSelected) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! Nothing was selected";
+
+            throw e;
+        }
+
+    }
+
+    public static void noBlanks(Resource blanks) throws InvalidArgumentsException {
+
+        if(blanks.getAmount() == 0) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! No blank resources to choose from";
+
+            throw e;
+        }
+    }
+
+    public static void hasBlanks(Resource blanks) throws InvalidArgumentsException {
+
+        if(blanks.getAmount() != 0) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! There are some blank resources left";
+            errorMessage += "\nAmount left: " + blanks.getAmount();
+
+            throw e;
+        }
+    }
+
+    public static void blankOrFaith(Resource resource) throws InvalidArgumentsException {
+
+        if(resource.getType() == BLANK || resource.getType() == FAITH) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! Selection contains a BLANK or FAITH resource";
+            errorMessage += "\nSelected type: " + resource.getType();
+
+            throw e;
+        }
+
     }
 
 }
