@@ -1,0 +1,262 @@
+[
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "YELLOW",
+        "amount": 1,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "GREEN",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "SALE",
+    "resourceType": "SERVANT",
+    "vp": 2,
+    "ID": "leadercard_front_1_1"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "BLUE",
+        "amount": 1,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "PURPLE",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "SALE",
+    "resourceType": "SHIELD",
+    "vp": 2,
+    "ID": "leadercard_front_1_2"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "GREEN",
+        "amount": 1,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "BLUE",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "SALE",
+    "resourceType": "STONE",
+    "vp": 2,
+    "ID": "leadercard_front_1_3"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "YELLOW",
+        "amount": 1,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "PURPLE",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "SALE",
+    "resourceType": "COIN",
+    "vp": 2,
+    "ID": "leadercard_front_1_4"
+  },
+  {
+    "isActive": false,
+    "resourceRequirements": [
+      {
+        "type": "COIN",
+        "amount": 5
+      }
+    ],
+    "abilityType": "DEPOT",
+    "resourceType": "STONE",
+    "vp": 3,
+    "ID": "leadercard_front_2_1"
+  },
+  {
+    "isActive": false,
+    "resourceRequirements": [
+      {
+        "type": "STONE",
+        "amount": 5
+      }
+    ],
+    "abilityType": "DEPOT",
+    "resourceType": "SERVANT",
+    "vp": 3,
+    "ID": "leadercard_front_2_2"
+  },
+  {
+    "isActive": false,
+    "resourceRequirements": [
+      {
+        "type": "SERVANT",
+        "amount": 5
+      }
+    ],
+    "abilityType": "DEPOT",
+    "resourceType": "SHIELD",
+    "vp": 3,
+    "ID": "leadercard_front_2_3"
+  },
+  {
+    "isActive": false,
+    "resourceRequirements": [
+      {
+        "type": "SHIELD",
+        "amount": 5
+      }
+    ],
+    "abilityType": "DEPOT",
+    "resourceType": "COIN",
+    "vp": 3,
+    "ID": "leadercard_front_2_4"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "YELLOW",
+        "amount": 2,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "BLUE",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "RESOURCE",
+    "resourceType": "SERVANT",
+    "vp": 5,
+    "ID": "leadercard_front_3_1"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "GREEN",
+        "amount": 2,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "PURPLE",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "RESOURCE",
+    "resourceType": "SHIELD",
+    "vp": 5,
+    "ID": "leadercard_front_3_2"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "BLUE",
+        "amount": 2,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "YELLOW",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "RESOURCE",
+    "resourceType": "STONE",
+    "vp": 5,
+    "ID": "leadercard_front_3_3"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "PURPLE",
+        "amount": 2,
+        "minLevelRequired": 0
+      },
+      {
+        "type": "GREEN",
+        "amount": 1,
+        "minLevelRequired": 0
+      }
+    ],
+    "abilityType": "RESOURCE",
+    "resourceType": "COIN",
+    "vp": 5,
+    "ID": "leadercard_front_3_4"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "YELLOW",
+        "amount": 1,
+        "minLevelRequired": 2
+      }
+    ],
+    "abilityType": "PRODUCTION",
+    "resourceType": "SHIELD",
+    "vp": 4,
+    "ID": "leadercard_front_4_1"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "BLUE",
+        "amount": 1,
+        "minLevelRequired": 2
+      }
+    ],
+    "abilityType": "PRODUCTION",
+    "resourceType": "SERVANT",
+    "vp": 4,
+    "ID": "leadercard_front_4_2"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "PURPLE",
+        "amount": 1,
+        "minLevelRequired": 2
+      }
+    ],
+    "abilityType": "PRODUCTION",
+    "resourceType": "STONE",
+    "vp": 4,
+    "ID": "leadercard_front_4_3"
+  },
+  {
+    "isActive": false,
+    "cardRequirements": [
+      {
+        "type": "GREEN",
+        "amount": 1,
+        "minLevelRequired": 2
+      }
+    ],
+    "abilityType": "PRODUCTION",
+    "resourceType": "COIN",
+    "vp": 4,
+    "ID": "leadercard_front_4_4"
+  }
+]

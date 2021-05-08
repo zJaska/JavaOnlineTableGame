@@ -115,7 +115,7 @@ public class CardMarketTest {
 
         assertTrue(deepEquals(actual, expected));
 
-        market.removeCard(0,0);
+       // market.removeCard(0,0);
 
         assertTrue(deepEquals(actual, expected));
 
@@ -176,8 +176,6 @@ public class CardMarketTest {
 
         assertNull(actual4);
 
-        DevCard actual5 = market.getCard(0,0);
-        assertNull(actual5);
     }
 
 }

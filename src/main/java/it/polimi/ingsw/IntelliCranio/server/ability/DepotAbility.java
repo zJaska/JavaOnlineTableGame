@@ -44,6 +44,10 @@ public class DepotAbility extends Ability{
     }
 
     public boolean isFull() {
+
+        if(isEmpty())
+            return false;
+
         return depot.getAmount() == 2;
     }
 
