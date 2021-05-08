@@ -394,6 +394,7 @@ public class Checks {
         if(hasSelected) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You have already selected something";
+            e.setErrorMessage(errorMessage);
 
             throw e;
         }
@@ -405,6 +406,7 @@ public class Checks {
         if(!hasSelected) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Nothing was selected";
+            e.setErrorMessage(errorMessage);
 
             throw e;
         }
@@ -416,6 +418,7 @@ public class Checks {
         if(blanks.getAmount() == 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! No blank resources to choose from";
+            e.setErrorMessage(errorMessage);
 
             throw e;
         }
@@ -427,6 +430,7 @@ public class Checks {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! There are some blank resources left";
             errorMessage += "\nAmount left: " + blanks.getAmount();
+            e.setErrorMessage(errorMessage);
 
             throw e;
         }
@@ -438,6 +442,7 @@ public class Checks {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Selection contains a BLANK or FAITH resource";
             errorMessage += "\nSelected type: " + resource.getType();
+            e.setErrorMessage(errorMessage);
 
             throw e;
         }

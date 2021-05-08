@@ -39,6 +39,8 @@ public class ResourceMarket_ActionState extends ActionState {
             case SELECT_ROW: selectRow(packet.getArgs()); return;
             case SELECT_COLUMN: selectCol(packet.getArgs()); return;
             case CHOOSE_RES: chooseResource(packet.getArgs()); return;
+            case CANCEL: cancel(); return;
+            case CONFIRM: confirm(); return;
         }
 
 
@@ -165,7 +167,7 @@ public class ResourceMarket_ActionState extends ActionState {
 
         Player player = game.getCurrentPlayer();
 
-        ArrayList<FinalResource> marketRes = rm.selectRow(col);
+        ArrayList<FinalResource> marketRes = rm.selectColumn(col);
 
         //Add faith to player for each faith taken from market
         marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
