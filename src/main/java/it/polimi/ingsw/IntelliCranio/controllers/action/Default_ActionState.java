@@ -8,6 +8,7 @@ import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
+import it.polimi.ingsw.IntelliCranio.util.Checks;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
@@ -55,28 +56,7 @@ public class Default_ActionState extends ActionState {
         LeadCard card; //The argument expected
 
         //region Conversion of args from packet
-        if(args.size() == 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 1);
 
         try {
             card = (LeadCard) args.get(0);
@@ -99,78 +79,17 @@ public class Default_ActionState extends ActionState {
         //region Argument validation
 
         //Null Condition
-        if(card == null) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
-
-            String errorMessage = "OOOPS, something went wrong! Server received a null element";
-            errorMessage += "\nElement expected: Leader Card";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.nullElement(card, "Leader Card");
 
         //Not in Hand Condition
-        if(!player.hasLeader(card)) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+        Checks.notInHand(player, card);
 
-            String errorMessage = "OOOPS, something went wrong! Server received a card you don't have";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        AtomicBoolean error = new AtomicBoolean(false);
 
         //Resource Requirements Condition
-        ArrayList<Resource> playerResources = player.getAllResources();
-        ArrayList<FinalResource> resourceRequirements = player.getLeader(card).getResourceRequirements();
-
-        if(resourceRequirements != null)
-            resourceRequirements.forEach(resReq -> {
-
-                //No match of type and amount
-                if(playerResources.stream().noneMatch(pRes ->
-                        (pRes.getType() == resReq.getType() && pRes.getAmount() >= resReq.getAmount())))
-                    error.set(true);
-
-            });
-
-        if(error.get()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-            String errorMessage = "OOOPS, something went wrong! You don't have enough resources to activate this card";
-            e.setErrorMessage(errorMessage);
-            throw e;
-        }
+        Checks.resourceRequirements(player, card);
 
         //Card Requirements Condition
-        ArrayList<CardResource> playerDevCards = Lists.toCardResource(player.getAllDevCards());
-        ArrayList<CardResource> cardRequirements = player.getLeader(card).getCardRequirements();
-
-        cardRequirements.forEach(cReq -> {
-            //If not 0, the lead card has a specific level requirement
-            if(cReq.getLevel() != 0) {
-                //No specific match of type and level
-                if(playerDevCards.stream().noneMatch(pDev ->
-                        (pDev.getType() == cReq.getType() && pDev.getLevel() == cReq.getLevel())))
-                    error.set(true);
-            }
-            else {
-                int typeAmount = playerDevCards.stream().filter(pDev -> pDev.getType() == cReq.getType())
-                        .map(CardResource::getAmount).reduce(Integer::sum).get();
-
-                if(typeAmount < cReq.getAmount())
-                    error.set(true);
-            }
-        });
-
-        if(error.get()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-            String errorMessage = "OOOPS, something went wrong! You don't have enough development cards to activate this card";
-            e.setErrorMessage(errorMessage);
-            throw e;
-        }
+        Checks.cardRequirements(player, card);
 
         //endregion
 
@@ -189,28 +108,7 @@ public class Default_ActionState extends ActionState {
         LeadCard card; //Expected argument
 
         //region Conversion of args from packet
-        if(args.size() == 0) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        if(args.size() > 1) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
-
-            String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
-            errorMessage += "\nArguments received: " + args.size();
-            errorMessage += "\nArguments expected: 1";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.argsAmount(args, 1);
 
         try {
             card = (LeadCard) args.get(0);
@@ -233,38 +131,13 @@ public class Default_ActionState extends ActionState {
         //region Argument validation
 
         //Null Condition
-        if(card == null) {
-            InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
-
-            String errorMessage = "OOOPS, something went wrong! Server received a null element";
-            errorMessage += "\nElement expected: Leader Card";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.nullElement(card, "Leader Card");
 
         //Not in Hand
-        if(!player.hasLeader(card)) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! Server received a card you don't have";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.notInHand(player, card);
 
         //Already Active
-        if(player.getLeader(card).isActive()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-
-            String errorMessage = "OOOPS, something went wrong! The card seems to be active";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
+        Checks.cardActive(player, card);
 
         //endregion
 
@@ -282,16 +155,6 @@ public class Default_ActionState extends ActionState {
 
     private void manageWarehouse() {
 
-        //region Conversion of args from packet
-        //endregion
-
-        //I get here if there are no problems with arguments conversion
-
-        //region Argument validation
-        //endregion
-
-        //I get here if the argument is valid
-
         //region Execute operation
         action.setActionState(new ManageWarehouse_ActionState(action, DEFAULT), MNG_WARE);
         game.getCurrentPlayer().setLastAction(MNG_WARE);
@@ -300,16 +163,6 @@ public class Default_ActionState extends ActionState {
     }
 
     private void cardMarket() {
-
-        //region Conversion of args from packet
-        //endregion
-
-        //I get here if there are no problems with arguments conversion
-
-        //region Argument validation
-        //endregion
-
-        //I get here if the argument is valid
 
         //region Execute operation
         action.setActionState(new CardMarket_ActionState(action), CARD_MARKET);
@@ -320,16 +173,6 @@ public class Default_ActionState extends ActionState {
 
     private void resourceMarket() {
 
-        //region Conversion of args from packet
-        //endregion
-
-        //I get here if there are no problems with arguments conversion
-
-        //region Argument validation
-        //endregion
-
-        //I get here if the argument is valid
-
         //region Execute operation
         action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
         game.getCurrentPlayer().setLastAction(RES_MARKET);
@@ -338,14 +181,6 @@ public class Default_ActionState extends ActionState {
     }
 
     private void activateProduction() {
-
-        //region Conversion of args from packet
-        //endregion
-
-        //I get here if there are no problems with arguments conversion
-
-        //region Argument validation
-        //endregion
 
         //I get here if the argument is valid
 

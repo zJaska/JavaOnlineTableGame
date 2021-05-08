@@ -3,6 +3,8 @@ package it.polimi.ingsw.IntelliCranio.util;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
+import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
@@ -13,6 +15,7 @@ import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.BLANK;
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.FAITH;
@@ -295,6 +298,78 @@ public class Checks {
             InvalidArgumentsException e = new InvalidArgumentsException(STATE_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Operation not allowed in current state";
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+    }
+
+    public static void resourceRequirements(Player player, LeadCard card) throws InvalidArgumentsException {
+
+        AtomicBoolean error = new AtomicBoolean(false);
+
+        ArrayList<Resource> playerResources = player.getAllResources();
+        ArrayList<FinalResource> resourceRequirements = player.getLeader(card).getResourceRequirements();
+
+        if(resourceRequirements != null)
+            resourceRequirements.forEach(resReq -> {
+
+                //No match of type and amount
+                if(playerResources.stream().noneMatch(pRes ->
+                        (pRes.getType() == resReq.getType() && pRes.getAmount() >= resReq.getAmount())))
+                    error.set(true);
+
+            });
+
+        if(error.get()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You don't have enough resources to activate this card";
+            errorMessage += "\nSelected card ID: " + card.getID();
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void cardRequirements(Player player, LeadCard card) throws InvalidArgumentsException {
+
+        AtomicBoolean error = new AtomicBoolean(false);
+
+        ArrayList<CardResource> playerDevCards = Lists.toCardResource(player.getAllDevCards());
+        ArrayList<CardResource> cardRequirements = player.getLeader(card).getCardRequirements();
+
+        cardRequirements.forEach(cReq -> {
+            //If not 0, the lead card has a specific level requirement
+            if(cReq.getLevel() != 0) {
+                //No specific match of type and level
+                if(playerDevCards.stream().noneMatch(pDev ->
+                        (pDev.getType() == cReq.getType() && pDev.getLevel() == cReq.getLevel())))
+                    error.set(true);
+            }
+            else {
+                int typeAmount = playerDevCards.stream().filter(pDev -> pDev.getType() == cReq.getType())
+                        .map(CardResource::getAmount).reduce(Integer::sum).get();
+
+                if(typeAmount < cReq.getAmount())
+                    error.set(true);
+            }
+        });
+
+        if(error.get()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You don't have enough development cards to activate this card";
+            errorMessage += "\nSelected card ID: " + card.getID();
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void cardActive(Player player, LeadCard card) throws InvalidArgumentsException {
+
+        if(player.getLeader(card).isActive()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! The card seems to be active";
 
             e.setErrorMessage(errorMessage);
 
