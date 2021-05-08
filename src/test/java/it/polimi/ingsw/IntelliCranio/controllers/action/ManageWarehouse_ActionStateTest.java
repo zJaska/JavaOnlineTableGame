@@ -43,9 +43,8 @@ class ManageWarehouse_ActionStateTest {
 
     }
 
-    @ParameterizedTest
-    @EnumSource(value = Packet.InstructionCode.class)
-    void nullPacket(Packet.InstructionCode p) {//Le instruction code e listobject
+    @Test
+    void nullPacket() {//Le instruction code e listobject
 
         Action action = new Action();
         action.setActionState(new ManageWarehouse_ActionState(action, null), MNG_WARE);

@@ -36,7 +36,7 @@ class DiscardInitLeaders_ActionStateTest {
         nicknames.add("3");
         nicknames.add("4");
         game=new Game(nicknames);
-        action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);
+        action.setActionState(new ChooseInitResources_ActionState(action), DISCARD_INIT_LEAD);
 
     }
 
