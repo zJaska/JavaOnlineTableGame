@@ -53,7 +53,7 @@ class ManageWarehouse_ActionStateTest {
             action.execute(game, null);
         });
 
-        assertEquals(CODE_NULL, e.getCode());
+        assertEquals(PACKET_NULL, e.getCode());
 
     }
 
@@ -69,7 +69,7 @@ class ManageWarehouse_ActionStateTest {
             action.execute(game, packet);
         });
 
-        assertEquals(CODE_NOT_ALLOWED, e.getCode());
+        assertEquals(ARGS_NULL, e.getCode());
     }
 
     @Test
@@ -1310,7 +1310,7 @@ class ManageWarehouse_ActionStateTest {
         assertTrue(deepEquals(expectedExtra.toArray()[1], game.getCurrentPlayer().getWarehouse().getDepot()[1]));
         assertTrue(deepEquals(expectedExtra.toArray()[0], game.getCurrentPlayer().getWarehouse().getDepot()[2]));
 
-        Packet packetCanc = new Packet(CANCEL, null, null);
+        Packet packetCanc = new Packet(CANCEL, null, new ArrayList<>());
 
         action.setActionState(new ManageWarehouse_ActionState(action, MNG_WARE), MNG_WARE);
 

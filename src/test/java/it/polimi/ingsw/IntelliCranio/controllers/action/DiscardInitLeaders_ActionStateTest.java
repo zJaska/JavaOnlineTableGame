@@ -43,7 +43,7 @@ class DiscardInitLeaders_ActionStateTest {
     @Test
     void nullPacket(){//Le instruction code e listobject
         InvalidArgumentsException e =assertThrows(InvalidArgumentsException.class,()->{action.execute(game,null);});
-        assertEquals(CODE_NULL,e.getCode());
+        assertEquals(PACKET_NULL,e.getCode());
     }
 
 
@@ -52,7 +52,7 @@ class DiscardInitLeaders_ActionStateTest {
     void codeNotAllowed(Packet.InstructionCode p){
         Packet packet=new Packet(p,null,null);// For each test
         InvalidArgumentsException e= assertThrows(InvalidArgumentsException.class,()->{action.execute(game,packet );});
-        assertEquals(CODE_NOT_ALLOWED,e.getCode());
+        assertEquals(ARGS_NULL,e.getCode());
     }
 
     @Test

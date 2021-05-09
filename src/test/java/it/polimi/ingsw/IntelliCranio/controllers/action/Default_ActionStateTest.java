@@ -49,7 +49,7 @@ class Default_ActionStateTest {
             action.execute(game, null);
         });
 
-        assertEquals(CODE_NULL, e.getCode());
+        assertEquals(PACKET_NULL, e.getCode());
 
     }
 
@@ -59,7 +59,8 @@ class Default_ActionStateTest {
         Action action = new Action();
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
-        Packet packet = new Packet(p, null, null);// For each test
+
+        Packet packet = new Packet(p, null, new ArrayList<>());// For each test
 
         InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
             action.execute(game, packet);
@@ -73,13 +74,27 @@ class Default_ActionStateTest {
         Action action = new Action();
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
-        Packet packet = new Packet(PLAY_LEADER, null, null);// For each test
+        Packet packet = new Packet(PLAY_LEADER, null, new ArrayList<>());// For each test
 
         InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
             action.execute(game, packet);
         });
         System.out.println(e.getErrorMessage());
         assertEquals(NOT_ENOUGH_ARGS, e.getCode());
+    }
+
+    @Test
+    void PlayLeader_Less_Argumen_NULL(){
+        Action action = new Action();
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        Packet packet = new Packet(PLAY_LEADER, null, null);// For each test
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet);
+        });
+        System.out.println(e.getErrorMessage());
+        assertEquals(ARGS_NULL, e.getCode());
     }
 
     @Test
@@ -148,10 +163,12 @@ class Default_ActionStateTest {
         cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         ArrayList<Object> cards = new ArrayList<>();
 
-        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
         ((LeadCard)(card)).setupAbility();
 
         cards.add(card);
+
+        game.getCurrentPlayer().setLeaders(new ArrayList<>());
 
         Packet packet = new Packet(PLAY_LEADER, null, cards);// For each test
 
@@ -174,13 +191,13 @@ class Default_ActionStateTest {
         cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         ArrayList<Object> cards = new ArrayList<>();
 
-        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
-        ((LeadCard)(card)).setupAbility();
+        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
+        card.setupAbility();
 
         cards.add(card);
 
         ArrayList<LeadCard> ins=new ArrayList<>();
-        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
         i1.setupAbility();
         ins.add(i1);
 
@@ -194,6 +211,8 @@ class Default_ActionStateTest {
         System.out.println(e.getErrorMessage());
         assertEquals(SELECTION_INVALID, e.getCode());
     }
+
+    //ResourceWrong
 
     @Test
     void PlayLeader_Card_NOT_CARD_REQUIRMENTS(){
@@ -250,11 +269,29 @@ class Default_ActionStateTest {
         assertEquals(SELECTION_INVALID, e.getCode());
     }
 
+    //wrongcard
+
+    //correct
+
     //End region
 
     //New region
     @Test
     void DiscardLeader_Less_Argument(){
+        Action action = new Action();
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        Packet packet = new Packet(DISCARD_LEAD, null, new ArrayList<>());// For each test
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet);
+        });
+       // System.out.println(e.getErrorMessage());
+        assertEquals(NOT_ENOUGH_ARGS, e.getCode());
+    }
+
+    @Test
+    void DiscardLeader_Argument_null(){
         Action action = new Action();
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
@@ -264,7 +301,7 @@ class Default_ActionStateTest {
             action.execute(game, packet);
         });
         System.out.println(e.getErrorMessage());
-        assertEquals(NOT_ENOUGH_ARGS, e.getCode());
+        assertEquals(ARGS_NULL, e.getCode());
     }
 
     @Test
@@ -338,6 +375,8 @@ class Default_ActionStateTest {
 
         cards.add(card);
 
+        game.getCurrentPlayer().setLeaders(new ArrayList<>());
+
         Packet packet = new Packet(DISCARD_LEAD, null, cards);// For each test
 
         InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
@@ -348,7 +387,7 @@ class Default_ActionStateTest {
     }
 
     @Test
-    void CardLeader_Card_ACTIVED(){
+    void DiscardCardLeader_Card_ACTIVED(){
         Action action = new Action();
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
@@ -359,8 +398,8 @@ class Default_ActionStateTest {
         cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         ArrayList<Object> cards = new ArrayList<>();
 
-        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, true);
-        ((LeadCard)(card)).setupAbility();
+        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, true);
+        card.setupAbility();
 
         cards.add(card);
 
@@ -381,7 +420,7 @@ class Default_ActionStateTest {
     }
 
     @Test
-    void CardLeader_Card_CORRECT(){
+    void DiscardCardLeader_Card_CORRECT(){
         Action action = new Action();
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
@@ -392,13 +431,13 @@ class Default_ActionStateTest {
         cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         ArrayList<Object> cards = new ArrayList<>();
 
-        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
-        ((LeadCard)(card)).setupAbility();
+        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
+        card.setupAbility();
 
         cards.add(card);
 
         ArrayList<LeadCard> ins=new ArrayList<>();
-        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
         i1.setupAbility();
         ins.add(i1);
 
@@ -408,14 +447,13 @@ class Default_ActionStateTest {
 
         assertDoesNotThrow(() -> {
             action.execute(game, packet);
-
         });
 
         assertTrue(deepEquals(null,game.getCurrentPlayer().getLeader(i1)));
         assertTrue(deepEquals(0,game.getCurrentPlayer().getLeaders().size()));
-        assertTrue(deepEquals(1,game.getPlayers().get(1).getFaithPosition()));
-        assertTrue(deepEquals(1,game.getPlayers().get(2).getFaithPosition()));
-        assertTrue(deepEquals(1,game.getPlayers().get(3).getFaithPosition()));
+        assertTrue(!game.getCurrentPlayer().hasLeader(i1));
+        assertTrue(deepEquals(1,game.getCurrentPlayer().getFaithPosition()));
+
 
     }
 

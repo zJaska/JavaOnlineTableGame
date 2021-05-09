@@ -6,9 +6,9 @@ import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Save;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -24,14 +24,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
 
 class ChooseInitResources_ActionStateTest {
-    static Action action = new Action();
+     Action action = new Action();
 
-    static ArrayList<String> nicknames = new ArrayList<>();
-    static Game game;
+     ArrayList<String> nicknames = new ArrayList<>();
+     Game game;
 
 
-    @BeforeAll
-    static void setupTest() {
+    @BeforeEach
+    void setupTest() {
         nicknames.add("1");
         nicknames.add("2");
         nicknames.add("3");
@@ -47,22 +47,22 @@ class ChooseInitResources_ActionStateTest {
         InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
             action.execute(game, null);
         });
-        assertEquals(CODE_NULL, e.getCode());
+        assertEquals(PACKET_NULL, e.getCode());
     }
 
 
     @ParameterizedTest
     @EnumSource(value = Packet.InstructionCode.class, mode = EXCLUDE, names = {"CHOOSE_RES"})
-    void codeNotAllowed(Packet.InstructionCode p) {
+    void ArgsNull(Packet.InstructionCode p) {
         Packet packet = new Packet(p, null, null);// For each test
         InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
             action.execute(game, packet);
         });
-        assertEquals(CODE_NOT_ALLOWED, e.getCode());
+        assertEquals(ARGS_NULL, e.getCode());
     }
 
     @Test
-    void nullAllArgumentPacket() {//Le instruction code e listobject
+    void CodeNull() {//Le instruction code e listobject
         Packet packet = new Packet(null, null, null);// For each test
         InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
             action.execute(game, packet);
@@ -105,10 +105,8 @@ class ChooseInitResources_ActionStateTest {
         assertEquals(TYPE_MISMATCH, e.getCode());
     }
 
-
     @Test
-    @AfterAll
-    static void OneArgumentWithCorrectInstructionCode() {//Blank e faith attenzione
+     void OneArgumentWithCorrectInstructionCodeButImFirstPlayer() {//Blank e faith attenzione
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SHIELD, 1));
         Packet packet = new Packet(CHOOSE_RES, null, args);// For each test
@@ -120,7 +118,28 @@ class ChooseInitResources_ActionStateTest {
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(FinalResource.ResourceType.SHIELD, 1));
 
+        assertTrue(deepEquals(0, game.getCurrentPlayer().getExtraRes().size()));
+
+
+    }
+
+    @Test
+    void OneArgumentWithCorrectInstructionCodeButImNotFirstPlayer() {//Blank e faith attenzione
+        ArrayList<Object> args = new ArrayList<>();
+        args.add(new Resource(FinalResource.ResourceType.SHIELD, 1));
+        Packet packet = new Packet(CHOOSE_RES, null, args);// For each test
+
+        game.changeTurn();
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+        ArrayList<Resource> expectedExtra = new ArrayList<>();
+        expectedExtra.add(new Resource(FinalResource.ResourceType.SHIELD, 1));
+
         assertTrue(deepEquals(expectedExtra.get(0), game.getCurrentPlayer().getExtraRes().get(0)));
+
 
     }
 
@@ -141,6 +160,6 @@ class ChooseInitResources_ActionStateTest {
 
     @Test
     void execute() {
-        assert (true);
+        assertTrue(true);
     }
 }
