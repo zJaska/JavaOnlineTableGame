@@ -29,7 +29,7 @@ public class Checks {
 
     public static void argsAmount(ArrayList<Object> args, int expectedAmount) throws InvalidArgumentsException {
 
-        if(args == null || args.size() < expectedAmount) {
+        if(args.size() < expectedAmount) {
             InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
 
             String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
@@ -349,6 +349,7 @@ public class Checks {
             }
             else {
                 int typeAmount;
+
                 try {
                     typeAmount = playerDevCards.stream()
                             .filter(pDev -> pDev.getType() == cReq.getType())
