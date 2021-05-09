@@ -15,6 +15,7 @@ import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.BLANK;
@@ -28,7 +29,7 @@ public class Checks {
 
     public static void argsAmount(ArrayList<Object> args, int expectedAmount) throws InvalidArgumentsException {
 
-        if(args.size() < expectedAmount) {
+        if(args == null || args.size() < expectedAmount) {
             InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
 
             String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
@@ -347,8 +348,14 @@ public class Checks {
                     error.set(true);
             }
             else {
-                int typeAmount = playerDevCards.stream().filter(pDev -> pDev.getType() == cReq.getType())
-                        .map(CardResource::getAmount).reduce(Integer::sum).get();
+                int typeAmount;
+                try {
+                    typeAmount = playerDevCards.stream()
+                            .filter(pDev -> pDev.getType() == cReq.getType())
+                            .map(CardResource::getAmount).reduce(Integer::sum).get();
+                } catch (NoSuchElementException e) {
+                    typeAmount = 0;
+                }
 
                 if(typeAmount < cReq.getAmount())
                     error.set(true);

@@ -103,8 +103,8 @@ public class ResourceMarket_ActionState extends ActionState {
         //Add faith to player for each faith taken from market
         marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
 
-        //If player has ANY card of type SALE, add blank resources
-        if(player.hasLeader(Ability.AbilityType.SALE))
+        //If player has ANY card of type RESOURCE, add blank resources
+        if(player.hasLeader(Ability.AbilityType.RESOURCE))
             //Add all blanks present in selected row to blanks list
             marketRes.stream().filter(res -> res.getType().equals(BLANK)).forEach(blank -> blanks.addAmount(blank.getAmount()));
 
@@ -172,8 +172,8 @@ public class ResourceMarket_ActionState extends ActionState {
         //Add faith to player for each faith taken from market
         marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
 
-        //If player has ANY card of type SALE, add blank resources
-        if(player.hasLeader(Ability.AbilityType.SALE))
+        //If player has ANY card of type RESOURCE, add blank resources
+        if(player.hasLeader(Ability.AbilityType.RESOURCE))
             //Add all blanks present in selected row to blanks list
             marketRes.stream().filter(res -> res.getType().equals(BLANK)).forEach(blank -> blanks.addAmount(blank.getAmount()));
 
