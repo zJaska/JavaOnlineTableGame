@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
@@ -222,10 +223,13 @@ public class Player implements Serializable {
      * Get a card stored on server providing a matching object.
      *
      * @param card The card to get as original
-     * @return The server card matched by ID
+     * @return The server card matched by ID, null if player doesn't have card
      */
     public LeadCard getLeader(LeadCard card) {
-        return leaders.stream().filter(lead -> lead.getID().equals(card.getID())).findFirst().get();
+        if(hasLeader(card))
+            return leaders.stream().filter(lead -> lead.getID().equals(card.getID())).findFirst().get();
+        else
+            return null;
     }
 
     /**
