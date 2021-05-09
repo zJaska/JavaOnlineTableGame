@@ -27,6 +27,29 @@ import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.D
 
 public class Checks {
 
+    public static void packetCheck(Packet packet) throws InvalidArgumentsException {
+        if(packet == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(PACKET_NULL);
+            String errorMessage = "OOOPS, something went wrong! Server received no packet";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+
+        if(packet.getInstructionCode() == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(CODE_NULL);
+            String errorMessage = "OOOPS, something went wrong! Server received no code";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+
+        if(packet.getArgs() == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(ARGS_NULL);
+            String errorMessage = "OOOPS, something went wrong! Server received null args";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
     public static void argsAmount(ArrayList<Object> args, int expectedAmount) throws InvalidArgumentsException {
 
         if(args.size() < expectedAmount) {

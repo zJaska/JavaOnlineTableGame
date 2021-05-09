@@ -62,7 +62,9 @@ public class Packet implements Serializable {
         ACK,
 
         // Action errors
+        PACKET_NULL,
         CODE_NULL,
+        ARGS_NULL,
         CODE_NOT_ALLOWED,
         NOT_ENOUGH_ARGS,
         TOO_MANY_ARGS,

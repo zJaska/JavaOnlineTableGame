@@ -33,7 +33,7 @@ public class ResourceMarket_ActionState extends ActionState {
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
-        if (packet == null || packet.getInstructionCode() == null || packet.getArgs() == null) throw new InvalidArgumentsException(CODE_NULL);
+        Checks.packetCheck(packet);
 
         switch (packet.getInstructionCode()) {
             case SELECT_ROW: selectRow(packet.getArgs()); return;

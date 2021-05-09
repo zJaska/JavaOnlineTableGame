@@ -33,12 +33,7 @@ public class ManageWarehouse_ActionState extends ActionState {
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
 
-        if(packet == null || packet.getInstructionCode() == null || packet.getArgs() == null) {
-            InvalidArgumentsException e = new InvalidArgumentsException(CODE_NULL);
-            String errorMessage = "OOOPS, something went wrong! No action received";
-            e.setErrorMessage(errorMessage);
-            throw e;
-        }
+        Checks.packetCheck(packet);
 
         switch (packet.getInstructionCode()) {
             case SWAP_LINES: swapLines(packet.getArgs()); return;
