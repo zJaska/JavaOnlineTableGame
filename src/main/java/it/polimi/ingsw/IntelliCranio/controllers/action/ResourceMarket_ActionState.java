@@ -1,6 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
 import it.polimi.ingsw.IntelliCranio.models.Game;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
+import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
 
 public class ResourceMarket_ActionState extends ActionState {
 
@@ -88,8 +90,8 @@ public class ResourceMarket_ActionState extends ActionState {
         //Add faith to player for each faith taken from market
         marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
 
-        //If player has ANY card of type RESOURCE, add blank resources
-        if(player.hasLeader(Ability.AbilityType.RESOURCE))
+        //If player has ANY card of type RESOURCE and is active, add blank resources
+        if(player.getLeaders().stream().anyMatch(lead -> (lead.getAbilityType() == RESOURCE && lead.isActive())))
             //Add all blanks present in selected row to blanks list
             marketRes.stream().filter(res -> res.getType().equals(BLANK)).forEach(blank -> blanks.addAmount(blank.getAmount()));
 
@@ -141,8 +143,8 @@ public class ResourceMarket_ActionState extends ActionState {
         //Add faith to player for each faith taken from market
         marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
 
-        //If player has ANY card of type RESOURCE, add blank resources
-        if(player.hasLeader(Ability.AbilityType.RESOURCE))
+        //If player has ANY card of type RESOURCE and isActive, add blank resources
+        if(player.getLeaders().stream().anyMatch(lead -> (lead.getAbilityType() == RESOURCE && lead.isActive())))
             //Add all blanks present in selected row to blanks list
             marketRes.stream().filter(res -> res.getType().equals(BLANK)).forEach(blank -> blanks.addAmount(blank.getAmount()));
 
@@ -183,7 +185,11 @@ public class ResourceMarket_ActionState extends ActionState {
         Checks.blankOrFaith(resource);
 
         //Player doesn't have correct card
-        Checks.notInHand(player, Ability.AbilityType.SALE, resource.getType());
+        Checks.notInHand(player, RESOURCE, resource.getType());
+
+        //Card is not active
+        LeadCard card = player.getLeader(RESOURCE, resource.getType());
+        Checks.cardInactive(card);
 
         //endregion
 

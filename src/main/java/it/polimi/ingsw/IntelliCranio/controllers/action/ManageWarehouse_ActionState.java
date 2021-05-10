@@ -227,7 +227,7 @@ public class ManageWarehouse_ActionState extends ActionState {
         card = player.getLeader(DEPOT, resource.getType());
 
         //Card Inactive Condition
-        Checks.inactiveCard(card);
+        Checks.cardInactive(card);
 
         //Card Depot Full Condition
         Checks.cardDepotFull(card);
@@ -282,7 +282,7 @@ public class ManageWarehouse_ActionState extends ActionState {
         card = player.getLeader(DEPOT, resource.getType());
 
         //Card Inactive Condition
-        Checks.inactiveCard(card);
+        Checks.cardInactive(card);
 
         //Card Depot is full
         Checks.cardDepotFull(card);

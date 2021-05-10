@@ -2,6 +2,7 @@ package it.polimi.ingsw.IntelliCranio.util;
 
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.player.Strongbox;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
@@ -290,7 +291,26 @@ public class Checks {
         }
     }
 
-    public static void inactiveCard(LeadCard card) throws InvalidArgumentsException {
+    /**
+     *
+     * @param card The SERVER copy of provided card
+     * @param at
+     * @throws InvalidArgumentsException
+     */
+    public static void invalidAbility(LeadCard card, AbilityType at) throws InvalidArgumentsException {
+
+        if(card.getAbilityType() != at) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! Selected card doesn't have a valid ability";
+            errorMessage += "\nExpected ability: " + at;
+
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+
+    }
+
+    public static void cardInactive(LeadCard card) throws InvalidArgumentsException {
         if(!card.isActive()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
@@ -522,6 +542,18 @@ public class Checks {
             errorMessage += "\nSelected slot: " + slot;
             e.setErrorMessage(errorMessage);
 
+            throw e;
+        }
+
+    }
+
+    public static void strongboxEmpty(Strongbox sb, ResourceType rt) throws InvalidArgumentsException {
+
+        if(sb.getAmount(rt) == 0) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! Selected resource is empty in strongbox";
+            errorMessage += "\nSelected resource: " + rt;
+            e.setErrorMessage(errorMessage);
             throw e;
         }
 
