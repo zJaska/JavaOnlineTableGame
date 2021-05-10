@@ -46,4 +46,25 @@ class ResourceMarketTest {
         assertTrue(deepEquals(list,resources));
     }
 
+    @Test
+    void testSelectRow(){
+        ResourceMarket market =new ResourceMarket(3,4);
+        //I would like to select a row and shift that
+        ArrayList<Resource> expected=new ArrayList<>();
+        Resource ExtraMrblExpected=new Resource(market.getExtraMarble().getType(),1);
+
+        for(int c=0;c< market.COLUMNS;c++)
+            expected.add(new Resource(market.getMarbleGrid()[1][c].getType(),1));
+
+        market.selectRow(1);
+
+        for(int c=0;c<market.COLUMNS-1;c++)
+            assertTrue(deepEquals(expected.get(c+1),market.getMarbleGrid()[1][c]));
+
+        assertTrue(deepEquals(ExtraMrblExpected,market.getMarbleGrid()[1][market.COLUMNS-1]));
+        assertTrue(deepEquals(expected.get(0),market.getExtraMarble()));
+
+
+    }
+
 }
