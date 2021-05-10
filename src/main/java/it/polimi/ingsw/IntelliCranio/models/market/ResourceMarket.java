@@ -78,7 +78,7 @@ public class ResourceMarket implements Serializable {
         FinalResource tempExtraMarble = marbleGrid[row][0];
 
         //Left-Shift the row
-        for(int col = 1; col < COLUMNS - 1; ++col)
+        for(int col = 1; col < COLUMNS; ++col)
             marbleGrid[row][col - 1] = marbleGrid[row][col];
 
         //Add the extra marble at the end of the row
@@ -112,7 +112,7 @@ public class ResourceMarket implements Serializable {
         FinalResource tempExtraMarble = marbleGrid[0][column];
 
         //Top-Shift the column
-        for(int row = 1; row < ROWS - 1; ++row)
+        for(int row = 1; row < ROWS; ++row)
             marbleGrid[row - 1][column] = marbleGrid[row][column];
 
         //Add the extra marble at the end of the column
