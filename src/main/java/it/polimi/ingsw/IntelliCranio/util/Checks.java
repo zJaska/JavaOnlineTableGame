@@ -91,8 +91,8 @@ public class Checks {
         }
     }
 
-    public static void negativeLine(int line) throws InvalidArgumentsException {
-        if(line < 0) {
+    public static void negativeValue(int value) throws InvalidArgumentsException {
+        if(value < 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! One or more values selected are negative";
@@ -103,6 +103,32 @@ public class Checks {
         }
     }
 
+    /**
+     * Used for single values checks
+     * @param value
+     * @param max
+     * @throws InvalidArgumentsException
+     */
+    public static void overMaxValue(int value, int max) throws InvalidArgumentsException {
+        if(value > max) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+
+            String errorMessage = "OOOPS, something went wrong! One or more values selected exceed maximum size";
+            errorMessage += "\nSelected value: " + value;
+            errorMessage += "\nMax value: " + max;
+
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+    }
+
+    /**
+     * Used for depots and arrays checks
+     * @param line
+     * @param size
+     * @throws InvalidArgumentsException
+     */
     public static void overSizeLine(int line, int size) throws InvalidArgumentsException{
         if(line >= size) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
@@ -473,6 +499,27 @@ public class Checks {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Selection contains a BLANK or FAITH resource";
             errorMessage += "\nSelected type: " + resource.getType();
+            e.setErrorMessage(errorMessage);
+
+            throw e;
+        }
+
+    }
+
+    /**
+     * If slot == 0, don't throw (base is always possible)
+     * @param player
+     * @param slot
+     */
+    public static void slotEmpty(Player player, int slot) throws InvalidArgumentsException {
+
+        if(slot == 0)
+            return;
+
+        if(player.getFirstDevCards()[slot - 1] == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! There are no cards in selected slot";
+            errorMessage += "\nSelected slot: " + slot;
             e.setErrorMessage(errorMessage);
 
             throw e;

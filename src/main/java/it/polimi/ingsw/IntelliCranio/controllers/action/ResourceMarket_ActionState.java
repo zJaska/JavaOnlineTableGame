@@ -9,6 +9,7 @@ import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
+import it.polimi.ingsw.IntelliCranio.util.Conversions;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
@@ -41,39 +42,23 @@ public class ResourceMarket_ActionState extends ActionState {
             case CHOOSE_RES: chooseResource(packet.getArgs()); return;
             case CANCEL: cancel(); return;
             case CONFIRM: confirm(); return;
+            default:
+                InvalidArgumentsException e = new InvalidArgumentsException(CODE_NOT_ALLOWED);
+                String errorMessage = "OOOPS, something went wrong! Action invalid in current state";
+                e.setErrorMessage(errorMessage);
+                throw e; //Code in packet is not allowed in this state
         }
-
-
-        throw new InvalidArgumentsException(CODE_NOT_ALLOWED); //Code in packet is not allowed in this state
-
-
     }
 
     private void selectRow(ArrayList<Object> args) throws InvalidArgumentsException {
 
         int row; //Expected argument
 
-        //region Conversion of args from packet
-
         //Amount args check
         Checks.argsAmount(args, 1);
 
-        try {
+        row = Conversions.getInteger(args, 0);
 
-            row = (int)args.get(0);
-
-        } catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
-            errorMessage += "\nElement expected: Integer Number";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //endregion
 
         //I get here if there are no problems with arguments conversion
 
@@ -88,7 +73,7 @@ public class ResourceMarket_ActionState extends ActionState {
         Checks.overSizeLine(row, rm.ROWS);
 
         //Negative Row Condition
-        Checks.negativeLine(row);
+        Checks.negativeValue(row);
 
         //endregion
 
@@ -122,27 +107,11 @@ public class ResourceMarket_ActionState extends ActionState {
 
         int col; //Expected argument
 
-        //region Conversion of args from packet
-
         //Amount args check
         Checks.argsAmount(args, 1);
 
-        try {
+        col = Conversions.getInteger(args, 0);
 
-            col = (int)args.get(0);
-
-        } catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
-            errorMessage += "\nElement expected: Integer Number";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //endregion
 
         //I get here if there are no problems with arguments conversion
 
@@ -157,7 +126,7 @@ public class ResourceMarket_ActionState extends ActionState {
         Checks.overSizeLine(col, rm.COLUMNS);
 
         //Negative Row Condition
-        Checks.negativeLine(col);
+        Checks.negativeValue(col);
 
         //endregion
 
@@ -191,26 +160,11 @@ public class ResourceMarket_ActionState extends ActionState {
 
         Resource resource; //Expected arg for this action
 
-        //region Conversion of args from packet
-
         //Amount args check
         Checks.argsAmount(args, 1);
 
-        try {
+        resource = Conversions.getResource(args, 0);
 
-            resource = (Resource) args.get(0);
-
-        } catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
-            errorMessage += "\nElement expected: Resource";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        //endregion
 
         //I get here if there are no problems with arguments conversion
 

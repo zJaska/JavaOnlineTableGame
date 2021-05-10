@@ -39,7 +39,7 @@ public class Packet implements Serializable {
         RES_FROM_DEPOT,
         RES_FROM_STRONG,
         RES_FROM_CARD,
-        SELECT_SLOT,
+        SELECT_SLOT, //0 = base, 1-3 = dev slot
         SELECT_CARD,
 
 

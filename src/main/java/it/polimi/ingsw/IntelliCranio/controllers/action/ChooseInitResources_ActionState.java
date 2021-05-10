@@ -6,6 +6,7 @@ import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
+import it.polimi.ingsw.IntelliCranio.util.Conversions;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
@@ -42,23 +43,9 @@ public class ChooseInitResources_ActionState extends ActionState {
 
         Resource resource; //Expected argument for this operation
 
-        //region Conversion of args from packet
-
         Checks.argsAmount(args, 1);
 
-        try {
-            resource = (Resource) args.get(0);
-        } catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
-            errorMessage += "\nElement expected: Resource";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        //endregion
+        resource = Conversions.getResource(args, 0);
 
         //I get here if there are no problems with arguments conversion
 

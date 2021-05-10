@@ -9,6 +9,7 @@ import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
+import it.polimi.ingsw.IntelliCranio.util.Conversions;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
@@ -55,25 +56,10 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         int first, second; //Expected arguments for this operation
 
-        //region Conversion of args from packet
-
         Checks.argsAmount(args, 2);
 
-        try{
-            first = (int)args.get(0);
-            second = (int)args.get(1);
-        } catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received some elements invalid for this action";
-            errorMessage += "\nElements expected: Integer Numbers";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-
-        //endregion
+        first = Conversions.getInteger(args, 0);
+        second = Conversions.getInteger(args, 1);
 
         //I get here if there are no problems with arguments conversion
 
@@ -85,8 +71,8 @@ public class ManageWarehouse_ActionState extends ActionState {
         Checks.sameLine(first, second);
 
         //Negative Line Condition
-        Checks.negativeLine(first);
-        Checks.negativeLine(second);
+        Checks.negativeValue(first);
+        Checks.negativeValue(second);
 
         //Over Size Condition
         Checks.overSizeLine(first, playerWh.getDepot().length);
@@ -115,25 +101,10 @@ public class ManageWarehouse_ActionState extends ActionState {
         Resource resource; //First Expected argument
         int depotLine; //Second Expected argument
 
-        //region Conversion of args from packet
-
         Checks.argsAmount(args, 2);
 
-        try {
-            resource = (Resource) args.get(0);
-            depotLine = (int) args.get(1);
-        }catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received some elements invalid for this action";
-            errorMessage += "\nFirst Element Expected: Resource";
-            errorMessage += "\nSecond Element Expected: Integer Number";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        //endregion
+        resource = Conversions.getResource(args, 0);
+        depotLine = Conversions.getInteger(args, 1);
 
         //I get here if there are no problems with arguments conversion
 
@@ -147,7 +118,7 @@ public class ManageWarehouse_ActionState extends ActionState {
         Checks.nullElement(resource.getType(), "Type of Resource");
 
         //Negative Line Condition
-        Checks.negativeLine(depotLine);
+        Checks.negativeValue(depotLine);
 
         //Over Size Condition
         Checks.overSizeLine(depotLine, playerWh.getDepot().length);
@@ -186,23 +157,9 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         int depotLine; //Expected argument
 
-        //region Conversion of args from packet
-
         Checks.argsAmount(args, 1);
 
-        try {
-            depotLine = (int) args.get(0);
-        } catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
-            errorMessage += "\nElement expected: Integer Number";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        //endregion
+        depotLine = Conversions.getInteger(args, 0);
 
         //I get here if there are no problems with arguments conversion
 
@@ -211,7 +168,7 @@ public class ManageWarehouse_ActionState extends ActionState {
         //region Argument validation
 
         //Negative line Condition
-        Checks.negativeLine(depotLine);
+        Checks.negativeValue(depotLine);
 
         //Over Size Condition
         Checks.overSizeLine(depotLine, playerWh.getDepot().length);
@@ -242,23 +199,9 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         int depotLine; //Expected first argument
 
-        //region Conversion of args from packet
-
         Checks.argsAmount(args, 1);
 
-        try {
-            depotLine = (int) args.get(0);
-        }catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
-            errorMessage += "\nElement expected: Integer Number";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        //endregion
+        depotLine = Conversions.getInteger(args, 0);
 
         //I get here if there are no problems with arguments conversion
 
@@ -311,23 +254,9 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         Resource resource; //Expected argument
 
-        //region Conversion of args from packet
-
         Checks.argsAmount(args, 1);
 
-        try {
-            resource = (Resource) args.get(0);
-        }catch (Exception ex) {
-            InvalidArgumentsException e = new InvalidArgumentsException(TYPE_MISMATCH);
-
-            String errorMessage = "OOOPS, something went wrong! Server received an element invalid for this action";
-            errorMessage += "\nElement expected: Resource";
-
-            e.setErrorMessage(errorMessage);
-
-            throw e;
-        }
-        //endregion
+        resource = Conversions.getResource(args, 0);
 
         //I get here if there are no problems with arguments conversion
 
