@@ -32,17 +32,17 @@ public class CliActivateProductionScene implements CliScene {
 
     private Pair<InstructionCode, ArrayList<Object>> selectSlot(ArrayList<String> input) throws InvalidArgumentsException {
         if (input.size() == 1) {
-            System.out.println("Select the slot of the development card you want to use");
+            System.out.println("Select the slot of the development card you want to use (or 0 if you want to use the base production)");
             return null;
         }
         if (input.size() != 2)
             throw new InvalidArgumentsException("ERROR: you must input only the number of the slot");
 
-        int num = CliUtil.checkInt(input.get(1),1, MainClient.game.getCurrentPlayer().getFirstDevCards().length);
+        int num = CliUtil.checkInt(input.get(1),0, MainClient.game.getCurrentPlayer().getFirstDevCards().length);
 
         return new Pair<>(
                 SELECT_SLOT,
-                new ArrayList<>(Arrays.asList(num - 1)));
+                new ArrayList<>(Arrays.asList(num)));
     }
 
     private Pair<InstructionCode, ArrayList<Object>> selectCard(ArrayList<String> input) throws InvalidArgumentsException {
@@ -55,7 +55,7 @@ public class CliActivateProductionScene implements CliScene {
 
         ArrayList<LeadCard> leaders = MainClient.game.getCurrentPlayer().getLeaders();
         int num = CliUtil.checkInt(input.get(1), 1, leaders.size());
-        LeadCard lead = leaders.get(num);
+        LeadCard lead = leaders.get(num-1);
 
         if (lead.getAbilityType() != PRODUCTION)
             throw new InvalidArgumentsException("ERROR: the leader card must have a production ability");
