@@ -25,8 +25,8 @@ import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.Resour
 
 public class CliIdleScene implements CliScene {
 
-    public static final String[] IDLE_COMMANDS = new String[] {
-      "/help", "/showWarehouse", "/showStrongbox", "/showCardMarket", "/showResourceMarket",
+    public static final String[] IDLE_COMMANDS = new String[]{
+            "/help", "/showWarehouse", "/showStrongbox", "/showCardMarket", "/showResourceMarket",
             "/showFaithTrack", "/display", "/resourceTypes", "/showLeaders", "/showDevCards"
     };
 
@@ -41,16 +41,17 @@ public class CliIdleScene implements CliScene {
     }
 
     /**
-     *
      * @param input The command the calls the method. If null, shows the player's warehouse.
      *              Otherwise, input.get(1) should be the nickname of a player.
      */
     public static void showWarehouse(ArrayList<String> input) throws InvalidArgumentsException {
-        _showWarehouse(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+        _showWarehouse(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
     }
+
     public static void showWarehouse() {
         _showWarehouse(MainClient.game.getPlayer(MainClient.nickname));
     }
+
     private static void _showWarehouse(Player player) {
         System.out.println("Warehouse (" + player.getNickname() + "):");
         Resource[] resources = player.getWarehouse().getDepot();
@@ -64,15 +65,16 @@ public class CliIdleScene implements CliScene {
     }
 
     /**
-     *
      * @param input The command that calls the method. input.get(1) should be the nickname of a player.
      */
     public static void showStrongbox(ArrayList<String> input) throws InvalidArgumentsException {
-        _showStrongbox(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+        _showStrongbox(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
     }
+
     public static void showStrongbox() {
         _showStrongbox(MainClient.game.getPlayer(MainClient.nickname));
     }
+
     private static void _showStrongbox(Player player) {
         System.out.println("Strongbox (" + player.getNickname() + "): ");
         player.getStrongbox().getAll().forEach(System.out::println);
@@ -84,15 +86,14 @@ public class CliIdleScene implements CliScene {
         ResourceMarket market = MainClient.game.getResourceMarket();
         FinalResource[][] grid = market.getGridCopy();
 
-        for (int i=0; i<market.COLUMNS; i++)
-            System.out.print("\t" + (i+1));
+        for (int i = 0; i < market.COLUMNS; i++)
+            System.out.print("\t" + (i + 1));
         System.out.println();
 
-        for (int i=0; i<market.ROWS; i++) {
-            ArrayList<FinalResource> resources = market.selectRow(i);
-            System.out.print((i+1) + "\t");
-            for (int j=0; j<market.COLUMNS; j++)
-                System.out.print(grid[i][j].getType().toString().substring(0,2) + "\t");
+        for (int i = 0; i < market.ROWS; i++) {
+            System.out.print((i + 1) + "\t");
+            for (int j = 0; j < market.COLUMNS; j++)
+                System.out.print(grid[i][j].getType().toString().substring(0, 2) + "\t");
             System.out.println();
         }
         System.out.println("Extra marble: " + market.getExtraMarbleCopy());
@@ -105,28 +106,28 @@ public class CliIdleScene implements CliScene {
         final int FIRST = 15;
 
         System.out.println("Card Market: ");
-        System.out.print(format("",FIRST));
+        System.out.print(format("", FIRST));
 
         Arrays.asList(CardType.values()).forEach(x -> System.out.print(format(x.toString())));
         System.out.println();
 
-        for (int i=0; i<market.rows; i++) {
+        for (int i = 0; i < market.rows; i++) {
 
             // r is the index that splits a level into 3 lines
-            for (int r=0; r<3; r++) {
+            for (int r = 0; r < 3; r++) {
                 if (r == 1)
-                    System.out.print(format("Level " + (market.rows-i), FIRST));
+                    System.out.print(format("Level " + (market.rows - i), FIRST));
                 else
-                    System.out.print(format("",FIRST));
+                    System.out.print(format("", FIRST));
 
-                for (int j=0; j<market.cols; j++) {
-                    if (market.getCard(i,j) == null) {
+                for (int j = 0; j < market.cols; j++) {
+                    if (market.getCard(i, j) == null) {
                         System.out.print(format(""));
                         continue;
                     }
 
                     if (r == 0)
-                        System.out.print(format(String.valueOf(market.getCard(i,j).getVictoryPoints())));
+                        System.out.print(format(String.valueOf(market.getCard(i, j).getVictoryPoints())));
                     if (r == 1) {
                         String tmp = "";
                         for (FinalResource x : market.getCard(i, j).getCardCost())
@@ -151,13 +152,14 @@ public class CliIdleScene implements CliScene {
         }
     }
 
-    private static String format (String x) {
+    private static String format(String x) {
         String space = "                                                       ";
-        return x.concat(space).substring(0,40);
+        return x.concat(space).substring(0, 40);
     }
-    private static String format (String x, int num) {
+
+    private static String format(String x, int num) {
         String space = "                                                       ";
-        return x.concat(space).substring(0,num);
+        return x.concat(space).substring(0, num);
     }
 
     public static void showFaithTrack() {
@@ -168,7 +170,7 @@ public class CliIdleScene implements CliScene {
         game.getPlayers().forEach(x -> {
             System.out.println(x.getNickname() + ": \t{" +
                     "index: " + x.getFaithPosition() + ",\t" +
-                    "pope cards: [" + x.getPopeCards().stream().map(card -> card.getStatus().toString()).reduce("", (s1,s2) -> s1 + " " + s2) + " ]\t");
+                    "pope cards: [" + x.getPopeCards().stream().map(card -> card.getStatus().toString()).reduce("", (s1, s2) -> s1 + " " + s2) + " ]\t");
         });
 
         System.out.print("Pope spaces: ");
@@ -181,16 +183,17 @@ public class CliIdleScene implements CliScene {
     }
 
     /**
-     *
      * @param input The command the calls the method. If null, shows the player's warehouse.
      *              Otherwise, input.get(1) should be the nickname of a player.
      */
     public static void showLeaders(ArrayList<String> input) throws InvalidArgumentsException {
-        _showLeaders(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+        _showLeaders(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
     }
+
     public static void showLeaders() {
         _showLeaders(MainClient.game.getPlayer(MainClient.nickname));
     }
+
     private static void _showLeaders(Player player) {
         ArrayList<LeadCard> leaders = player.getLeaders();
         System.out.println("Leader cards (" + player.getNickname() + "): (requirements: {type, amount, level})");
@@ -199,16 +202,18 @@ public class CliIdleScene implements CliScene {
                 System.out.println((leaders.indexOf(x) + 1) + ") " + x);
         });
     }
-    
+
     public static void showDevCards(ArrayList<String> input) throws InvalidArgumentsException {
-        _showDevCards(CliUtil.checkPlayerHelpCommands(input,MainClient.game));
+        _showDevCards(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
     }
+
     public static void showDevCards() {
         _showDevCards(MainClient.game.getPlayer(MainClient.nickname));
     }
+
     private static void _showDevCards(Player player) {
         System.out.println("Development cards (" + player.getNickname() + "):");
-        int i=1;
+        int i = 1;
         for (DevCard card : player.getFirstDevCards()) {
             System.out.println(i++ + ") " + card);
         }
@@ -228,7 +233,7 @@ public class CliIdleScene implements CliScene {
                 help(input);
                 break;
             case "/display":
-                display(input,scene);
+                display(input, scene);
                 break;
             case "/showWarehouse":
                 showWarehouse(input);
@@ -257,7 +262,11 @@ public class CliIdleScene implements CliScene {
         }
     }
 
-    public void displayOptions() { System.out.println("It's not your turn"); }
+    public void displayOptions() {
+        System.out.println("It's not your turn");
+    }
 
-    public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) { return null; }
+    public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) {
+        return null;
+    }
 }
