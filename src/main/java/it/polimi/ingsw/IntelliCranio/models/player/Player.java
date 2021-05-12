@@ -195,6 +195,8 @@ public class Player implements Serializable {
      * @return True if player has the card, false otherwise
      */
     public boolean hasLeader(Ability.AbilityType at) {
+        if(leaders==null)
+            return false;
         return leaders.stream().anyMatch(lead -> lead.getAbilityType() == at);
     }
 
@@ -204,6 +206,8 @@ public class Player implements Serializable {
      * @return True if player has the card, false otherwise
      */
     public boolean hasLeader(FinalResource.ResourceType rt) {
+        if(leaders==null)
+            return false;
         return leaders.stream().anyMatch(lead -> lead.getResourceType() == rt);
     }
 
@@ -214,6 +218,8 @@ public class Player implements Serializable {
      * @return True if player has the card, false otherwise
      */
     public boolean hasLeader(Ability.AbilityType at, FinalResource.ResourceType rt) {
+        if(leaders==null)
+            return false;
         return leaders.stream()
                 .anyMatch(lead -> (lead.getAbilityType() == at && lead.getResourceType() == rt));
     }
@@ -250,6 +256,8 @@ public class Player implements Serializable {
     }
 
     public void removeLeader(LeadCard card) {
+        if(leaders==null)
+            return ;
         leaders.removeIf(lead -> lead.getID().equals(card.getID()));
     }
 
@@ -267,6 +275,8 @@ public class Player implements Serializable {
      * @return True if a resource of type rt is in the list, false otherwise
      */
     public boolean hasExtra(FinalResource.ResourceType rt) {
+        if(extraRes==null)
+            return false;
         return extraRes.stream().anyMatch(res -> res.getType() == rt);
     }
 

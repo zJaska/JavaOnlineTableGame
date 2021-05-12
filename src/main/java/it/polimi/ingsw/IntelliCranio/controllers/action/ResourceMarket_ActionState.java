@@ -97,7 +97,7 @@ public class ResourceMarket_ActionState extends ActionState {
 
         //Add all resources different from BLANK or FAITH to player extra res
         marketRes.stream()
-                .filter(res -> (!res.getType().equals(FAITH) || !res.getType().equals(BLANK)))
+                .filter(res -> (!res.getType().equals(FAITH) && !res.getType().equals(BLANK)))
                 .forEach(res -> player.addExtra(res.getType(), res.getAmount()));
 
         hasSelected = true;
@@ -150,7 +150,7 @@ public class ResourceMarket_ActionState extends ActionState {
 
         //Add all resources different from BLANK or FAITH to player extra res
         marketRes.stream()
-                .filter(res -> (!res.getType().equals(FAITH) || !res.getType().equals(BLANK)))
+                .filter(res -> (!res.getType().equals(FAITH) && !res.getType().equals(BLANK)))
                 .forEach(res -> player.addExtra(res.getType(), res.getAmount()));
 
         hasSelected = true;

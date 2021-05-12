@@ -4,6 +4,8 @@ import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,23 +48,44 @@ class ResourceMarketTest {
         assertTrue(deepEquals(list,resources));
     }
 
-    @Test
-    void testSelectRow(){
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2 })
+    void testSelectRow(int test){
         ResourceMarket market =new ResourceMarket(3,4);
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblExpected=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
 
         for(int c=0;c< market.COLUMNS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[1][c].getType(),1));
+            expected.add(new Resource(market.getMarbleGrid()[test][c].getType(),1));
 
-        market.selectRow(1);
+        market.selectRow(test);
 
         for(int c=0;c<market.COLUMNS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1),market.getMarbleGrid()[1][c]));
+            assertTrue(deepEquals(expected.get(c+1).getType(),market.getMarbleGrid()[test][c].getType()));
 
-        assertTrue(deepEquals(ExtraMrblExpected,market.getMarbleGrid()[1][market.COLUMNS-1]));
-        assertTrue(deepEquals(expected.get(0),market.getExtraMarble()));
+        assertTrue(deepEquals(ExtraMrblOld,market.getMarbleGrid()[test][market.COLUMNS-1]));
+        assertTrue(deepEquals(expected.get(0).getType(),market.getExtraMarble().getType()));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3})
+    void testSelectColumn(int test){
+        ResourceMarket market =new ResourceMarket(3,4);
+        //I would like to select a row and shift that
+        ArrayList<Resource> expected=new ArrayList<>();
+        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+
+        for(int c=0;c< market.ROWS;c++)
+            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+
+        market.selectColumn(test);
+
+        for(int c=0;c<market.ROWS-1;c++)
+            assertTrue(deepEquals(expected.get(c+1).getType(),market.getMarbleGrid()[c][test].getType()));
+
+        assertTrue(deepEquals(ExtraMrblOld,market.getMarbleGrid()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),market.getExtraMarble().getType()));
 
 
     }
