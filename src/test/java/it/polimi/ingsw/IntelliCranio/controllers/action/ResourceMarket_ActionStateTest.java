@@ -601,8 +601,12 @@ class ResourceMarket_ActionStateTest {
             }
         }
 
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
         ArrayList<Object> args1=new ArrayList<>();
-        args1.add(new Resource(FinalResource.ResourceType.SERVANT,1));
+        args1.add(new Resource(FinalResource.ResourceType.SHIELD,1));
 
         Packet packet1=new Packet(CHOOSE_RES,null,args1);
 
@@ -717,17 +721,41 @@ class ResourceMarket_ActionStateTest {
         assertTrue(deepEquals(null,game.getCurrentPlayer().getExtra(FAITH)));
 
         if(numBlank>0) {
+
+
+            Packet packet2=new Packet(CONFIRM,null,new ArrayList<>());
+
+            InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+                action.execute(game, packet2);
+            });
+
+            assertEquals(SELECTION_INVALID, e.getCode());
+
+
+
+
+
             ArrayList<Object> args1 = new ArrayList<>();
             args1.add(new Resource(FinalResource.ResourceType.SERVANT, 1));
 
             Packet packet1 = new Packet(CHOOSE_RES, null, args1);
 
-            assertDoesNotThrow(() -> {
-                action.execute(game, packet1);
-            });
-            numServant++;
+            while(numBlank>0) {
+                assertDoesNotThrow(() -> {
+                    action.execute(game, packet1);
+                });
+                numServant++;
 
-            assertTrue(deepEquals(numServant, game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT).getAmount()));
+                assertTrue(deepEquals(numServant, game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT).getAmount()));
+                numBlank--;
+            }
+
+            Packet packet3=new Packet(CONFIRM,null,new ArrayList<>());
+
+            assertDoesNotThrow(() -> {
+                action.execute(game, packet3);
+            });
+
         }else{
             ArrayList<Object> args1=new ArrayList<>();
             args1.add(new Resource(FinalResource.ResourceType.SERVANT,1));
@@ -739,6 +767,14 @@ class ResourceMarket_ActionStateTest {
             });
 
             assertEquals(SELECTION_INVALID, e.getCode());
+
+            Packet packet2=new Packet(CONFIRM,null,new ArrayList<>());
+
+            assertDoesNotThrow(() -> {
+                action.execute(game, packet2);
+            });
+
+
         }
 
     }
@@ -923,6 +959,8 @@ class ResourceMarket_ActionStateTest {
         if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK)!=null)
             assertTrue(deepEquals(0,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK).getAmount()));
 
+        assertTrue(deepEquals(null,game.getCurrentPlayer().getExtra(FAITH)));
+
         ArrayList<Object> args1=new ArrayList<>();
         args1.add(new Resource(FinalResource.ResourceType.COIN,1));
 
@@ -933,6 +971,497 @@ class ResourceMarket_ActionStateTest {
         });
 
         assertEquals(SELECTION_INVALID, e.getCode());
+
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3 })
+    void testSelectColumnButLeadersNotActived(int test){
+
+        game.changeTurn();
+
+        ArrayList<CardResource> cardRequirements = new ArrayList<>();
+        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 2, 0));
+        cardRequirements.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
+        ArrayList<LeadCard> cards = new ArrayList<>();
+
+        LeadCard card = new LeadCard("leadercard_front_3_1", 5, cardRequirements, null, Ability.AbilityType.RESOURCE, FinalResource.ResourceType.SERVANT, false);
+        card.setupAbility();
+
+        cards.add(card);
+
+        game.getCurrentPlayer().setLeaders(cards);
+
+        ArrayList<Object> args=new ArrayList<>();
+        args.add(test);
+
+        Action action = new Action();
+        action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
+        Packet packet=new Packet(SELECT_COLUMN,null,args);
+
+
+        ResourceMarket market = game.getResourceMarket();
+        //I would like to select a row and shift that
+        ArrayList<Resource> expected=new ArrayList<>();
+        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+
+        int incrementFaith=0;
+        int numCoin=0;
+        int numShield=0;
+        int numStone=0;
+        int numServant=0;
+
+        for(int c=0;c< market.ROWS;c++)
+            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+
+        for(int i=0;i<expected.size();i++){
+            switch (expected.get(i).getType()){
+                case FAITH:
+                    incrementFaith++;
+                    break;
+
+                case COIN:
+                    numCoin++;
+                    break;
+
+                case SHIELD:
+                    numShield++;
+                    break;
+
+                case STONE:
+                    numStone++;
+                    break;
+
+                case SERVANT:
+                    numServant++;
+                    break;
+
+                case BLANK:
+                    //IDontHaveLeaders
+                    break;
+            }
+        }
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+        for(int c=0;c<market.ROWS-1;c++)
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+
+        assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN)!=null)
+            assertTrue(deepEquals(numCoin,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD)!=null)
+            assertTrue(deepEquals(numShield,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE)!=null)
+            assertTrue(deepEquals(numStone,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT)!=null)
+            assertTrue(deepEquals(numServant,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK)!=null)
+            assertTrue(deepEquals(0,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK).getAmount()));
+
+        assertTrue(deepEquals(null,game.getCurrentPlayer().getExtra(FAITH)));
+
+        ArrayList<Object> args1=new ArrayList<>();
+        args1.add(new Resource(FinalResource.ResourceType.SERVANT,1));
+
+        Packet packet1=new Packet(CHOOSE_RES,null,args1);
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet1);
+        });
+
+        assertEquals(SELECTION_INVALID, e.getCode());
+
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3 })
+    void testSelectColumnButLeadersHasWrongAbility(int test){
+
+        game.changeTurn();
+
+        ArrayList<CardResource> cardRequirements = new ArrayList<>();
+        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 2, 0));
+        cardRequirements.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
+        ArrayList<LeadCard> cards = new ArrayList<>();
+
+        LeadCard card = new LeadCard("leadercard_front_3_1", 5, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, true);
+        card.setupAbility();
+
+        cards.add(card);
+
+        game.getCurrentPlayer().setLeaders(cards);
+
+        ArrayList<Object> args=new ArrayList<>();
+        args.add(test);
+
+        Action action = new Action();
+        action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
+        Packet packet=new Packet(SELECT_COLUMN,null,args);
+
+
+        ResourceMarket market = game.getResourceMarket();
+        //I would like to select a row and shift that
+        ArrayList<Resource> expected=new ArrayList<>();
+        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+
+        int incrementFaith=0;
+        int numCoin=0;
+        int numShield=0;
+        int numStone=0;
+        int numServant=0;
+
+        for(int c=0;c< market.ROWS;c++)
+            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+
+        for(int i=0;i<expected.size();i++){
+            switch (expected.get(i).getType()){
+                case FAITH:
+                    incrementFaith++;
+                    break;
+
+                case COIN:
+                    numCoin++;
+                    break;
+
+                case SHIELD:
+                    numShield++;
+                    break;
+
+                case STONE:
+                    numStone++;
+                    break;
+
+                case SERVANT:
+                    numServant++;
+                    break;
+
+                case BLANK:
+                    //IDontHaveLeaders
+                    break;
+            }
+        }
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+        for(int c=0;c<market.ROWS-1;c++)
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+
+        assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN)!=null)
+            assertTrue(deepEquals(numCoin,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD)!=null)
+            assertTrue(deepEquals(numShield,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE)!=null)
+            assertTrue(deepEquals(numStone,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT)!=null)
+            assertTrue(deepEquals(numServant,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK)!=null)
+            assertTrue(deepEquals(0,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK).getAmount()));
+
+        assertTrue(deepEquals(null,game.getCurrentPlayer().getExtra(FAITH)));
+
+        ArrayList<Object> args1=new ArrayList<>();
+        args1.add(new Resource(FinalResource.ResourceType.SERVANT,1));
+
+        Packet packet1=new Packet(CHOOSE_RES,null,args1);
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet1);
+        });
+
+        assertEquals(SELECTION_INVALID, e.getCode());
+
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3 })
+    void testSelectColumnButLeadersHasWrongResource(int test){
+
+        game.changeTurn();
+
+        ArrayList<CardResource> cardRequirements = new ArrayList<>();
+        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 2, 0));
+        cardRequirements.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
+        ArrayList<LeadCard> cards = new ArrayList<>();
+
+        LeadCard card = new LeadCard("leadercard_front_3_1", 5, cardRequirements, null, Ability.AbilityType.RESOURCE, FinalResource.ResourceType.SERVANT, true);
+        card.setupAbility();
+
+        cards.add(card);
+
+        game.getCurrentPlayer().setLeaders(cards);
+
+        ArrayList<Object> args=new ArrayList<>();
+        args.add(test);
+
+        Action action = new Action();
+        action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
+        Packet packet=new Packet(SELECT_COLUMN,null,args);
+
+
+        ResourceMarket market = game.getResourceMarket();
+        //I would like to select a row and shift that
+        ArrayList<Resource> expected=new ArrayList<>();
+        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+
+        int incrementFaith=0;
+        int numCoin=0;
+        int numShield=0;
+        int numStone=0;
+        int numServant=0;
+
+        for(int c=0;c< market.ROWS;c++)
+            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+
+        for(int i=0;i<expected.size();i++){
+            switch (expected.get(i).getType()){
+                case FAITH:
+                    incrementFaith++;
+                    break;
+
+                case COIN:
+                    numCoin++;
+                    break;
+
+                case SHIELD:
+                    numShield++;
+                    break;
+
+                case STONE:
+                    numStone++;
+                    break;
+
+                case SERVANT:
+                    numServant++;
+                    break;
+
+                case BLANK:
+                    //IDontHaveLeaders
+                    break;
+            }
+        }
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+        for(int c=0;c<market.ROWS-1;c++)
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+
+        assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN)!=null)
+            assertTrue(deepEquals(numCoin,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD)!=null)
+            assertTrue(deepEquals(numShield,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE)!=null)
+            assertTrue(deepEquals(numStone,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT)!=null)
+            assertTrue(deepEquals(numServant,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK)!=null)
+            assertTrue(deepEquals(0,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK).getAmount()));
+
+        assertTrue(deepEquals(null,game.getCurrentPlayer().getExtra(FAITH)));
+
+        ArrayList<Object> args1=new ArrayList<>();
+        args1.add(new Resource(FinalResource.ResourceType.COIN,1));
+
+        Packet packet1=new Packet(CHOOSE_RES,null,args1);
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet1);
+        });
+
+        assertEquals(SELECTION_INVALID, e.getCode());
+
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3 })
+    void testSelectColumnCorrectWithLeader(int test){
+
+        game.changeTurn();
+
+        ArrayList<CardResource> cardRequirements = new ArrayList<>();
+        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 2, 0));
+        cardRequirements.add(new CardResource(DevCard.CardType.BLUE, 1, 0));
+        ArrayList<LeadCard> cards = new ArrayList<>();
+
+        LeadCard card = new LeadCard("leadercard_front_3_1", 5, cardRequirements, null, Ability.AbilityType.RESOURCE, FinalResource.ResourceType.SERVANT, true);
+        card.setupAbility();
+
+        cards.add(card);
+
+        game.getCurrentPlayer().setLeaders(cards);
+
+        ArrayList<Object> args=new ArrayList<>();
+        args.add(test);
+
+        Action action = new Action();
+        action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
+        Packet packet=new Packet(SELECT_COLUMN,null,args);
+
+
+        ResourceMarket market = game.getResourceMarket();
+        //I would like to select a row and shift that
+        ArrayList<Resource> expected=new ArrayList<>();
+        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+
+        int incrementFaith=0;
+        int numCoin=0;
+        int numShield=0;
+        int numStone=0;
+        int numServant=0;
+        int numBlank=0;
+
+        for(int c=0;c< market.ROWS;c++)
+            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+
+        for(int i=0;i<expected.size();i++){
+            switch (expected.get(i).getType()){
+                case FAITH:
+                    incrementFaith++;
+                    break;
+
+                case COIN:
+                    numCoin++;
+                    break;
+
+                case SHIELD:
+                    numShield++;
+                    break;
+
+                case STONE:
+                    numStone++;
+                    break;
+
+                case SERVANT:
+                    numServant++;
+                    break;
+
+                case BLANK:
+                    numBlank++;
+                    break;
+            }
+        }
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+        for(int c=0;c<market.ROWS-1;c++)
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+
+        assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN)!=null)
+            assertTrue(deepEquals(numCoin,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.COIN).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD)!=null)
+            assertTrue(deepEquals(numShield,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SHIELD).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE)!=null)
+            assertTrue(deepEquals(numStone,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.STONE).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT)!=null)
+            assertTrue(deepEquals(numServant,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT).getAmount()));
+
+        if(game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK)!=null)
+            assertTrue(deepEquals(0,game.getCurrentPlayer().getExtra(FinalResource.ResourceType.BLANK).getAmount()));
+
+        assertTrue(deepEquals(null,game.getCurrentPlayer().getExtra(FAITH)));
+
+        if(numBlank>0) {
+
+
+            Packet packet2=new Packet(CONFIRM,null,new ArrayList<>());
+
+            InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+                action.execute(game, packet2);
+            });
+
+            assertEquals(SELECTION_INVALID, e.getCode());
+
+
+
+
+
+            ArrayList<Object> args1 = new ArrayList<>();
+            args1.add(new Resource(FinalResource.ResourceType.SERVANT, 1));
+
+            Packet packet1 = new Packet(CHOOSE_RES, null, args1);
+
+            while(numBlank>0) {
+                assertDoesNotThrow(() -> {
+                    action.execute(game, packet1);
+                });
+                numServant++;
+
+                assertTrue(deepEquals(numServant, game.getCurrentPlayer().getExtra(FinalResource.ResourceType.SERVANT).getAmount()));
+                numBlank--;
+            }
+
+            Packet packet3=new Packet(CONFIRM,null,new ArrayList<>());
+
+            assertDoesNotThrow(() -> {
+                action.execute(game, packet3);
+            });
+
+        }else{
+            ArrayList<Object> args1=new ArrayList<>();
+            args1.add(new Resource(FinalResource.ResourceType.SERVANT,1));
+
+            Packet packet1=new Packet(CHOOSE_RES,null,args1);
+
+            InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+                action.execute(game, packet1);
+            });
+
+            assertEquals(SELECTION_INVALID, e.getCode());
+
+            Packet packet2=new Packet(CONFIRM,null,new ArrayList<>());
+
+            assertDoesNotThrow(() -> {
+                action.execute(game, packet2);
+            });
+
+
+        }
 
 
     }
