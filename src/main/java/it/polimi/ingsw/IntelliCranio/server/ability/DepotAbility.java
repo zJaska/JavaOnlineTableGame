@@ -27,6 +27,10 @@ public class DepotAbility extends Ability{
             depot.addAmount(1);
     }
 
+    /**
+     * Remove a single unit from depot if is not empty.
+     * If depot amount is 0, it is set to null.
+     */
     public void removeResource() {
         if(!isEmpty())
             depot.removeAmount(1);

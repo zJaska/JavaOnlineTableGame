@@ -113,9 +113,9 @@ public class CliManageWarehouseScene implements CliScene {
             case "extraToCard":
                 return extraToCard(input);
             case "confirm":
-                return new Pair<>(CONFIRM, null);
+                return new Pair<>(CONFIRM, new ArrayList<>());
             case "cancel":
-                return new Pair<>(CANCEL, null);
+                return new Pair<>(CANCEL, new ArrayList<>());
             default:
                 throw new InvalidArgumentsException("ERROR: command not found");
         }

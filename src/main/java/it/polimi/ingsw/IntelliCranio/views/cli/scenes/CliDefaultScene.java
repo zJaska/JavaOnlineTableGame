@@ -58,7 +58,7 @@ public class CliDefaultScene implements CliScene {
                     throw new InvalidArgumentsException("ERROR: you must input only 1 argument");
 
                 int num = CliUtil.checkInt(input.get(0),1, instructionCodes.size());
-                return new Pair<>(instructionCodes.get(num - 1), null);
+                return new Pair<>(instructionCodes.get(num - 1), new ArrayList<>());
         }
 
         return null;

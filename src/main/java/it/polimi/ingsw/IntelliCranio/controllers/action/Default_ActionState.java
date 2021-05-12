@@ -108,7 +108,7 @@ public class Default_ActionState extends ActionState {
         Checks.notInHand(player, card);
 
         //Already Active
-        Checks.cardActive(player, card);
+        Checks.cardActive(player.getLeader(card));
 
         //endregion
 

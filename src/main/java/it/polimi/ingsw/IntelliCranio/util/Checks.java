@@ -310,12 +310,17 @@ public class Checks {
 
     }
 
-    public static void cardInactive(LeadCard card) throws InvalidArgumentsException {
-        if(!card.isActive()) {
+    /**
+     *
+     * @param serverCard The SERVER copy of given card
+     * @throws InvalidArgumentsException
+     */
+    public static void cardInactive(LeadCard serverCard) throws InvalidArgumentsException {
+        if(!serverCard.isActive()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Your card is not active";
-            errorMessage += "\nSelected card ID: " + card.getID();
+            errorMessage += "\nSelected card ID: " + serverCard.getID();
 
             e.setErrorMessage(errorMessage);
 
@@ -323,17 +328,39 @@ public class Checks {
         }
     }
 
-    public static void cardDepotFull(LeadCard card) throws InvalidArgumentsException {
-        if(((DepotAbility)card.getSpecialAbility()).isFull()) {
+    /**
+     *
+     * @param serverCard The SERVER copy of given card
+     * @throws InvalidArgumentsException
+     */
+    public static void cardDepotFull(LeadCard serverCard) throws InvalidArgumentsException {
+        if(((DepotAbility)serverCard.getSpecialAbility()).isFull()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The depot of the card is already full";
-            errorMessage += "\nSelected card ID: " + card.getID();
+            errorMessage += "\nSelected card ID: " + serverCard.getID();
 
             e.setErrorMessage(errorMessage);
 
             throw e;
         }
+    }
+
+    /**
+     *
+     * @param serverCard The SERVER copy of given card
+     * @throws InvalidArgumentsException
+     */
+    public static void cardDepotEmpty(LeadCard serverCard) throws InvalidArgumentsException {
+
+        if(((DepotAbility)serverCard.getSpecialAbility()).isEmpty()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! Selected card has empty depot";
+            errorMessage += "\nSelected card ID: " + serverCard.getID();
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+
     }
 
     public static void invalidResource(ResourceType selected, ResourceType invalid) throws InvalidArgumentsException{
@@ -441,9 +468,14 @@ public class Checks {
         }
     }
 
-    public static void cardActive(Player player, LeadCard card) throws InvalidArgumentsException {
+    /**
+     *
+     * @param serverCard The SERVER copy of given card
+     * @throws InvalidArgumentsException
+     */
+    public static void cardActive(LeadCard serverCard) throws InvalidArgumentsException {
 
-        if(player.getLeader(card).isActive()) {
+        if(serverCard.isActive()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The card seems to be active";
@@ -553,6 +585,24 @@ public class Checks {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Selected resource is empty in strongbox";
             errorMessage += "\nSelected resource: " + rt;
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+
+    }
+
+    public static void invalidCostResources(ArrayList<FinalResource> actual, ArrayList<FinalResource> expected) throws InvalidArgumentsException {
+
+        AtomicBoolean error = new AtomicBoolean(false);
+
+        expected.forEach(ex -> {
+            if(actual.stream().noneMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() < ex.getAmount())))
+                error.set(true);
+        });
+
+        if(error.get()){
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You don't have enough resources selected";
             e.setErrorMessage(errorMessage);
             throw e;
         }

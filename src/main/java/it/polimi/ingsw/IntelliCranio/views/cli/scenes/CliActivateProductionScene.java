@@ -91,9 +91,9 @@ public class CliActivateProductionScene implements CliScene {
             case "chooseResource":
                 return chooseResource(input);
             case "cancel":
-                return new Pair<>(CANCEL, null);
+                return new Pair<>(CANCEL, new ArrayList<>());
             case "confirm":
-                return new Pair<>(CONFIRM, null);
+                return new Pair<>(CONFIRM, new ArrayList<>());
             default:
                 throw new InvalidArgumentsException("Command not found");
         }
