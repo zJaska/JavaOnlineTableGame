@@ -9,7 +9,6 @@ import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
@@ -18,7 +17,6 @@ import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
@@ -243,7 +241,7 @@ public class ActivateProduction_ActionState extends ActionState{
         Checks.notInHand(player, card);
 
         //Invalid Ability
-        Checks.invalidAbility(serverCard, PRODUCTION);
+        Checks.invalidAbility(serverCard, DEPOT);
 
         //Inactive
         Checks.cardInactive(serverCard);
@@ -363,7 +361,7 @@ public class ActivateProduction_ActionState extends ActionState{
         allCosts = Lists.unifyResourceAmounts(allCosts);
         costResources = Lists.unifyResourceAmounts(costResources);
 
-        Checks.invalidCostResources(costResources, allCosts);
+        Checks.invalidProdCostResources(costResources, allCosts);
 
         //endregion
 
@@ -386,7 +384,9 @@ public class ActivateProduction_ActionState extends ActionState{
 
         //endregion
 
+        Save.saveGame(game);
         game.getCurrentPlayer().hasPlayed = true;
+        action.setActionState(new Default_ActionState(action), DEFAULT);
 
     }
 

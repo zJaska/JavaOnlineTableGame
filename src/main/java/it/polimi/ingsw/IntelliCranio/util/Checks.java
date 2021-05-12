@@ -1,6 +1,8 @@
 package it.polimi.ingsw.IntelliCranio.util;
 
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.player.Strongbox;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
@@ -15,9 +17,9 @@ import it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType;
 import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.BLANK;
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.FAITH;
@@ -591,7 +593,7 @@ public class Checks {
 
     }
 
-    public static void invalidCostResources(ArrayList<FinalResource> actual, ArrayList<FinalResource> expected) throws InvalidArgumentsException {
+    public static <T extends FinalResource> void invalidProdCostResources(ArrayList<T> actual, ArrayList<T> expected) throws InvalidArgumentsException {
 
         AtomicBoolean error = new AtomicBoolean(false);
 
@@ -606,7 +608,121 @@ public class Checks {
             e.setErrorMessage(errorMessage);
             throw e;
         }
+    }
+
+    public static <T extends FinalResource> void invalidCardCostResources(ArrayList<T> actual, ArrayList<T> expected) throws InvalidArgumentsException {
+
+        AtomicBoolean error = new AtomicBoolean(false);
+
+        expected.forEach(ex -> {
+            if(actual.stream().noneMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
+                error.set(true);
+        });
+
+        if(error.get()){
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You have selected an invalid amount of resources";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void cardMarketEmpty(CardMarket cm, int row, int col) throws InvalidArgumentsException {
+
+        if(cm.getCard(row, col) == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! There are no cards left in this slot";
+            errorMessage += "\nSelected row: " + (row + 1);
+            errorMessage += "\nSelected column: " + (col + 1);
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void invalidLevel(Player player, DevCard card) throws InvalidArgumentsException {
+
+        DevCard[] topCards = player.getFirstDevCards();
+        AtomicBoolean error = new AtomicBoolean(false);
+
+        if(card.getLevel() == 1) {
+            if(Arrays.stream(topCards).noneMatch(topC -> topC == null))
+                error.set(true);
+        }
+
+        if(error.get()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPs, something went wrong! You need an empty slot to put this card";
+            errorMessage += "\nSelected card level: " + card.getLevel();
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+
+        if(Arrays.stream(topCards).filter(Objects::nonNull).noneMatch(topC -> topC.getLevel() == card.getLevel() - 1))
+            error.set(true);
+
+        if(error.get()) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You don't have a card a level below selected one";
+            errorMessage += "\nSelected card level: " + card.getLevel();
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void alreadyConfirmed(boolean confirmed) throws InvalidArgumentsException {
+        if(confirmed) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You have confirmed the card, please select a slot";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void notConfirmed(boolean confirmed) throws InvalidArgumentsException {
+        if(!confirmed) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You have to confirm before selecting a slot";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void cardSelected(DevCard card) throws InvalidArgumentsException {
+
+        if(card != null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! A card is already selected";
+            errorMessage += "\nSelected card ID: " + card.getID();
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
 
     }
 
+    public static void cardNotSelected(DevCard card) throws InvalidArgumentsException {
+        if(card == null) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! You need to select a card first";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
+
+    public static void invalidSlot(DevCard slotCard, DevCard selected) throws InvalidArgumentsException {
+
+        if(selected.getLevel() == 1)
+            if(slotCard != null) {
+                InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+                String errorMessage = "OOOPS, something went wrong! Can't add selected card in this slot";
+                e.setErrorMessage(errorMessage);
+                throw e;
+            }
+
+        if(slotCard.getLevel() != selected.getLevel() - 1) {
+            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+            String errorMessage = "OOOPS, something went wrong! Can't add selected card in this slot";
+            e.setErrorMessage(errorMessage);
+            throw e;
+        }
+    }
 }
