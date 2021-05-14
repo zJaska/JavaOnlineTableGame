@@ -80,6 +80,16 @@ public class GuiManageWarehouseConfig implements GuiConfig {
         realScene.extra_type.forEach(image -> {
             image.setOnDragDropped(null);
         });
+
+        ArrayList<Node> listeners = new ArrayList<>();
+        listeners.addAll(realScene.warehouse);
+        listeners.addAll(realScene.extra_count);
+        listeners.addAll(realScene.extra_type);
+        listeners.addAll(realScene.getLeadersButtons());
+
+        listeners.forEach(image -> {
+            image.setOnMouseClicked(null);
+        });
     }
 
     public void resolve(Node source, Node target) {
