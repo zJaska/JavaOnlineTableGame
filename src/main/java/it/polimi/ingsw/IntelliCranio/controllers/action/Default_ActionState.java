@@ -117,7 +117,7 @@ public class Default_ActionState extends ActionState {
         //region Execute operation
 
         player.removeLeader(card);
-        player.addFaith();
+        game.addCurrentPlayerFaith();
 
         Save.saveGame(game);
 

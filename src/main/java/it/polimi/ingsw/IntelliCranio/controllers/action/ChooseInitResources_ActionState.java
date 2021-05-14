@@ -88,7 +88,7 @@ public class ChooseInitResources_ActionState extends ActionState {
         if(player.extraAmount() == allowedAmount) {
             //Add initial amount of faith (no need to check for position)
             for (int i = 0; i < allowedFaith; ++i)
-                player.addFaith();
+                game.addCurrentPlayerFaith();
 
             action.setActionState(new ManageWarehouse_ActionState(action, CHOOSE_INIT_RES), MNG_WARE);
             player.setLastAction(MNG_WARE);

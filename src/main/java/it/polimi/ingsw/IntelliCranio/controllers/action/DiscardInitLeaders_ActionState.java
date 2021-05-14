@@ -70,7 +70,7 @@ public class DiscardInitLeaders_ActionState extends ActionState {
 
             //Check for automatic end turn
             if (game.getInitRes(game.getCurrentPlayerIndex()) == 0) {
-                game.endTurn = true;
+                game.endTurn(true);
                 player.setLastAction(DEFAULT);
             } else {
                 action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);
@@ -87,7 +87,7 @@ public class DiscardInitLeaders_ActionState extends ActionState {
 
             //Check for automatic end turn
             if (game.getInitRes(game.getCurrentPlayerIndex()) == 0) {
-                game.endTurn = true;
+                game.endTurn(true);
                 player.setLastAction(DEFAULT);
             } else {
                 action.setActionState(new ChooseInitResources_ActionState(action), CHOOSE_INIT_RES);

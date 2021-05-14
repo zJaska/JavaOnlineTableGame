@@ -314,6 +314,10 @@ public class CardMarket_ActionState extends ActionState{
         //Add the card to player slot
         player.addDevCard(selected, slot);
 
+        //Check for game ended
+        if(player.getAllDevCards().size() == 7)
+            game.endGame(true);
+
     }
 
 }
