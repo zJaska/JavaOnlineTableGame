@@ -181,7 +181,7 @@ public class Player implements Serializable {
     }
 
     public void addDevCard(DevCard card, int slot) {
-        devSlots[slot].add(card);
+        devSlots[slot].add(0, card);
     }
 
     public DevCard[] getFirstDevCards() {
