@@ -335,7 +335,7 @@ public class ManageWarehouse_ActionState extends ActionState {
 
         if(prevState == CHOOSE_INIT_RES) {
             game.getCurrentPlayer().setLastAction(DEFAULT);
-            game.endTurn = true;
+            game.endTurn(true);
         } else {
             action.setActionState(new Default_ActionState(action), DEFAULT); //Go to this state
             game.getCurrentPlayer().setLastAction(DEFAULT);

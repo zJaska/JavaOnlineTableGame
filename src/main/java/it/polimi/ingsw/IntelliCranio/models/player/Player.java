@@ -16,6 +16,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
@@ -174,8 +175,7 @@ public class Player implements Serializable {
     public ArrayList<DevCard> getAllDevCards() {
         ArrayList<DevCard> temp = new ArrayList<>();
 
-        for (ArrayList<DevCard> devSlot : devSlots)
-            temp.addAll(devSlot);
+        Arrays.stream(devSlots).filter(Objects::nonNull).forEach(temp::addAll);
 
         return temp;
     }

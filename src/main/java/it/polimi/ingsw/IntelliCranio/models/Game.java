@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Game implements Serializable {
@@ -28,7 +29,8 @@ public class Game implements Serializable {
     private ResourceMarket resourceMarket;
     private ArrayList<Player> players = new ArrayList<>();
 
-    public boolean endTurn = false;
+    private boolean endTurn = false;
+    private boolean endGame = false;
 
     public Game () { }
 
@@ -149,6 +151,10 @@ public class Game implements Serializable {
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
+
+    public boolean isTurnEnded() { return endTurn; }
+
+    public boolean isGameEnded() { return endGame; }
     //endregion
 
     /**
@@ -222,15 +228,15 @@ public class Game implements Serializable {
         players = temp;
     }
 
-    public void addPlayerFaith(Player player) {
+    public void addCurrentPlayerFaith() {
         //Increment player Faith
         //Check every increment the position of the player on the faith track
+        Player current = getCurrentPlayer();
 
-        player.addFaith();
+        if(current.getFaithPosition() < faithTrack.getTrackLength())
+            getCurrentPlayer().addFaith();
 
-        //Todo: Gestione posizioni e fine del gioco
-
-        throw new UnsupportedOperationException();
+        faithTrack.checkStatus(players, this);
     }
 
     public void addFaithToAll(int faithAmount) {
@@ -238,11 +244,11 @@ public class Game implements Serializable {
         for(int i = 0; i < faithAmount; ++i) {
             //Increment faith for every player other than current one
             players.stream()
-                    .filter(player -> !player.equals(getCurrentPlayer()))
+                    .filter(player -> (!player.equals(getCurrentPlayer()) && player.getFaithPosition() < faithTrack.getTrackLength()))
                     .forEach(Player::addFaith);
 
             //Check the positions on the faithtrack
-            faithTrack.checkStatus(players);
+            faithTrack.checkStatus(players, this);
         }
     }
 
@@ -252,10 +258,14 @@ public class Game implements Serializable {
         players.add(turn, player);
     }
 
+    public void endTurn(boolean flag) { endTurn = flag; }
+
     public void changeTurn() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
         endTurn = false;
     }
+
+    public void endGame(boolean flag) { endGame = flag; }
 
     public void loadGame(Game newGame) {
         uuid = newGame.getUuid();
@@ -264,6 +274,6 @@ public class Game implements Serializable {
         faithTrack = newGame.getFaithTrack();
         resourceMarket = newGame.getResourceMarket();
         cardMarket = newGame.getCardMarket();
-        endTurn = newGame.endTurn;
+        endTurn = newGame.isTurnEnded();
     }
 }

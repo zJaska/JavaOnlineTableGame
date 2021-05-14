@@ -160,7 +160,7 @@ public class GameManager implements Runnable {
                         network.send(currentPlayer.getNickname(), ackMessagePacket);
 
                         // Send next action to the player
-                        if (!game.endTurn)
+                        if (!game.isTurnEnded())
                             network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
 
                     } catch (InvalidArgumentsException e) {
@@ -179,7 +179,7 @@ public class GameManager implements Runnable {
                 }
 
                 //Check if action was an automatic ending turn
-                if(game.endTurn)
+                if(game.isTurnEnded())
                     endTurn(currentPlayer);
 
             }

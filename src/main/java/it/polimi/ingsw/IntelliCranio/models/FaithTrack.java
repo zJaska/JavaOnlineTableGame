@@ -44,7 +44,7 @@ public class FaithTrack implements Serializable {
         }
     }
 
-    public void checkStatus(ArrayList<Player> players) {
+    public void checkStatus(ArrayList<Player> players, Game game) {
 
         //Check if: pope space
         players.forEach(player -> {
@@ -66,8 +66,8 @@ public class FaithTrack implements Serializable {
                 });
 
                 //Check for game ending
-                //if(player.getFaithPosition() == length - 1)
-                //    GameManager.endingGame();
+                if(player.getFaithPosition() == length)
+                    game.endGame(true);
             }
         });
 

@@ -615,7 +615,7 @@ public class Checks {
         AtomicBoolean error = new AtomicBoolean(false);
 
         expected.forEach(ex -> {
-            if(actual.stream().noneMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
+            if(actual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
                 error.set(true);
         });
 

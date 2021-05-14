@@ -88,7 +88,7 @@ public class ResourceMarket_ActionState extends ActionState {
         ArrayList<FinalResource> marketRes = rm.selectRow(row);
 
         //Add faith to player for each faith taken from market
-        marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
+        marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> game.addCurrentPlayerFaith());
 
         //If player has ANY card of type RESOURCE and is active, add blank resources
         if(player.getLeaders().stream().anyMatch(lead -> (lead.getAbilityType() == RESOURCE && lead.isActive())))
@@ -141,7 +141,7 @@ public class ResourceMarket_ActionState extends ActionState {
         ArrayList<FinalResource> marketRes = rm.selectColumn(col);
 
         //Add faith to player for each faith taken from market
-        marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
+        marketRes.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> game.addCurrentPlayerFaith());
 
         //If player has ANY card of type RESOURCE and isActive, add blank resources
         if(player.getLeaders().stream().anyMatch(lead -> (lead.getAbilityType() == RESOURCE && lead.isActive())))

@@ -380,7 +380,7 @@ public class ActivateProduction_ActionState extends ActionState{
         allProduct.forEach(res -> sb.addResources(res.getType(), res.getAmount()));
 
         //Add faith for each leader used
-        leadCards.forEach(lead -> game.getCurrentPlayer().addFaith());
+        leadCards.forEach(lead -> game.addCurrentPlayerFaith());
 
         //endregion
 
