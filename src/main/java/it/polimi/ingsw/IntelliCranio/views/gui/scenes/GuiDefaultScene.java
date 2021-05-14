@@ -28,7 +28,7 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.views.gui.GameChangedEvent.GAME_CHANGED_EVENT_TYPE;
 import static java.lang.Integer.parseInt;
 
-public class GuiDefaultScene extends GuiScene implements SceneWithLeaders {
+public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, SceneWithResources {
 
     private Parent root;
 
@@ -49,6 +49,8 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders {
 
     private ImageView faith;
     private int faith_pos = 0;
+    private double faith_translate_x = 0;
+    private double faith_translate_y = 0;
     private int dir = 0; // 0 to 3: right, down, left, up
 
     public GuiDefaultScene(Parent parent) {
@@ -91,14 +93,17 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders {
                     dir = 1;
 
                 if (dir == 0)
-                    faith.setTranslateX(faith.getFitWidth());
+                    faith_translate_x += faith.getFitWidth() - 2;
                 if (dir == 1)
-                    faith.setTranslateY(faith.getFitHeight());
+                    faith_translate_y += faith.getFitHeight() -2;
                 if (dir == 3)
-                    faith.setTranslateY((-1)*faith.getFitHeight());
+                    faith_translate_y -= (faith.getFitHeight() -2);
 
                 faith_pos++;
             }
+
+            faith.setTranslateX(faith_translate_x);
+            faith.setTranslateY(faith_translate_y);
         });
 
         GuiUtil.getNodesStartingWithId(root, "develop").forEach(image -> {
@@ -166,5 +171,9 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders {
 
     public ArrayList<Node> getLeadersButtons() {
         return GuiUtil.getNodesStartingWithId(root, "leader");
+    }
+
+    public ArrayList<Node> getResources() {
+        return GuiUtil.getNodesStartingWithId(root, "resource");
     }
 }

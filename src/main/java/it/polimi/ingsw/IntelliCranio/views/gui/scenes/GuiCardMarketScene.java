@@ -34,7 +34,7 @@ public class GuiCardMarketScene extends GuiScene {
         dev_cards.forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
                 int row = parseInt(image.getId().split("_")[1]);
-                int col = parseInt(image.getId().split("_")[1]);
+                int col = parseInt(image.getId().split("_")[2]);
 
                 DevCard card = MainClient.game.getCardMarket().getCard(row, col);
 

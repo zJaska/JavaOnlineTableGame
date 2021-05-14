@@ -8,7 +8,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.SELECT_SLOT;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static java.lang.Integer.parseInt;
 
 public class GuiCardMarketAfterSelectionConfig implements GuiConfig {
@@ -24,6 +24,17 @@ public class GuiCardMarketAfterSelectionConfig implements GuiConfig {
             scene.setIdle(gui);
             return;
         }
+
+        realScene.confirm.setText("CONFIRM");
+        realScene.confirm.setVisible(true);
+        realScene.cancel.setVisible(true);
+
+        realScene.confirm.setOnMouseClicked(event -> {
+            gui.setData(new Pair<>(CONFIRM, null));
+        });
+        realScene.cancel.setOnMouseClicked(event -> {
+            gui.setData(new Pair<>(CANCEL, null));
+        });
 
         realScene.dev_slots.forEach(slot -> {
             slot.setOnMouseClicked(event -> {
@@ -44,6 +55,12 @@ public class GuiCardMarketAfterSelectionConfig implements GuiConfig {
             scene.removeIdle(gui);
             return;
         }
+
+        realScene.confirm.setVisible(false);
+        realScene.cancel.setVisible(false);
+
+        realScene.confirm.setOnMouseClicked(null);
+        realScene.cancel.setOnMouseClicked(null);
 
         realScene.dev_slots.forEach(slot -> slot.setOnMouseClicked(null));
 

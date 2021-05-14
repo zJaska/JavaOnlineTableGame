@@ -119,4 +119,6 @@ public class FaithTrack implements Serializable {
         startOfVaticanSections.forEach(x -> copy.add(Integer.valueOf(x)));
         return copy;
     }
+
+
 }

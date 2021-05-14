@@ -27,7 +27,7 @@ public class CardMarket_ActionState extends ActionState{
     private Game game;
 
     private DevCard selected;
-    private ArrayList<Resource> costResources;
+    private ArrayList<Resource> costResources = new ArrayList<>();
     private boolean confirmed;
 
     public CardMarket_ActionState(Action action){

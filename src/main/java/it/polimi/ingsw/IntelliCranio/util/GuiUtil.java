@@ -152,7 +152,7 @@ public class GuiUtil {
 
     public static void togglePointer(Node target, String id) {
         Pane parent = (Pane) target.getParent();
-        if (parent.getChildren().removeIf(child -> child.getId().equals("_" + id)))
+        if (parent.getChildren().removeIf(child -> ("_" + id).equals(child.getId())))
             return;
 
         Circle circle = createPointer(target, id);

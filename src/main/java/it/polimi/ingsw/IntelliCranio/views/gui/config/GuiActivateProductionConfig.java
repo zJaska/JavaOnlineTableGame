@@ -5,6 +5,7 @@ import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
+import it.polimi.ingsw.IntelliCranio.util.GuiUtil;
 import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 import it.polimi.ingsw.IntelliCranio.views.gui.scenes.GuiDefaultScene;
 import it.polimi.ingsw.IntelliCranio.views.gui.scenes.GuiScene;
@@ -33,8 +34,17 @@ public class GuiActivateProductionConfig implements GuiConfig {
         realScene.cancel.setVisible(true);
         realScene.anchor_resources.setVisible(true);
 
+        realScene.confirm.setOnMouseClicked(event -> {
+            gui.setData(new Pair<>(CONFIRM, null));
+        });
+        realScene.cancel.setOnMouseClicked(event -> {
+            GuiUtil.removePointers(scene);
+            gui.setData(new Pair<>(CANCEL, null));
+        });
+
         realScene.dev_slots.forEach(slot -> {
             slot.setOnMouseClicked(event -> {
+                GuiUtil.togglePointer(slot, slot.getId());
                 gui.setData(new Pair<>(
                         SELECT_SLOT,
                         new ArrayList<>(Arrays.asList(parseInt(slot.getId().split("_")[2])))
@@ -44,6 +54,7 @@ public class GuiActivateProductionConfig implements GuiConfig {
 
         realScene.getLeadersButtons().forEach(btn -> {
             btn.setOnMouseClicked(event -> {
+                GuiUtil.togglePointer(btn, btn.getId());
                 LeadCard lead = MainClient.game.getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[1]));
                 gui.setData(new Pair<>(
                         SELECT_CARD,
@@ -64,6 +75,9 @@ public class GuiActivateProductionConfig implements GuiConfig {
         realScene.cancel.setVisible(false);
         realScene.anchor_resources.setVisible(false);
 
+        realScene.confirm.setOnMouseClicked(null);
+        realScene.cancel.setOnMouseClicked(null);
+
         realScene.dev_slots.forEach(slot -> {
             slot.setOnMouseClicked(null);
         });
@@ -75,5 +89,7 @@ public class GuiActivateProductionConfig implements GuiConfig {
         new GuiResFromConfig(gui).removeConfig(scene);
 
         new GuiChooseResourceConfig(gui).removeConfig(realScene);
+
+        GuiUtil.removePointers(scene);
     }
 }
