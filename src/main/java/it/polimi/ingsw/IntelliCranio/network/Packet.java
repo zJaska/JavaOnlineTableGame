@@ -13,6 +13,7 @@ public class Packet implements Serializable {
         MNG_WARE,
         RES_MARKET,
         CARD_MARKET,
+        CARD_MARKET_AS,
         ACT_PROD,
         IDLE,
 

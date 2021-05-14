@@ -102,6 +102,7 @@ public class ClientHandler implements Runnable {
 
         if (MainServer.getAllPlayers().contains(nickname)) {
             socketHandler.send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Joining the running game..."))));
+            socketHandler.send(new Packet(IDLE, null, null));
             MainServer.getManager(nickname).reconnectPlayer(nickname, socketHandler);
             return;
         }
@@ -141,13 +142,12 @@ public class ClientHandler implements Runnable {
 
         firstPlayer.getValue().send(new Packet(CHOOSE_NUMBER_PLAYERS, null,null));
         try {
-
-            int numPlayers = parseInt((String) firstPlayer.getValue().receive().getArgs().get(0));
+            int numPlayers = (int) firstPlayer.getValue().receive().getArgs().get(0);
 
             System.out.println("Received size");
-            //firstPlayer.getValue().send(new Packet(CHOOSE_NUMBER_PLAYERS, ACK,null));
 
             numFirstPlayers--;
+
             new WaitingRoom(numPlayers, firstPlayer).run();
 
         } catch (SocketTimeoutException e) {

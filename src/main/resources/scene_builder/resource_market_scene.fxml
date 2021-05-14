@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="603.0" prefWidth="1024.0">
+         <children>
+            <AnchorPane layoutX="106.0" layoutY="15.0" prefHeight="426.0" prefWidth="426.0">
+               <children>
+                  <ImageView fitHeight="523.0" fitWidth="520.0" layoutX="11.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/board_market.png" />
+                     </image>
+                  </ImageView>
+                  <Rectangle fx:id="select_row_2" arcHeight="5.0" arcWidth="5.0" height="50.0" layoutX="376.0" layoutY="229.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" width="37.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Rectangle fx:id="select_row_1" arcHeight="5.0" arcWidth="5.0" height="50.0" layoutX="376.0" layoutY="181.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" width="37.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Rectangle fx:id="select_row_0" arcHeight="5.0" arcWidth="5.0" height="50.0" layoutX="376.0" layoutY="137.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" width="37.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Rectangle fx:id="select_col_0" arcHeight="5.0" arcWidth="5.0" height="70.0" layoutX="135.0" layoutY="331.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" width="37.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Rectangle fx:id="select_col_1" arcHeight="5.0" arcWidth="5.0" height="70.0" layoutX="183.0" layoutY="331.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" width="37.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Rectangle fx:id="select_col_2" arcHeight="5.0" arcWidth="5.0" height="70.0" layoutX="229.0" layoutY="331.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" width="37.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Rectangle fx:id="select_col_3" arcHeight="5.0" arcWidth="5.0" height="70.0" layoutX="277.0" layoutY="331.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;" width="37.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <AnchorPane layoutX="104.0" layoutY="115.0" prefHeight="182.0" prefWidth="233.0">
+                     <children>
+                        <ImageView fx:id="marble_0_0" fitHeight="37.0" fitWidth="50.0" layoutX="30.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_0_1" fitHeight="37.0" fitWidth="50.0" layoutX="80.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_1_0" fitHeight="37.0" fitWidth="50.0" layoutX="30.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_2_0" fitHeight="37.0" fitWidth="50.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_1_1" fitHeight="37.0" fitWidth="37.0" layoutX="80.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_0_2" fitHeight="37.0" fitWidth="50.0" layoutX="124.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_0_3" fitHeight="37.0" fitWidth="50.0" layoutX="168.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_1_2" fitHeight="37.0" fitWidth="50.0" layoutX="124.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_1_3" fitHeight="37.0" fitWidth="50.0" layoutX="168.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_2_1" fitHeight="37.0" fitWidth="50.0" layoutX="80.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_2_2" fitHeight="37.0" fitWidth="50.0" layoutX="124.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="marble_2_3" fitHeight="37.0" fitWidth="50.0" layoutX="168.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+                  <ImageView fx:id="marble_extra" fitHeight="37.0" fitWidth="50.0" layoutX="300.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/Materials/marble_blank.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="616.0" layoutY="173.0" prefHeight="189.0" prefWidth="274.0">
+               <children>
+                  <Ellipse layoutX="137.0" layoutY="95.0" radiusX="100.0" radiusY="80.0" stroke="BLACK" strokeType="INSIDE">
+                     <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.8372093023255814">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.5492202639579773" green="0.5781757831573486" blue="0.6052631735801697" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                  </Ellipse>
+                  <ImageView fx:id="resource_coin" fitHeight="55.0" fitWidth="50.0" layoutX="75.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_coin.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource_stone" fitHeight="48.0" fitWidth="48.0" layoutX="147.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_stone.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource_shield" fitHeight="48.0" fitWidth="50.0" layoutX="76.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_shield.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource_servant" fitHeight="50.0" fitWidth="57.0" layoutX="147.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_servant.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <Label layoutX="652.0" layoutY="146.0" text="Blank to Resource choice:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="communication" layoutX="739.0" layoutY="429.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="confirm" layoutX="690.0" layoutY="429.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="200.0" style="-fx-cursor: hand;" text="CONFIRM" />
+            <Polygon fx:id="goto_default" layoutX="937.0" layoutY="285.0" points="0.0, 15.0, 63.0, -17.0, 0.0, -49.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.15839999914169312" green="0.3632410168647766" blue="0.47999998927116394" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Polygon>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

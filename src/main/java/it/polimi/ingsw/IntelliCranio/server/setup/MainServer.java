@@ -21,7 +21,7 @@ public class MainServer {
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT);
-
+        /*
         File folder = new File(Save.pathPrefix);
         for (File file : folder.listFiles()) {
             ArrayList<Pair<String, SocketHandler>> players = new ArrayList<>();
@@ -29,7 +29,7 @@ public class MainServer {
             Save.loadGame(uuid).getPlayers().forEach(x -> players.add(new Pair<>(x.getNickname(), null)));
 
             startManager(uuid, players);
-        }
+        }*/
 
         while (true) {
             try {

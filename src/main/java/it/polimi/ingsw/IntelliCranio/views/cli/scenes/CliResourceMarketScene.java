@@ -20,6 +20,7 @@ public class CliResourceMarketScene implements CliScene {
         System.out.println("-) selectRow <number>");
         System.out.println("-) selectColumn <number>");
         System.out.println("-) chooseResource <ResourceType>");
+        System.out.println("-) confirm");
         System.out.println("-) cancel");
         CliIdleScene.showResourceMarket();
     }
@@ -67,9 +68,10 @@ public class CliResourceMarketScene implements CliScene {
                 return selectRowColumn("column", input);
             case "chooseResource":
                 return chooseResource(input);
+            case "confirm":
+                return new Pair<>(CONFIRM, null);
             case "cancel":
                 return new Pair<>(CANCEL, new ArrayList<>());
-            case "confirm": return new Pair<>(CONFIRM, new ArrayList<>());
             default:
                 throw new InvalidArgumentsException("Command not found");
         }

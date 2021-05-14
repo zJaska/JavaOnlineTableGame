@@ -62,6 +62,7 @@ public class RunningNetwork implements Runnable {
                 return null;
             case GAME:
                 MainClient.game = (Game) pack.getArgs().get(0);
+                view.gameChanged();
                 return null;
             case IDLE:
                 view.setScene(IDLE);

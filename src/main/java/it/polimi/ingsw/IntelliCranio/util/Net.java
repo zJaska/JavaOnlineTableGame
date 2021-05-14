@@ -14,9 +14,13 @@ public class Net {
 
     public static final String TIMEOUT_MSG = "You took too much to answer, disconnecting";
     public static final String HURRYUP_MSG = "HURRY UP! You are running out of time!";
+    public static final String ACK_MSG = "Action accepted!";
 
     public static Packet createPacketFromInput(Pair<Packet.InstructionCode, ArrayList<Object>> input) {
-        return new Packet(input.getKey(), null, input.getValue());
+        ArrayList<Object> args = new ArrayList<>();
+        if (input.getValue() != null)
+            args = input.getValue();
+        return new Packet(input.getKey(), null, args);
     }
 
     public static void disconnectPlayer(SocketHandler socketHandler, String msg) {

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
+import static it.polimi.ingsw.IntelliCranio.util.Net.ACK_MSG;
 
 public class GameManager implements Runnable {
 
@@ -90,6 +91,7 @@ public class GameManager implements Runnable {
             network.sendAll(gamePacket);
 
             Player currentPlayer = game.getCurrentPlayer();
+            int currentPlayerIndex = game.getCurrentPlayerIndex();
 
             String message = "---> It's " + currentPlayer.getNickname() + "'s turn";
             network.sendAll(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(message))));
@@ -108,7 +110,7 @@ public class GameManager implements Runnable {
             while (true) {
 
                 // Check if the turn has changed
-                if (!game.getCurrentPlayer().equals(currentPlayer))
+                if (game.getCurrentPlayerIndex() != currentPlayerIndex)
                     break;
 
                 // Update game objects in all clients, to ensure consistency of data and to make the game
@@ -154,8 +156,7 @@ public class GameManager implements Runnable {
                         gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
                         network.sendAll(gamePacket);
 
-                        String ackMessage = "Action Accepted";
-                        Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ackMessage)));
+                        Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ACK_MSG)));
                         network.send(currentPlayer.getNickname(), ackMessagePacket);
 
                         // Send next action to the player
@@ -169,7 +170,7 @@ public class GameManager implements Runnable {
 
                         network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, e.getCode(), errorArgs));
                         //Resend action to reset client scene
-                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
+                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), null, new ArrayList<>()));
 
                     }
                 } else {
@@ -187,6 +188,7 @@ public class GameManager implements Runnable {
     }
 
     private void endTurn (Player currentPlayer) {
+        currentPlayer.hasPlayed = false;
         network.send(currentPlayer.getNickname(), new Packet(IDLE, null, null));
         game.changeTurn();
     }

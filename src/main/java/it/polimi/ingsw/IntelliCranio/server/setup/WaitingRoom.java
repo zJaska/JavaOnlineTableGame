@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.COMMUNICATION;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
 
 public class WaitingRoom {
     private int size;
@@ -52,6 +53,7 @@ public class WaitingRoom {
 
         players.forEach(x -> {
             x.getValue().send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Starting game..."))));
+            x.getValue().send(new Packet(IDLE, null,null));
         });
 
         ClientHandler.removePlayerNames(players.stream().map(Pair::getKey).collect(Collectors.toList()));

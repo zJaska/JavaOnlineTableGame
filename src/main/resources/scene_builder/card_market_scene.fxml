@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane layoutX="188.0" layoutY="15.0" prefHeight="570.0" prefWidth="759.0">
+               <children>
+                  <Label layoutX="185.0" layoutY="30.0" text="Verde">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="355.0" layoutY="30.0" text="Blu">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="500.0" layoutY="30.0" text="Giallo">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="650.0" layoutY="30.0" text="Viola">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="40.0" layoutY="154.0" text="Livello III">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="43.0" layoutY="308.0" text="Livello II">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="46.0" layoutY="458.0" text="Livello I">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="dev_0_0" fitHeight="158.0" fitWidth="104.0" layoutX="158.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_1_0" fitHeight="158.0" fitWidth="104.0" layoutX="157.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_2_0" fitHeight="158.0" fitWidth="104.0" layoutX="157.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_0_1" fitHeight="158.0" fitWidth="104.0" layoutX="316.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_1_1" fitHeight="158.0" fitWidth="104.0" layoutX="315.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_2_1" fitHeight="158.0" fitWidth="104.0" layoutX="315.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_0_3" fitHeight="158.0" fitWidth="104.0" layoutX="619.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_1_3" fitHeight="158.0" fitWidth="104.0" layoutX="618.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_2_3" fitHeight="158.0" fitWidth="104.0" layoutX="618.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_0_2" fitHeight="158.0" fitWidth="104.0" layoutX="472.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_1_2" fitHeight="158.0" fitWidth="104.0" layoutX="471.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dev_2_2" fitHeight="158.0" fitWidth="104.0" layoutX="471.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <Polygon fx:id="goto_default" layoutX="25.0" layoutY="317.0" points="0.0, 15.0, 63.0, -17.0, 0.0, -49.0" rotate="180.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.15839999914169312" green="0.3632410168647766" blue="0.47999998927116394" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Polygon>
+         </children>
+    </AnchorPane>
+  </children>
+</VBox>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="600.0" prefWidth="1024.0">
+         <children>
+            <Label fx:id="message" alignment="CENTER" contentDisplay="CENTER" layoutX="111.0" layoutY="104.0" text="asdadssadsadadssasaas" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="anchor_leaders" layoutX="80.0" layoutY="239.0" prefHeight="328.0" prefWidth="879.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="308.0" layoutX="1.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="879.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.3552631437778473" green="0.3552631437778473" blue="0.3552631437778473" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Pane layoutX="4.0" layoutY="23.0" prefHeight="288.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="img_leader_0" fitHeight="271.0" fitWidth="194.0" layoutX="10.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/leaders/leadercard_back.JPG" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Button fx:id="leader_0" layoutX="4.0" layoutY="6.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="235.0" layoutY="21.0" prefHeight="288.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="img_leader_1" fitHeight="271.0" fitWidth="194.0" layoutX="10.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/leaders/leadercard_back.JPG" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Button fx:id="leader_1" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="458.0" layoutY="20.0" prefHeight="288.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="img_leader_2" fitHeight="271.0" fitWidth="194.0" layoutX="10.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/leaders/leadercard_back.JPG" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Button fx:id="leader_2" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="675.0" layoutY="19.0" prefHeight="288.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="img_leader_3" fitHeight="271.0" fitWidth="194.0" layoutX="10.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/leaders/leadercard_back.JPG" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Button fx:id="leader_3" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="anchor_resources" layoutX="532.0" layoutY="37.0" prefHeight="189.0" prefWidth="274.0">
+               <children>
+                  <Ellipse layoutX="137.0" layoutY="95.0" radiusX="100.0" radiusY="80.0" stroke="BLACK" strokeType="INSIDE">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.5492202639579773" green="0.5781757831573486" blue="0.6052631735801697" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Ellipse>
+                  <ImageView fx:id="resource_coin" fitHeight="55.0" fitWidth="50.0" layoutX="75.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_coin.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource_stone" fitHeight="48.0" fitWidth="48.0" layoutX="147.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_stone.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource_shield" fitHeight="48.0" fitWidth="50.0" layoutX="76.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_shield.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource_servant" fitHeight="50.0" fitWidth="57.0" layoutX="147.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                     <image>
+                        <Image url="@../assets/Materials/resource_servant.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <Label fx:id="communication" layoutX="111.0" layoutY="185.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

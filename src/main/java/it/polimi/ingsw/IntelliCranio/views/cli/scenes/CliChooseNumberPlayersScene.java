@@ -6,6 +6,7 @@ import it.polimi.ingsw.IntelliCranio.util.CliUtil;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_NICKNAME;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_NUMBER_PLAYERS;
@@ -23,6 +24,6 @@ public class CliChooseNumberPlayersScene implements CliScene {
 
         int num = CliUtil.checkInt(input.get(0),2,4);
 
-        return new Pair<InstructionCode, ArrayList<Object>> (CHOOSE_NUMBER_PLAYERS, new ArrayList<Object>(input));
+        return new Pair<InstructionCode, ArrayList<Object>> (CHOOSE_NUMBER_PLAYERS, new ArrayList<>(Arrays.asList(num)));
     }
 }

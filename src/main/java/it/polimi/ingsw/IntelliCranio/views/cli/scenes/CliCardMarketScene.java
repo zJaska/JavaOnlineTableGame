@@ -19,7 +19,9 @@ public class CliCardMarketScene implements CliScene {
     public void displayOptions() {
         System.out.println("CARD MARKET ACTIONS: ");
         System.out.println("-) selectCard <number> <number>");
-        System.out.println("-) putRes <container> <resourceType> <number>");
+        System.out.println("-) resFromCard <number>");
+        System.out.println("-) resFromStrongbox <resourceType>");
+        System.out.println("-) resFromWarehouse <number>");
         System.out.println("-) selectSlot <number>");
         System.out.println("-) cancel");
         System.out.println("-) confirm");
@@ -69,8 +71,12 @@ public class CliCardMarketScene implements CliScene {
         switch (input.get(0)) {
             case "selectCard":
                 return selectCard(input);
-            case "putRes":
-                return CliUtil.resFrom(input);
+            case "resFromCard":
+                return CliUtil.resFromCard(input);
+            case "resFromStrongbox":
+                return CliUtil.resFromStrongbox(input);
+            case "resFromWarehouse":
+                return CliUtil.resFromWarehouse(input);
             case "selectSlot":
                 return selectSlot(input);
             case "confirm":

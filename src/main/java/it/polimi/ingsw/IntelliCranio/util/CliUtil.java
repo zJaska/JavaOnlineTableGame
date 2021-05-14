@@ -43,24 +43,51 @@ public class CliUtil {
         return ResourceType.valueOf(input.trim().toUpperCase());
     }
 
-    public static Pair<InstructionCode, ArrayList<Object>> resFrom(ArrayList<String> input) throws InvalidArgumentsException {
+    public static Pair<InstructionCode, ArrayList<Object>> resFromCard(ArrayList<String> input) throws InvalidArgumentsException {
         if (input.size() == 1) {
-            System.out.println("Choose the resource type and the amount that you want to use, from 'warehouse', 'strongbox' or 'card'");
+            System.out.println("Choose the index (1,2) of the leader card where you want to take the resource from.");
             return null;
         }
-        if (input.size() != 4)
-            throw new InvalidArgumentsException("ERROR: you must input only 3 arguments");
+        if (input.size() != 2)
+            throw new InvalidArgumentsException("ERROR: you must input only 1 arguments");
 
-        if (!containers.contains(input.get(1)))
-            throw new InvalidArgumentsException("ERROR: container must be one of the following: " +
-                    containers.stream().reduce("", (x,y) -> x + " " + y));
-
-        ResourceType resType = CliUtil.checkResourceType(input.get(2));
-        int amount = CliUtil.checkInt(input.get(3),1,1000);
+        int amount = CliUtil.checkInt(input.get(1),1,MainClient.game.getCurrentPlayer().getLeaders().size());
 
         return new Pair<>(
-                (input.get(1) == "warehouse") ? RES_FROM_DEPOT : (input.get(1) == "strongbox") ? RES_FROM_STRONG : RES_FROM_CARD,
-                new ArrayList<>(Arrays.asList(new Resource(resType, amount)))
+                RES_FROM_CARD,
+                new ArrayList<>(Arrays.asList(MainClient.game.getCurrentPlayer().getLeaders().get(amount - 1)))
+        );
+    }
+
+    public static Pair<InstructionCode, ArrayList<Object>> resFromStrongbox(ArrayList<String> input) throws InvalidArgumentsException {
+        if (input.size() == 1) {
+            System.out.println("Choose the resource type that you want to use from the strongbox");
+            return null;
+        }
+        if (input.size() != 2)
+            throw new InvalidArgumentsException("ERROR: you must input only 1 arguments");
+
+        ResourceType resType = CliUtil.checkResourceType(input.get(1));
+
+        return new Pair<>(
+                RES_FROM_STRONG,
+                new ArrayList<>(Arrays.asList(new Resource(resType, 1)))
+        );
+    }
+
+    public static Pair<InstructionCode, ArrayList<Object>> resFromWarehouse(ArrayList<String> input) throws InvalidArgumentsException {
+        if (input.size() == 1) {
+            System.out.println("Choose the line of the warehouse where you want to take the resource from");
+            return null;
+        }
+        if (input.size() != 2)
+            throw new InvalidArgumentsException("ERROR: you must input only 1 arguments");
+
+        int amount = CliUtil.checkInt(input.get(1),1,3);
+
+        return new Pair<>(
+                RES_FROM_DEPOT,
+                new ArrayList<>(Arrays.asList(amount-1))
         );
     }
 

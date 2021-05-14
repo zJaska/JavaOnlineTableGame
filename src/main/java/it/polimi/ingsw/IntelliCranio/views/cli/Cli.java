@@ -62,4 +62,6 @@ public class Cli implements View {
     public void showCommunication(String msg) {
         System.out.println(msg);
     }
+
+    public void gameChanged() { }
 }

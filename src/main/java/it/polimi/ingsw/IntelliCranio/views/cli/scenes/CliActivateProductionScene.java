@@ -23,7 +23,9 @@ public class CliActivateProductionScene implements CliScene {
         System.out.println("ACTIVATE PRODUCTION:");
         System.out.println("-) selectSlot <number>");
         System.out.println("-) selectCard <number>");
-        System.out.println("-) resFrom <container> <resourceType> <number>");
+        System.out.println("-) resFromCard <number>");
+        System.out.println("-) resFromStrongbox <resourceType>");
+        System.out.println("-) resFromWarehouse <number>");
         System.out.println("-) chooseResource <resourceType>");
         System.out.println("-) cancel");
         System.out.println("-) confirm");
@@ -57,9 +59,6 @@ public class CliActivateProductionScene implements CliScene {
         int num = CliUtil.checkInt(input.get(1), 1, leaders.size());
         LeadCard lead = leaders.get(num-1);
 
-        if (lead.getAbilityType() != PRODUCTION)
-            throw new InvalidArgumentsException("ERROR: the leader card must have a production ability");
-
         return new Pair<>(
                 SELECT_CARD,
                 new ArrayList<>(Arrays.asList(lead)));
@@ -86,8 +85,12 @@ public class CliActivateProductionScene implements CliScene {
                 return selectSlot(input);
             case "selectCard":
                 return selectCard(input);
-            case "resFrom":
-                return CliUtil.resFrom(input);
+            case "resFromCard":
+                return CliUtil.resFromCard(input);
+            case "resFromStrongbox":
+                return CliUtil.resFromStrongbox(input);
+            case "resFromWarehouse":
+                return CliUtil.resFromWarehouse(input);
             case "chooseResource":
                 return chooseResource(input);
             case "cancel":

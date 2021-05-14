@@ -10,4 +10,5 @@ public interface View {
     Pair<InstructionCode,ArrayList<Object>> getInput();
     void setScene(InstructionCode code);
     void showCommunication(String msg);
+    void gameChanged();
 }

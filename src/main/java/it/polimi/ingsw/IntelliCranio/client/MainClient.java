@@ -8,6 +8,7 @@ import it.polimi.ingsw.IntelliCranio.views.View;
 import it.polimi.ingsw.IntelliCranio.views.cli.Cli;
 import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliIdleScene;
 import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
+import it.polimi.ingsw.IntelliCranio.views.gui.GuiLauncher;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,10 +26,6 @@ public class MainClient {
     private static View view;
 
     public static void main(String[] args) {
-        /*
-        game = new Game(new ArrayList<>(Arrays.asList("icci","pippi")));
-        nickname = "icci";
-        CliIdleScene.showDevCards();*/
 
         view = askView();
         //view = getDummyView(parseInt(args[0]));
@@ -63,7 +60,9 @@ public class MainClient {
             case "1":
                 return new Cli();
             case "2":
-                return new Gui();
+                new Thread(new GuiLauncher()).start();
+                GuiLauncher.waitForReady();
+                return GuiLauncher.getGui();
         }
 
         return null;

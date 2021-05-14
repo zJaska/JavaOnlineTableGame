@@ -141,7 +141,7 @@ public class ResourceMarket implements Serializable {
     }
 
     public FinalResource getExtraMarbleCopy() {
-        return new FinalResource(getExtraMarble().getType(), getExtraMarble().getAmount());
+        return new FinalResource(extraMarble.getType(), extraMarble.getAmount());
     }
 
     // NEEDED ONLY TO TEST
