@@ -645,28 +645,32 @@ public class Checks {
         AtomicBoolean error = new AtomicBoolean(false);
 
         if(card.getLevel() == 1) {
-            if(Arrays.stream(topCards).noneMatch(topC -> topC == null))
+            if(Arrays.stream(topCards).noneMatch(Objects::isNull))
                 error.set(true);
+
+            if(error.get()) {
+                InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+                String errorMessage = "OOOPs, something went wrong! You need an empty slot to put this card";
+                errorMessage += "\nSelected card level: " + card.getLevel();
+                e.setErrorMessage(errorMessage);
+                throw e;
+            }
+        }else {
+            if(Arrays.stream(topCards).filter(Objects::nonNull).noneMatch(topC -> topC.getLevel() == card.getLevel() - 1))
+                error.set(true);
+
+            if(error.get()) {
+                InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
+                String errorMessage = "OOOPS, something went wrong! You don't have a card a level below selected one";
+                errorMessage += "\nSelected card level: " + card.getLevel();
+                e.setErrorMessage(errorMessage);
+                throw e;
+            }
         }
 
-        if(error.get()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-            String errorMessage = "OOOPs, something went wrong! You need an empty slot to put this card";
-            errorMessage += "\nSelected card level: " + card.getLevel();
-            e.setErrorMessage(errorMessage);
-            throw e;
-        }
 
-        if(Arrays.stream(topCards).filter(Objects::nonNull).noneMatch(topC -> topC.getLevel() == card.getLevel() - 1))
-            error.set(true);
 
-        if(error.get()) {
-            InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
-            String errorMessage = "OOOPS, something went wrong! You don't have a card a level below selected one";
-            errorMessage += "\nSelected card level: " + card.getLevel();
-            e.setErrorMessage(errorMessage);
-            throw e;
-        }
+
     }
 
     public static void alreadyConfirmed(boolean confirmed) throws InvalidArgumentsException {
