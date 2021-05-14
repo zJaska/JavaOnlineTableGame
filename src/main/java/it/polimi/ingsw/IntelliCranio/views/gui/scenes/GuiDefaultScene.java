@@ -82,7 +82,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders {
 
         faith.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
             int newFaithPos = MainClient.game.getPlayer(MainClient.nickname).getFaithPosition();
-            if (newFaithPos > faith_pos) {
+            while (newFaithPos > faith_pos) {
                 if (Arrays.asList(2,16).contains(faith_pos))
                     dir = 3;
                 if (Arrays.asList(4,11,18).contains(faith_pos))
@@ -91,13 +91,13 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders {
                     dir = 1;
 
                 if (dir == 0)
-                    faith.setTranslateX(faith.getFitWidth()/2);
+                    faith.setTranslateX(faith.getFitWidth());
                 if (dir == 1)
-                    faith.setTranslateY(faith.getFitHeight()/2);
+                    faith.setTranslateY(faith.getFitHeight());
                 if (dir == 3)
-                    faith.setTranslateY((-1)*faith.getFitHeight()/2);
+                    faith.setTranslateY((-1)*faith.getFitHeight());
 
-                faith_pos = newFaithPos;
+                faith_pos++;
             }
         });
 

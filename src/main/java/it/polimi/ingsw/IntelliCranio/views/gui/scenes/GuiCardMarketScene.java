@@ -29,6 +29,7 @@ public class GuiCardMarketScene extends GuiScene {
         super(parent);
 
         dev_cards = GuiUtil.getNodesStartingWithId(parent, "dev");
+        goto_default = GuiUtil.getNodeById(parent, "goto_default");
 
         dev_cards.forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {

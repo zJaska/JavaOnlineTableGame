@@ -33,7 +33,7 @@ public abstract class GuiScene extends Scene {
             AnchorPane parent = (AnchorPane) getRoot().getChildrenUnmodifiable().get(0);
 
             communication.setLayoutX(50);
-            communication.setLayoutY(parent.getHeight()-50);
+            communication.setLayoutY(50);
             parent.getChildren().add(communication);
         }
 

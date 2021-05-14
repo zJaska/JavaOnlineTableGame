@@ -97,6 +97,8 @@ public class CardMarket_ActionState extends ActionState{
 
         selected = card;
 
+        // TODO: questa riga l'ha messa STE
+        action.setActionState(this, CARD_MARKET_AS);
     }
 
     private void resFromDepot(ArrayList<Object> args) throws InvalidArgumentsException {
