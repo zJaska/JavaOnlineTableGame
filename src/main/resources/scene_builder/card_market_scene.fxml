@@ -84,7 +84,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="dev_0_0" fitHeight="158.0" fitWidth="104.0" layoutX="158.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_0_0" fitHeight="158.0" fitWidth="104.0" layoutX="157.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
@@ -99,12 +99,12 @@
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_0_1" fitHeight="158.0" fitWidth="104.0" layoutX="316.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_0_1" fitHeight="158.0" fitWidth="104.0" layoutX="315.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_1_1" fitHeight="158.0" fitWidth="104.0" layoutX="315.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_1_1" fitHeight="158.0" fitWidth="104.0" layoutX="314.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
@@ -114,12 +114,12 @@
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_0_3" fitHeight="158.0" fitWidth="104.0" layoutX="619.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_0_3" fitHeight="158.0" fitWidth="104.0" layoutX="618.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_1_3" fitHeight="158.0" fitWidth="104.0" layoutX="618.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_1_3" fitHeight="158.0" fitWidth="104.0" layoutX="617.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
@@ -129,12 +129,12 @@
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_0_2" fitHeight="158.0" fitWidth="104.0" layoutX="472.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_0_2" fitHeight="158.0" fitWidth="104.0" layoutX="471.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_1_2" fitHeight="158.0" fitWidth="104.0" layoutX="471.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_1_2" fitHeight="158.0" fitWidth="104.0" layoutX="470.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
                      </image>
