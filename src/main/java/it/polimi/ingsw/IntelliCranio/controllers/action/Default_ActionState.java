@@ -21,8 +21,6 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 
 public class Default_ActionState extends ActionState {
 
-    private Game game;
-
     public Default_ActionState(Action action) {
         super(action);
     }
@@ -34,6 +32,7 @@ public class Default_ActionState extends ActionState {
         Checks.packetCheck(packet);
 
         switch (packet.getInstructionCode()) {
+            case END_TURN: endTurn(); return;
             case PLAY_LEADER: playLeader(packet.getArgs()); return;
             case DISCARD_LEAD: discardLeader(packet.getArgs()); return;
             case MNG_WARE: manageWarehouse(); return;
@@ -47,6 +46,7 @@ public class Default_ActionState extends ActionState {
                 throw e; //Code in packet is not allowed in this state
         }
     }
+
 
     private void playLeader(ArrayList<Object> args) throws InvalidArgumentsException {
 

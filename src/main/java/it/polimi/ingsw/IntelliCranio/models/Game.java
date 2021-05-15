@@ -31,6 +31,9 @@ public class Game implements Serializable {
 
     private boolean endTurn = false;
     private boolean endGame = false;
+    private boolean singlePlayer = false;
+
+    private SinglePlayerData singlePlayerData;
 
     public Game () { }
 
@@ -48,7 +51,10 @@ public class Game implements Serializable {
 
         createLeaderCards("src/main/resources/leadcards_config.json", true);
 
-        shufflePlayers();
+        if(players.size() == 1)
+            singlePlayerData = new SinglePlayerData();
+        else
+            shufflePlayers();
 
     }
 
@@ -155,6 +161,10 @@ public class Game implements Serializable {
     public boolean isTurnEnded() { return endTurn; }
 
     public boolean isGameEnded() { return endGame; }
+
+    public boolean isSinglePlayer() { return singlePlayer; }
+
+    public SinglePlayerData getSinglePlayerData() { return singlePlayerData; }
     //endregion
 
     /**
@@ -236,7 +246,7 @@ public class Game implements Serializable {
         if(current.getFaithPosition() < faithTrack.getTrackLength())
             getCurrentPlayer().addFaith();
 
-        faithTrack.checkStatus(players, this);
+        faithTrack.checkStatus(this, current.getFaithPosition());
     }
 
     public void addFaithToAll(int faithAmount) {
@@ -248,7 +258,9 @@ public class Game implements Serializable {
                     .forEach(Player::addFaith);
 
             //Check the positions on the faithtrack
-            faithTrack.checkStatus(players, this);
+            players.stream()
+                    .map(Player::getFaithPosition)
+                    .forEach(pos -> faithTrack.checkStatus(this, pos));
         }
     }
 
@@ -258,14 +270,20 @@ public class Game implements Serializable {
         players.add(turn, player);
     }
 
-    public void endTurn(boolean flag) { endTurn = flag; }
+    public void singlePlayer(boolean value) { singlePlayer = value; }
+
+    public void endTurn(boolean value) { endTurn = value; }
 
     public void changeTurn() {
+
+        if(singlePlayer)
+            lorenzoAction();
+
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
         endTurn = false;
     }
 
-    public void endGame(boolean flag) { endGame = flag; }
+    public void endGame(boolean value) { endGame = value; }
 
     public void loadGame(Game newGame) {
         uuid = newGame.getUuid();
@@ -275,5 +293,60 @@ public class Game implements Serializable {
         resourceMarket = newGame.getResourceMarket();
         cardMarket = newGame.getCardMarket();
         endTurn = newGame.isTurnEnded();
+        endGame = newGame.isGameEnded();
+        singlePlayer = newGame.isSinglePlayer();
+        singlePlayerData = newGame.getSinglePlayerData();
+    }
+
+    private void lorenzoAction() {
+        SinglePlayerData.Token token = singlePlayerData.getToken();
+
+        switch (token) {
+
+            case BLACK_CROSS: addLorenzoFaith(2); break;
+            case SHUFFLE_CROSS: addLorenzoFaith(1); break;
+            default: removeCards(token, 2); break;
+
+        }
+    }
+
+    private void removeCards(SinglePlayerData.Token token, int amount) {
+
+        int col;
+
+        //Find correct column for type
+        for(col = 0; col < cardMarket.cols; ++col) {
+            if(token.toString().equals(cardMarket.getCard(0, col).getType().toString()))
+                break;
+        }
+
+        int row = cardMarket.rows - 1;
+
+        for(int i = 0; i < amount; ++i) {
+
+            if (cardMarket.getCard(row, col) != null) {
+                cardMarket.removeCard(row, col);
+
+                if(cardMarket.getCard(0, col) == null)
+                    endGame = true;
+            }
+            else {
+                row--;
+                i--;
+            }
+        }
+
+    }
+
+    private void addLorenzoFaith(int amount) {
+
+        int ftLength = faithTrack.getTrackLength();
+
+        for(int i = 0; i < amount; ++i) {
+            if(singlePlayerData.getLorenzoFaith() < ftLength) {
+                singlePlayerData.addLorenzoFaith();
+                faithTrack.checkStatus(this, singlePlayerData.getLorenzoFaith());
+            }
+        }
     }
 }

@@ -22,7 +22,6 @@ import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*
 
 public class ManageWarehouse_ActionState extends ActionState {
 
-    private Game game;
     private Packet.InstructionCode prevState;
 
     public ManageWarehouse_ActionState(Action action, Packet.InstructionCode prevState) {

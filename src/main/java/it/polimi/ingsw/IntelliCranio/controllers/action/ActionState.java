@@ -7,10 +7,13 @@ import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException
 public abstract class ActionState {
 
     protected Action action;
+    protected Game game;
 
     public ActionState(Action action) {
         this.action = action;
     }
 
     public abstract void execute(Game game, Packet packet) throws InvalidArgumentsException;
+
+    protected void endTurn() { game.endTurn(true); }
 }

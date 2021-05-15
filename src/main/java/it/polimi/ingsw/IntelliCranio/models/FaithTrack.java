@@ -44,7 +44,29 @@ public class FaithTrack implements Serializable {
         }
     }
 
-    public void checkStatus(ArrayList<Player> players, Game game) {
+    public void checkStatus(Game game, int position) {
+
+        int section = popeSpace(position);
+
+        if(section != -1) {
+
+            game.getPlayers().forEach(player -> {
+                PopeCard pCard = player.getPopeCard(section);
+
+                if(pCard != null)
+                    if(isXSectionOrHigher(section, player.getFaithPosition()))
+                        pCard.setStatus(ACTIVE);
+                    else
+                        pCard.setStatus(REMOVED);
+            });
+
+            if(position == length)
+                game.endGame(true);
+
+        }
+
+        /*
+        //Todo: Single Player Check
 
         //Check if: pope space
         players.forEach(player -> {
@@ -69,7 +91,7 @@ public class FaithTrack implements Serializable {
                 if(player.getFaithPosition() == length)
                     game.endGame(true);
             }
-        });
+        }); */
 
     }
 

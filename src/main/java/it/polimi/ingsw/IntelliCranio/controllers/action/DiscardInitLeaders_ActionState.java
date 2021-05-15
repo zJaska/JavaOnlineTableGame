@@ -17,8 +17,6 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class DiscardInitLeaders_ActionState extends ActionState {
 
-    private Game game;
-
     public DiscardInitLeaders_ActionState(Action action) {
         super(action);
     }

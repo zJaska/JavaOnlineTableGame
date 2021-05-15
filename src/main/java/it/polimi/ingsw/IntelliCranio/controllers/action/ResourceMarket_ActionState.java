@@ -23,8 +23,6 @@ import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*
 
 public class ResourceMarket_ActionState extends ActionState {
 
-    private Game game;
-
     private boolean hasSelected;
     private Resource blanks = new Resource(BLANK, 0);
 

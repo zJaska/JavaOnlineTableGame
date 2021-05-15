@@ -17,8 +17,6 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class ChooseInitResources_ActionState extends ActionState {
 
-    private Game game;
-
     public ChooseInitResources_ActionState(Action action){
         super(action);
     }

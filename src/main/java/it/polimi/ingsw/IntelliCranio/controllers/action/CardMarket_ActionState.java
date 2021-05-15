@@ -25,8 +25,6 @@ import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*
 
 public class CardMarket_ActionState extends ActionState{
 
-    private Game game;
-
     private DevCard selected;
     private ArrayList<Resource> costResources = new ArrayList<>();
     private boolean confirmed;

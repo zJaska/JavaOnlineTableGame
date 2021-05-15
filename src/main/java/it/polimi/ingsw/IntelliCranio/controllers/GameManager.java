@@ -55,31 +55,22 @@ public class GameManager implements Runnable {
         return onlinePlayers.get(nickname);
     }
 
-    /*Idea:
-    Interrupt all the inputs from client and display the results and the winner.
-    Disconnect from the clients
-    Clear the backup memory from disk
-    Terminate the execution of this thread
-     */
-    public void endingGame() {
-        MainServer.forgetManager(game.getUuid(), new ArrayList<>(game.getPlayers().stream().map(Player::getNickname).collect(Collectors.toList())));
-
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public void run() {
         playGame();
+        endGame();
     }
 
-    private void gameSetup() {
-
-    }
 
     private void playGame() {
 
         //Game lifecycle
         while (true) {
+
+            //Check for game ended and first player reached
+            if(game.isGameEnded() && game.getCurrentPlayerIndex() == 0)
+                break; //Exit from main game loop and show results
 
             if (!onlinePlayers.get(game.getCurrentPlayer().getNickname())) {
                 game.changeTurn();
@@ -150,34 +141,29 @@ public class GameManager implements Runnable {
                 hurryUp = false;
 
                 // Do the action
-                if(packet.getInstructionCode() != END_TURN) {
-                    try {
-                        action.execute(game, packet); //Execute the content of the packet received
+                try {
+                    action.execute(game, packet); //Execute the content of the packet received
 
-                        //Send updated game
-                        gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
-                        network.sendAll(gamePacket);
+                    //Send updated game
+                    gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
+                    network.sendAll(gamePacket);
 
-                        Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ACK_MSG)));
-                        network.send(currentPlayer.getNickname(), ackMessagePacket);
+                    Packet ackMessagePacket = new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(ACK_MSG)));
+                    network.send(currentPlayer.getNickname(), ackMessagePacket);
 
-                        // Send next action to the player
-                        if (!game.isTurnEnded())
-                            network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
+                    // Send next action to the player
+                    if (!game.isTurnEnded())
+                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), ACK, new ArrayList<>()));
 
-                    } catch (InvalidArgumentsException e) {
+                } catch (InvalidArgumentsException e) {
 
-                        ArrayList<Object> errorArgs = new ArrayList<>();
-                        errorArgs.add(e.getErrorMessage());
+                    ArrayList<Object> errorArgs = new ArrayList<>();
+                    errorArgs.add(e.getErrorMessage());
 
-                        network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, e.getCode(), errorArgs));
-                        //Resend action to reset client scene
-                        network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), null, new ArrayList<>()));
+                    network.send(currentPlayer.getNickname(), new Packet(COMMUNICATION, e.getCode(), errorArgs));
+                    //Resend action to reset client scene
+                    network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), null, new ArrayList<>()));
 
-                    }
-                } else {
-                    //Player decided to end its turn
-                    endTurn(currentPlayer);
                 }
 
                 //Check if action was an automatic ending turn
@@ -193,4 +179,14 @@ public class GameManager implements Runnable {
         network.send(currentPlayer.getNickname(), new Packet(IDLE, null, null));
         game.changeTurn();
     }
+
+
+    private void endGame() {
+
+        //Display results
+
+        //Delete game data
+
+    }
+
 }
