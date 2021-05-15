@@ -624,8 +624,9 @@ public class Checks {
 
         AtomicBoolean error = new AtomicBoolean(false);
         ArrayList<T> unifiedActual = Lists.unifyResourceAmounts(actual);
+        ArrayList<T> unifiedExpected=Lists.unifyResourceAmounts(expected);
 
-        expected.forEach(ex -> {
+        unifiedExpected.forEach(ex -> {
             if (unifiedActual.stream().noneMatch(ac -> ac.getType() == ex.getType()))
                 error.set(true);
             if (unifiedActual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))

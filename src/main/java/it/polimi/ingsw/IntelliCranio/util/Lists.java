@@ -26,7 +26,7 @@ public class Lists {
         if (list == null)
             return result;
 
-        list.stream().filter(x -> x != null).map(FinalResource::getType).distinct().forEach(resType -> {
+        list.stream().filter(x -> (x != null && x.getAmount()!=0)).map(FinalResource::getType).distinct().forEach(resType -> {
             Resource temp = new Resource(resType,
                     list.stream().filter(res -> res != null && res.getType() == resType)
                             .map(FinalResource::getAmount).reduce(Integer::sum).get());
