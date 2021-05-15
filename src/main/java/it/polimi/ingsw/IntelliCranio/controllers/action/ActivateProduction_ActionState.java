@@ -18,13 +18,12 @@ import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
 
 public class ActivateProduction_ActionState extends ActionState{
-
-    private Game game;
 
     private boolean baseProduction = false;
     private ArrayList<DevCard> slotCards = new ArrayList<>();
@@ -45,7 +44,6 @@ public class ActivateProduction_ActionState extends ActionState{
         Checks.packetCheck(packet);
 
         switch (packet.getInstructionCode()) {
-
             case SELECT_SLOT: selectSlot(packet.getArgs()); return;
             case SELECT_CARD: selectCard(packet.getArgs()); return;
             case RES_FROM_DEPOT: resFromDepot(packet.getArgs()); return;
@@ -374,10 +372,16 @@ public class ActivateProduction_ActionState extends ActionState{
         allProduct.addAll(selectedResources);
         allProduct = Lists.unifyResourceAmounts(allProduct);
 
+        Player player = game.getCurrentPlayer();
+
+        //Add faith from devcards
+        allProduct.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
+
         //Add resources to player strongbox
         Strongbox sb = game.getCurrentPlayer().getStrongbox();
-
-        allProduct.forEach(res -> sb.addResources(res.getType(), res.getAmount()));
+        allProduct.stream()
+                .filter(res -> !res.getType().equals(FAITH))
+                .forEach(res -> sb.addResources(res.getType(), res.getAmount()));
 
         //Add faith for each leader used
         leadCards.forEach(lead -> game.addCurrentPlayerFaith());
