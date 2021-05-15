@@ -43,7 +43,7 @@ class ResourceMarket_ActionStateTest {
     }
 
     @Test
-    void nullPacket() {//Le instruction code e listobject
+    void nullPacket() {
 
         Action action = new Action();
         action.setActionState(new ResourceMarket_ActionState(action), RES_MARKET);
