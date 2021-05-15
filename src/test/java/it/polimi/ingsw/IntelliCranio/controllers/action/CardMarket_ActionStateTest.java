@@ -1115,7 +1115,6 @@ class CardMarket_ActionStateTest {
         });
     }
 
-
     @Test
     void DiscountTest(){
             Action action = new Action();
