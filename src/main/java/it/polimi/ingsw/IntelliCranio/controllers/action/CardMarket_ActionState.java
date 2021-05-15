@@ -13,6 +13,7 @@ import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
 import it.polimi.ingsw.IntelliCranio.util.Conversions;
+import it.polimi.ingsw.IntelliCranio.util.Lists;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.util.ArrayList;
@@ -278,6 +279,7 @@ public class CardMarket_ActionState extends ActionState{
         }
 
         //Check for cost match
+        //Checks.invalidCardCostResources(costResources, cardCost);
         Checks.invalidCardCostResources(costResources, cardCost);
 
         //Get here if cost resources selected are the same as card resources
@@ -318,6 +320,10 @@ public class CardMarket_ActionState extends ActionState{
         if(player.getAllDevCards().size() == 7)
             game.endGame(true);
 
+        // TODO: ste
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+        game.getCurrentPlayer().setLastAction(DEFAULT);
+        Save.saveGame(game);
     }
 
 }

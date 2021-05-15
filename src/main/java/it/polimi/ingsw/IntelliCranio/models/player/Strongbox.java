@@ -1,5 +1,6 @@
 package it.polimi.ingsw.IntelliCranio.models.player;
 
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 
@@ -17,7 +18,7 @@ public class Strongbox implements Serializable {
 
     public Strongbox() {
         Arrays.stream(ResourceType.values())
-                .filter(type -> type != ResourceType.BLANK && type != ResourceType.FAITH)
+                .filter(type -> !FinalResource.EXCLUDED.contains(type))
                 .forEach( type -> resources.add(new Resource(type, 0)));
     }
 
@@ -28,6 +29,9 @@ public class Strongbox implements Serializable {
     }
 
     public void addResources(ResourceType resource, int amount) {
+        if (FinalResource.EXCLUDED.contains(resource))
+            return;
+
         resources.stream()
                 .filter(res -> res.getType() == resource)
                 .findFirst().get()
@@ -35,8 +39,11 @@ public class Strongbox implements Serializable {
     }
 
     public void removeResources(ResourceType resource, int amount) {
+        if (FinalResource.EXCLUDED.contains(resource))
+            return;
+
         Resource temp = resources.stream()
-                .filter(res -> res.getType() == resource)
+                .filter(res -> !FinalResource.EXCLUDED.contains(res.getType()) && res.getType() == resource)
                 .findFirst().get();
 
         if(temp.getAmount() < amount){

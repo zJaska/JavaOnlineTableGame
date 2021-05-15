@@ -238,6 +238,7 @@ public class ResourceMarket_ActionState extends ActionState {
 
         game.loadGame(Objects.requireNonNull(Save.loadGame(game.getUuid())));
 
+        game.getCurrentPlayer().setLastAction(DEFAULT);
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
         //endregion

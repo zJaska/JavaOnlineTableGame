@@ -93,7 +93,7 @@ public class GameManager implements Runnable {
             Player currentPlayer = game.getCurrentPlayer();
             int currentPlayerIndex = game.getCurrentPlayerIndex();
 
-            String message = "---> It's " + currentPlayer.getNickname() + "'s turn";
+            String message = "It's " + currentPlayer.getNickname() + "'s turn";
             network.sendAll(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(message))));
 
             //Force client to set the correct scene
@@ -101,6 +101,8 @@ public class GameManager implements Runnable {
             network.send(currentPlayer.getNickname(), startPacket);
 
             action.restoreState(currentPlayer.getLastAction());
+
+            currentPlayer.hasPlayed = false;
 
             //endregion
 
@@ -188,7 +190,6 @@ public class GameManager implements Runnable {
     }
 
     private void endTurn (Player currentPlayer) {
-        currentPlayer.hasPlayed = false;
         network.send(currentPlayer.getNickname(), new Packet(IDLE, null, null));
         game.changeTurn();
     }

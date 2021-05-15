@@ -1,10 +1,15 @@
 package it.polimi.ingsw.IntelliCranio.models.resource;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.*;
 
 public class FinalResource implements Serializable {
 
     public enum ResourceType {STONE, SHIELD, SERVANT, COIN, FAITH, BLANK}
+    public static final ArrayList<ResourceType> EXCLUDED = new ArrayList<>(Arrays.asList(FAITH, BLANK));
 
     protected final ResourceType type;
     protected int amount;

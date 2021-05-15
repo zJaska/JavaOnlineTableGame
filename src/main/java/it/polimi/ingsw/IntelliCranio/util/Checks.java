@@ -597,10 +597,20 @@ public class Checks {
 
         AtomicBoolean error = new AtomicBoolean(false);
 
+        ArrayList<T> unifiedActual = Lists.unifyResourceAmounts(actual);
+
+        expected.forEach(ex -> {
+            if (unifiedActual.stream().noneMatch(ac -> ac.getType() == ex.getType()))
+                error.set(true);
+            if (unifiedActual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
+                error.set(true);
+        });
+
+        /*
         expected.forEach(ex -> {
             if(actual.stream().noneMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() < ex.getAmount())))
                 error.set(true);
-        });
+        });*/
 
         if(error.get()){
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
@@ -613,9 +623,12 @@ public class Checks {
     public static <T extends FinalResource> void invalidCardCostResources(ArrayList<T> actual, ArrayList<T> expected) throws InvalidArgumentsException {
 
         AtomicBoolean error = new AtomicBoolean(false);
+        ArrayList<T> unifiedActual = Lists.unifyResourceAmounts(actual);
 
         expected.forEach(ex -> {
-            if(actual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
+            if (unifiedActual.stream().noneMatch(ac -> ac.getType() == ex.getType()))
+                error.set(true);
+            if (unifiedActual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
                 error.set(true);
         });
 
@@ -714,13 +727,15 @@ public class Checks {
 
     public static void invalidSlot(DevCard slotCard, DevCard selected) throws InvalidArgumentsException {
 
-        if(selected.getLevel() == 1)
+        if(selected.getLevel() == 1) {
             if(slotCard != null) {
                 InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
                 String errorMessage = "OOOPS, something went wrong! Can't add selected card in this slot";
                 e.setErrorMessage(errorMessage);
                 throw e;
             }
+            return;
+        }
 
         if(slotCard.getLevel() != selected.getLevel() - 1) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);

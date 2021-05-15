@@ -106,10 +106,10 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
             faith.setTranslateY(faith_translate_y);
         });
 
-        GuiUtil.getNodesStartingWithId(root, "develop").forEach(image -> {
+        GuiUtil.getNodesStartingWithId(root, "dev_slot").forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
                 DevCard[] cards = MainClient.game.getPlayer(MainClient.nickname).getFirstDevCards();
-                int index = parseInt(image.getId().split("_")[1]);
+                int index = parseInt(image.getId().split("_")[2]) - 1;
                 if (cards[index] == null)
                     ((ImageView)image).setImage(null);
                 else {
