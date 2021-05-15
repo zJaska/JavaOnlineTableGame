@@ -97,10 +97,10 @@ public class GameManager implements Runnable {
             network.sendAll(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(message))));
 
             //Force client to set the correct scene
+            action.restoreState(currentPlayer.getLastAction());
+
             Packet startPacket = new Packet(currentPlayer.getLastAction(), null, new ArrayList<>());
             network.send(currentPlayer.getNickname(), startPacket);
-
-            action.restoreState(currentPlayer.getLastAction());
 
             currentPlayer.hasPlayed = false;
 
