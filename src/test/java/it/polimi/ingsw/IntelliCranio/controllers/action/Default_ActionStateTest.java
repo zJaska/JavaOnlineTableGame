@@ -54,7 +54,7 @@ class Default_ActionStateTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = Packet.InstructionCode.class, mode = EXCLUDE, names = {"PLAY_LEADER", "DISCARD_LEAD", "MNG_WARE", "CARD_MARKET", "RES_MARKET", "ACT_PROD"})
+    @EnumSource(value = Packet.InstructionCode.class, mode = EXCLUDE, names = {"END_TURN","PLAY_LEADER", "DISCARD_LEAD", "MNG_WARE", "CARD_MARKET", "RES_MARKET", "ACT_PROD"})
     void codeNotAllowed(Packet.InstructionCode p) {
         Action action = new Action();
         action.setActionState(new Default_ActionState(action), DEFAULT);

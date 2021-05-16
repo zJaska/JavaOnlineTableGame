@@ -1,6 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
 import it.polimi.ingsw.IntelliCranio.models.Game;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
@@ -15,6 +16,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.util.ArrayList;
 
 
+import static com.cedarsoftware.util.DeepEquals.deepEquals;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +38,7 @@ class DiscardInitLeaders_ActionStateTest {
         nicknames.add("3");
         nicknames.add("4");
         game=new Game(nicknames);
-        action.setActionState(new ChooseInitResources_ActionState(action), DISCARD_INIT_LEAD);
+        action.setActionState(new DiscardInitLeaders_ActionState(action), DISCARD_INIT_LEAD);
 
     }
 
@@ -48,7 +50,7 @@ class DiscardInitLeaders_ActionStateTest {
 
 
     @ParameterizedTest
-    @EnumSource(value = Packet.InstructionCode.class, mode = EXCLUDE, names = {"CHOOSE_RES"})
+    @EnumSource(value = Packet.InstructionCode.class, mode = EXCLUDE, names = {"DISCARD_LEAD"})
     void codeNotAllowed(Packet.InstructionCode p){
         Packet packet=new Packet(p,null,null);// For each test
         InvalidArgumentsException e= assertThrows(InvalidArgumentsException.class,()->{action.execute(game,packet );});
@@ -65,7 +67,7 @@ class DiscardInitLeaders_ActionStateTest {
     @Test
     void notEnoughArgs(){//Le instruction code e listobject
         ArrayList<Object> args= new ArrayList<>();
-        Packet packet=new Packet(CHOOSE_RES,null,args);// For each test
+        Packet packet=new Packet(DISCARD_LEAD,null,args);// For each test
         InvalidArgumentsException e= assertThrows(InvalidArgumentsException.class,()->{action.execute(game,packet );});
         assertEquals(NOT_ENOUGH_ARGS,e.getCode());
     }
@@ -76,7 +78,7 @@ class DiscardInitLeaders_ActionStateTest {
         args.add(new Resource(FinalResource.ResourceType.SHIELD,1));
         args.add(new Resource(FinalResource.ResourceType.STONE,1));
         args.add(new Resource(FinalResource.ResourceType.COIN,1));
-        Packet packet=new Packet(CHOOSE_RES,null,args);// For each test
+        Packet packet=new Packet(DISCARD_LEAD,null,args);// For each test
         InvalidArgumentsException e= assertThrows(InvalidArgumentsException.class,()->{action.execute(game,packet );});
         assertEquals(TOO_MANY_ARGS,e.getCode());
     }
@@ -85,9 +87,41 @@ class DiscardInitLeaders_ActionStateTest {
     void typeMissMatch(){//Le instruction code e listobject
         ArrayList<Object> args= new ArrayList<>();
         args.add(5);
-        Packet packet=new Packet(CHOOSE_RES,null,args);// For each test
+        Packet packet=new Packet(DISCARD_LEAD,null,args);// For each test
         InvalidArgumentsException e= assertThrows(InvalidArgumentsException.class,()->{action.execute(game,packet );});
         assertEquals(TYPE_MISMATCH,e.getCode());
+    }
+
+    @Test
+    void TestCorrect(){//Le instruction code e listobject
+        ArrayList<Object> args= new ArrayList<>();
+        LeadCard discarded=game.getCurrentPlayer().getLeaders().get(0);
+
+        args.add(discarded);
+        Packet packet=new Packet(DISCARD_LEAD,null,args);// For each test
+
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+        assertTrue(deepEquals(null,game.getCurrentPlayer().getLeader(discarded)));
+
+    }
+
+    @Test
+    void TestCardNotInHand(){//Le instruction code e listobject
+        ArrayList<Object> args= new ArrayList<>();
+
+
+        args.add(new LeadCard("NON ESISTE",100,null,null,null,null,false));
+        Packet packet=new Packet(DISCARD_LEAD,null,args);// For each test
+
+
+        InvalidArgumentsException e= assertThrows(InvalidArgumentsException.class,()->{action.execute(game,packet );});
+        assertEquals(SELECTION_INVALID,e.getCode());
+
+
     }
 
     @Test
