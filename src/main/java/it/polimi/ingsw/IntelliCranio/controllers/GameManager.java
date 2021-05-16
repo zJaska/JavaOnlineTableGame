@@ -90,7 +90,7 @@ public class GameManager implements Runnable {
             //Force client to set the correct scene
             action.restoreState(currentPlayer.getLastAction());
 
-            Packet startPacket = new Packet(currentPlayer.getLastAction(), null, new ArrayList<>());
+            Packet startPacket = new Packet(action.getActionCode(), null, new ArrayList<>());
             network.send(currentPlayer.getNickname(), startPacket);
 
             currentPlayer.hasPlayed = false;
@@ -103,8 +103,11 @@ public class GameManager implements Runnable {
             while (true) {
 
                 // Check if the turn has changed
-                if (game.getCurrentPlayerIndex() != currentPlayerIndex)
+                if(game.isTurnEnded()) {
+                    endTurn(currentPlayer);
                     break;
+                }
+
 
                 // Update game objects in all clients, to ensure consistency of data and to make the game
                 // people see changes in others' turns
@@ -130,7 +133,7 @@ public class GameManager implements Runnable {
                     }
 
                 } catch (IOException e) {
-                    game.changeTurn(); //Change turn upon disconnection
+                    game.endTurn(true); //Change turn upon disconnection
                     onlinePlayers.put(currentPlayer.getNickname(), false);
                 }
 
@@ -165,10 +168,6 @@ public class GameManager implements Runnable {
                     network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), null, new ArrayList<>()));
 
                 }
-
-                //Check if action was an automatic ending turn
-                if(game.isTurnEnded())
-                    endTurn(currentPlayer);
 
             }
         }

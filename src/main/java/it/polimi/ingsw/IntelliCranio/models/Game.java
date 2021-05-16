@@ -51,8 +51,11 @@ public class Game implements Serializable {
 
         createLeaderCards("src/main/resources/leadcards_config.json", true);
 
-        if(players.size() == 1)
+        if(players.size() == 1) {
             singlePlayerData = new SinglePlayerData();
+            singlePlayer = true;
+        }
+
         else
             shufflePlayers();
 
@@ -275,7 +278,6 @@ public class Game implements Serializable {
     public void endTurn(boolean value) { endTurn = value; }
 
     public void changeTurn() {
-
         if(singlePlayer)
             lorenzoAction();
 

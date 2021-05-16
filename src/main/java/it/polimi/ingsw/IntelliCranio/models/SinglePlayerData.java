@@ -1,10 +1,11 @@
 package it.polimi.ingsw.IntelliCranio.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class SinglePlayerData {
+public class SinglePlayerData implements Serializable {
 
     public enum Token {
         GREEN,

@@ -51,7 +51,6 @@ public class GuiManageWarehouseConfig implements GuiConfig {
 
         listeners.forEach(image -> {
             image.setOnMouseClicked(event -> {
-                System.out.println(image.getId());
                 if (source == null) {
                     source = image;
                     GuiUtil.spawnPointer(image);

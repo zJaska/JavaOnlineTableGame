@@ -112,8 +112,10 @@ public class ClientHandler implements Runnable {
 
         socketHandler.send(new Packet(WANNA_PLAY_ALONE, null, null));
         try {
-            if (socketHandler.receive().getInstructionCode() == ALONE)
+            if (socketHandler.receive().getInstructionCode() == ALONE) {
                 MainServer.startManager(null, new ArrayList<>(Arrays.asList(new Pair<>(nickname, socketHandler))));
+                return;
+            }
 
         } catch (IOException e) {
             disconnectPlayer(socketHandler,TIMEOUT_MSG);

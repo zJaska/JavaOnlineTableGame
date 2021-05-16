@@ -5,6 +5,7 @@ import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.*;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.DEFAULT;
 
 public class Action {
 
@@ -33,7 +34,7 @@ public class Action {
                 break;
             default:
                 actionState = new Default_ActionState(this);
-                this.actionCode = actionCode;
+                this.actionCode = DEFAULT;
         }
     }
 
