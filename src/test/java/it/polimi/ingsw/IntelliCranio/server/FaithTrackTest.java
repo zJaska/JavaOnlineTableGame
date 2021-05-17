@@ -20,4 +20,6 @@ public class FaithTrackTest {
         assertFalse(faith.isXSectionOrHigher(-2,6));
         assertFalse(faith.isXSectionOrHigher(-23,-6));
     }
+
+    //Controlla posizione e attiva varie cose
 }

@@ -3,10 +3,14 @@ package it.polimi.ingsw.IntelliCranio.models;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 import it.polimi.ingsw.IntelliCranio.models.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -14,10 +18,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.reverseOrder;
+import static java.util.Comparator.comparing;
 
 public class Game implements Serializable {
 
@@ -266,6 +274,55 @@ public class Game implements Serializable {
                     .forEach(pos -> faithTrack.checkStatus(this, pos));
         }
     }
+
+
+    public ArrayList<Pair<String,Integer>> calculatePoints(){
+
+        ArrayList<Pair<String,Integer>> tablePoints=new ArrayList<>();
+
+
+
+        for (Player player: players) {
+            int points=0;
+            int numResources=0;
+            ArrayList<Resource> resources=player.getAllResources();
+            ArrayList<DevCard> devCards=player.getAllDevCards();
+            ArrayList<PopeCard> popeCards=player.getPopeCards();
+
+            for(int i=0;i<player.getLeaders().size();i++)
+                if(player.getLeaders().get(i).isActive())
+                    points+=player.getLeaders().get(i).getVictoryPoints();
+
+
+            for(int i=0;i<devCards.size();i++)
+                points+=devCards.get(i).getVictoryPoints();
+
+            for(int i=0;i<popeCards.size();i++)
+                if(popeCards.get(i).getStatus().equals(PopeCard.Status.ACTIVE))
+                    points+=popeCards.get(i).getVictoryPoints();
+
+            points+=faithTrack.getVp(player.getFaithPosition());
+
+            for(int i=0;i<resources.size();i++)
+                numResources+=resources.get(i).getAmount();
+
+            numResources=numResources/5;
+
+            points+=numResources;
+
+            tablePoints.add(new Pair<>(player.getNickname(),points));
+        }
+
+        Comparator<Pair<String,Integer>> c = reverseOrder(comparing(Pair::getValue));
+
+        tablePoints.sort(c);
+
+        tablePoints.stream().map(Pair::getValue).forEach(points ->System.out.println(points));
+
+        return tablePoints;
+    }
+
+   
 
     //Remove me
     public void addPlayer(Player player, int turn) {
