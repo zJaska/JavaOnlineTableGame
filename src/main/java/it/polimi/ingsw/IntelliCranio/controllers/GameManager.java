@@ -30,24 +30,30 @@ public class GameManager implements Runnable {
     private NetworkManagerI network;
     private TreeMap<String, Boolean> onlinePlayers = new TreeMap<>();
 
-    public GameManager(UUID uuid, ArrayList<Pair<String, SocketHandler>> playerConnections) {
+    public GameManager(UUID uuid, ArrayList<Pair<String, SocketHandler>> onlinePlayerConnections) {
         ArrayList<String> nicknames = new ArrayList<>();
-        nicknames.addAll(playerConnections.stream().map(Pair::getKey).collect(Collectors.toList()));
+        nicknames.addAll(onlinePlayerConnections.stream().map(Pair::getKey).collect(Collectors.toList()));
 
-        network = new SocketManager(playerConnections);
+        network = new SocketManager(onlinePlayerConnections);
 
         if (uuid == null) {
             game = new Game(nicknames);
-            playerConnections.forEach(x -> onlinePlayers.put(x.getKey(), true));
+            onlinePlayerConnections.forEach(pair -> onlinePlayers.put(pair.getKey(), true));
         }
         else {
             game = Save.loadGame(uuid);
-            playerConnections.forEach(x -> onlinePlayers.put(x.getKey(), false));
+            game.getPlayers().forEach(player -> onlinePlayers.put(player.getNickname(), false));
+            game.endTurn(false);
         }
     }
 
     public void reconnectPlayer(String nickname, SocketHandler socketHandler) {
         network.connect(nickname, socketHandler);
+
+        network.send(nickname, new Packet(GAME, null, new ArrayList<>(Arrays.asList(game))));
+        network.send(nickname, new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Joining the running game..."))));
+        network.send(nickname, new Packet(IDLE, null, null));
+
         onlinePlayers.put(nickname, true);
     }
 
@@ -55,13 +61,12 @@ public class GameManager implements Runnable {
         return onlinePlayers.get(nickname);
     }
 
+    public UUID getUUID() { return game.getUuid(); }
 
-    @Override
     public void run() {
         playGame();
         endGame();
     }
-
 
     private void playGame() {
 
@@ -82,7 +87,6 @@ public class GameManager implements Runnable {
             network.sendAll(gamePacket);
 
             Player currentPlayer = game.getCurrentPlayer();
-            int currentPlayerIndex = game.getCurrentPlayerIndex();
 
             String message = "It's " + currentPlayer.getNickname() + "'s turn";
             network.sendAll(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList(message))));
@@ -90,8 +94,7 @@ public class GameManager implements Runnable {
             //Force client to set the correct scene
             action.restoreState(currentPlayer.getLastAction());
 
-            Packet startPacket = new Packet(action.getActionCode(), null, new ArrayList<>());
-            network.send(currentPlayer.getNickname(), startPacket);
+            network.send(currentPlayer.getNickname(), new Packet(action.getActionCode(), null, null));
 
             currentPlayer.hasPlayed = false;
 

@@ -44,14 +44,16 @@ public class SocketHandler {
     }
 
     public void send (Packet packet) {
-        try {
-            out.reset();
-            out.writeObject(packet);
-        }
-        catch (IOException e) {
-            System.err.println("Unable to send the object for network problems");
-        } catch (Exception e) {
-            System.err.println("Unable to send packet, problems with object serialization");
+        synchronized (this) {
+            try {
+                out.reset();
+                out.writeObject(packet);
+            }
+            catch (IOException e) {
+                System.err.println("Unable to send the object for network problems");
+            } catch (Exception e) {
+                System.err.println("Unable to send packet, problems with object serialization");
+            }
         }
     }
 

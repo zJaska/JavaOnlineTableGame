@@ -77,7 +77,7 @@ public class ClientHandler implements Runnable {
                 String finalNickname = nickname;
 
                 if (playersTempNames.stream().anyMatch(x -> x.equals(finalNickname)) ||
-                        (MainServer.getAllPlayers().stream().anyMatch(x -> x.equals(finalNickname)) && MainServer.getManager(finalNickname).isOnline(finalNickname))) {
+                        (MainServer.getAllPlayers().stream().anyMatch(x -> x.equals(finalNickname)) && MainServer.isPlayerOnline(finalNickname))) {
                     chosen = true;
                     socketHandler.send(new Packet(CHOOSE_NICKNAME, NICKNAME_TAKEN,null));
                     socketHandler.send(new Packet(COMMUNICATION, null,new ArrayList<>(Arrays.asList("Nickname already taken, choose another one"))));
@@ -101,9 +101,9 @@ public class ClientHandler implements Runnable {
         // Checking if the player has a running game
 
         if (MainServer.getAllPlayers().contains(nickname)) {
-            socketHandler.send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Joining the running game..."))));
-            socketHandler.send(new Packet(IDLE, null, null));
-            MainServer.getManager(nickname).reconnectPlayer(nickname, socketHandler);
+            playersTempNames.remove(nickname);
+            MainServer.restartManager(nickname);
+            MainServer.reconnectPlayer(nickname, socketHandler);
             return;
         }
 
@@ -113,7 +113,7 @@ public class ClientHandler implements Runnable {
         socketHandler.send(new Packet(WANNA_PLAY_ALONE, null, null));
         try {
             if (socketHandler.receive().getInstructionCode() == ALONE) {
-                MainServer.startManager(null, new ArrayList<>(Arrays.asList(new Pair<>(nickname, socketHandler))));
+                MainServer.startManager(new ArrayList<>(Arrays.asList(new Pair<>(nickname, socketHandler))));
                 return;
             }
 

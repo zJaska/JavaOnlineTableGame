@@ -59,7 +59,7 @@ public class GuiSceneFactory {
             case ACT_PROD:
                 return new Pair<>(GuiDefaultScene, new GuiActivateProductionConfig(gui));
             case IDLE:
-                return new Pair<>(null, new GuiIdleConfig(gui));
+                return new Pair<>(GuiDefaultScene, new GuiIdleConfig(gui));
             default:
                 return null;
         }

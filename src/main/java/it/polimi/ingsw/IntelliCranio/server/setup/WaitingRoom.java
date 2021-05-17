@@ -57,6 +57,6 @@ public class WaitingRoom {
         });
 
         ClientHandler.removePlayerNames(players.stream().map(Pair::getKey).collect(Collectors.toList()));
-        MainServer.startManager(null, players);
+        MainServer.startManager(players);
     }
 }

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.IntelliCranio.client;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 import it.polimi.ingsw.IntelliCranio.views.DummyView;
 import it.polimi.ingsw.IntelliCranio.views.View;
 import it.polimi.ingsw.IntelliCranio.views.cli.Cli;
@@ -11,11 +14,12 @@ import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 import it.polimi.ingsw.IntelliCranio.views.gui.GuiLauncher;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 import static it.polimi.ingsw.IntelliCranio.util.Net.createPacketFromInput;
+import static java.lang.Integer.parseInt;
 
 public class MainClient {
 
@@ -30,7 +34,9 @@ public class MainClient {
         view = askView();
         //view = getDummyView(parseInt(args[0]));
 
-        try { socketHandler = new SocketHandler("localhost",1051); }
+        HashMap<String, String> config = Save.getDatabase("network_config.json", Save.netConfigType);
+
+        try { socketHandler = new SocketHandler(config.get("ip"), parseInt(config.get("port"))); }
         catch (IOException e) { return ; }
 
         new Thread(new RunningView(view)).start();
@@ -46,7 +52,6 @@ public class MainClient {
             socketHandler.send(createPacketFromInput(RunningView.getData()));
         }
     }
-
 
     private static View askView() {
         String tmp;

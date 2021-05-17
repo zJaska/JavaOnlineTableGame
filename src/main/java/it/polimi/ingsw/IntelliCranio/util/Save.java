@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -14,7 +15,10 @@ import java.util.UUID;
 public class Save {
 
     public static final String pathPrefix = "src/main/resources/saved_games/";
-    public static final String databasePath = "src/main/resources/database.json";
+    public static final String databasePath = "src/main/resources/";
+
+    public static final Type netConfigType = new TypeToken<HashMap<String, String>>() {}.getType();
+    public static final Type playerDatabaseType = new TypeToken<HashMap<String, UUID>>() {}.getType();
 
     /**
      * Serialize the game to file using unique IDs.
@@ -84,33 +88,29 @@ public class Save {
      *
      * @return The hasmap string-uuid of all the nicknames connected to a specific game
      */
-    public static HashMap<String, UUID> getDatabase() {
-
+    public static <T> T getDatabase(String filename, Type tClass) {
         Gson gson = new Gson();
         String fileData = "";
 
         try {
-            fileData = new String(Files.readAllBytes(Paths.get(databasePath)));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            fileData = new String(Files.readAllBytes(Paths.get(databasePath + filename)));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return gson.fromJson(fileData, new TypeToken<HashMap<String, UUID>>(){}.getType());
+        return gson.fromJson(fileData, tClass);
     }
 
     /**
      * Save the updated database in its file.
      * @param database The hashmap to store in a file.
      */
-    public static void saveDatabase(HashMap<String, UUID> database) {
+    public static void saveDatabase(HashMap<Object, Object> database, String filename) {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         try {
-            FileWriter out = new FileWriter(databasePath);
+            FileWriter out = new FileWriter(databasePath + filename);
 
             out.write(gson.toJson(database));
             out.close();
