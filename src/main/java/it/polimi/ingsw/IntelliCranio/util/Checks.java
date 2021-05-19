@@ -788,7 +788,7 @@ public class Checks {
             return;
         }
 
-        if (slotCard.getLevel() != selected.getLevel() - 1) {
+        if (slotCard == null || slotCard.getLevel() != selected.getLevel() - 1) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Can't add selected card in this slot";
             e.setErrorMessage(errorMessage);
