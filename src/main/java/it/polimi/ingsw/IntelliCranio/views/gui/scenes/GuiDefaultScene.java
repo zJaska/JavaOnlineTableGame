@@ -1,7 +1,10 @@
 package it.polimi.ingsw.IntelliCranio.views.gui.scenes;
 
 import it.polimi.ingsw.IntelliCranio.client.MainClient;
+import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
+import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 import it.polimi.ingsw.IntelliCranio.models.player.Strongbox;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
@@ -17,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
@@ -53,11 +57,18 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
     private double faith_translate_y = 0;
     private int dir = 0; // 0 to 3: right, down, left, up
 
+    private ImageView black_faith;
+    private int black_faith_pos = 0;
+    private double black_faith_translate_x = 0;
+    private double black_faith_translate_y = 0;
+    private int black_dir = 0; // 0 to 3: right, down, left, up
+
     public GuiDefaultScene(Parent parent) {
         super(parent);
 
         root = parent;
         faith = (ImageView) GuiUtil.getNodeById(root,"faith");
+        black_faith = (ImageView) GuiUtil.getNodeById(root,"black_faith");
         manage_warehouse = (Button) GuiUtil.getNodeById(root, "action_manage_warehouse");
         activate_production = (Button) GuiUtil.getNodeById(root, "action_activate_production");
         confirm = (Button) GuiUtil.getNodeById(root, "confirm");
@@ -81,6 +92,11 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
         anchor_resources.setVisible(false);
 
         GuiUtil.setLeadersUpdater(parent);
+
+        Label nickname = ((Label) GuiUtil.getNodeById(root, "nickname"));
+        nickname.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
+            nickname.setText(MainClient.nickname);
+        });
 
         faith.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
             int newFaithPos = MainClient.game.getPlayer(MainClient.nickname).getFaithPosition();
@@ -106,15 +122,65 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
             faith.setTranslateY(faith_translate_y);
         });
 
-        GuiUtil.getNodesStartingWithId(root, "dev_slot").forEach(image -> {
+        if (!MainClient.game.isSinglePlayer())
+            black_faith.setImage(null);
+        else
+            black_faith.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
+                int newFaithPos = MainClient.game.getSinglePlayerData().getLorenzoFaith();
+                while (newFaithPos > black_faith_pos) {
+                    if (Arrays.asList(2,16).contains(black_faith_pos))
+                        black_dir = 3;
+                    if (Arrays.asList(4,11,18).contains(black_faith_pos))
+                        black_dir = 0;
+                    if (black_faith_pos == 9)
+                        black_dir = 1;
+
+                    if (black_dir == 0)
+                        black_faith_translate_x += black_faith.getFitWidth() - 2;
+                    if (black_dir == 1)
+                        black_faith_translate_y += black_faith.getFitHeight() -2;
+                    if (black_dir == 3)
+                        black_faith_translate_y -= (black_faith.getFitHeight() -2);
+
+                    black_faith_pos++;
+                }
+
+                black_faith.setTranslateX(black_faith_translate_x);
+                black_faith.setTranslateY(black_faith_translate_y);
+            });
+
+        GuiUtil.getNodesStartingWithId(root, "dev_image").forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                DevCard[] cards = MainClient.game.getPlayer(MainClient.nickname).getFirstDevCards();
-                int index = parseInt(image.getId().split("_")[2]) - 1;
-                if (cards[index] == null)
+                ArrayList<DevCard>[] cards = MainClient.game.getPlayer(MainClient.nickname).getDevCardsCopy();
+
+                int slot = parseInt(image.getId().split("_")[2]);
+                int col = parseInt(image.getId().split("_")[3]);
+
+                if (cards[slot] == null || cards[slot].size() <= col)
                     ((ImageView)image).setImage(null);
                 else {
-                    InputStream tmp = getClass().getResourceAsStream("/assets/development_cards/" + cards[index].getID() + ".jpg");
+                    InputStream tmp = getClass().getResourceAsStream("/assets/development_cards/" + cards[slot].get(col).getID() + ".jpg");
                     ((ImageView) image).setImage(new Image(tmp));
+                }
+            });
+        });
+
+        GuiUtil.getNodesStartingWithId(root, "img_res_leader").forEach(image -> {
+            image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
+                ArrayList<LeadCard> leaders = MainClient.game.getPlayer(MainClient.nickname).getLeaders();
+                int index = parseInt(image.getId().split("_")[3]);
+
+                try {
+                    Resource res = ((DepotAbility) leaders.get(index).getSpecialAbility()).getDepot();
+
+                    if (parseInt(image.getId().split("_")[4]) < res.getAmount()) {
+                        InputStream tmp = getClass().getResourceAsStream("/assets/Materials/resource_" + res.getType().toString().toLowerCase() + ".png");
+                        ((ImageView) image).setImage(new Image(tmp));
+                    } else {
+                        ((ImageView)image).setImage(null);
+                    }
+                } catch (Exception e) {
+                    ((ImageView)image).setImage(null);
                 }
             });
         });
@@ -153,6 +219,24 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
                 }
             });
         });
+
+        GuiUtil.getNodesStartingWithId(root, "pope").forEach(rect -> {
+            rect.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
+                ArrayList<PopeCard> cards = MainClient.game.getPlayer(MainClient.nickname).getPopeCards();
+
+                switch (cards.get(parseInt(rect.getId().split("_")[1])).getStatus()) {
+                    case ACTIVE:
+                        ((Rectangle) rect).setFill(Color.GREEN);
+                        break;
+                    case INACTIVE:
+                        ((Rectangle) rect).setFill(Color.YELLOW);
+                        break;
+                    case REMOVED:
+                        ((Rectangle) rect).setFill(Color.RED);
+                        break;
+                }
+            });
+        });
     }
 
     public void setIdle(Gui gui) {
@@ -170,7 +254,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
     }
 
     public ArrayList<Node> getLeadersButtons() {
-        return GuiUtil.getNodesStartingWithId(root, "leader");
+        return GuiUtil.getNodesStartingWithId(root, "leader_btn");
     }
 
     public ArrayList<Node> getResources() {

@@ -45,26 +45,58 @@
                      <children>
                         <ImageView fx:id="img_leader_0" fitHeight="232.0" fitWidth="158.0" layoutX="10.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/leaders/leadercard_back.JPG" />
+                              <Image url="@../assets/leaders/leadercard_front_2_4.JPG" />
                            </image>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Button fx:id="leader_0" layoutX="5.0" layoutY="9.0" mnemonicParsing="false" opacity="0.0" prefHeight="232.0" prefWidth="158.0" text="Button" />
+                        <Button fx:id="leader_btn_0" layoutX="5.0" layoutY="9.0" mnemonicParsing="false" opacity="0.0" prefHeight="232.0" prefWidth="158.0" text="Button" />
+                        <ImageView fx:id="img_res_leader_0_0" fitHeight="35.0" fitWidth="33.0" layoutX="43.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="img_res_leader_0_1" fitHeight="35.0" fitWidth="33.0" layoutX="100.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </ImageView>
                      </children>
                   </Pane>
                   <Pane layoutY="317.0" prefHeight="257.0" prefWidth="183.0">
                      <children>
                         <ImageView fx:id="img_leader_1" fitHeight="241.0" fitWidth="158.0" layoutX="20.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/leaders/leadercard_back.JPG" />
+                              <Image url="@../assets/leaders/leadercard_front_2_1.JPG" />
                            </image>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Button fx:id="leader_1" layoutX="20.0" layoutY="25.0" mnemonicParsing="false" opacity="0.0" prefHeight="232.0" prefWidth="158.0" text="Button" />
+                        <Button fx:id="leader_btn_1" layoutX="20.0" layoutY="25.0" mnemonicParsing="false" opacity="0.0" prefHeight="232.0" prefWidth="158.0" text="Button" />
+                        <ImageView fx:id="img_res_leader_1_0" fitHeight="35.0" fitWidth="33.0" layoutX="52.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="img_res_leader_1_1" fitHeight="35.0" fitWidth="33.0" layoutX="113.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Materials/marble_blank.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </ImageView>
                      </children>
                   </Pane>
                   <Polygon fx:id="goto_market_card" layoutX="144.0" layoutY="312.0" points="0.0, 15.0, 63.0, -17.0, 0.0, -49.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;">
@@ -109,23 +141,56 @@
                         <Image url="@../assets/Materials/resource_faith.png" />
                      </image>
                   </ImageView>
-                  <AnchorPane layoutX="305.0" layoutY="257.0">
+                  <AnchorPane layoutX="301.0" layoutY="193.0" prefHeight="354.0" prefWidth="453.0">
                      <children>
-                        <ImageView fx:id="dev_slot_1" fitHeight="209.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_2_0" fitHeight="209.0" fitWidth="148.0" layoutX="315.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="dev_slot_2" fitHeight="209.0" fitWidth="148.0" layoutX="151.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_1_0" fitHeight="224.0" fitWidth="142.0" layoutX="151.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="dev_slot_3" fitHeight="209.0" fitWidth="148.0" layoutX="305.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_0_0" fitHeight="224.0" fitWidth="142.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
+                        <ImageView fx:id="dev_image_0_1" fitHeight="224.0" fitWidth="142.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="dev_image_0_2" fitHeight="224.0" fitWidth="142.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="dev_image_1_1" fitHeight="224.0" fitWidth="142.0" layoutX="151.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="dev_image_1_2" fitHeight="209.0" fitWidth="148.0" layoutX="151.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="dev_image_2_1" fitHeight="209.0" fitWidth="148.0" layoutX="315.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="dev_image_2_2" fitHeight="209.0" fitWidth="148.0" layoutX="315.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="dev_slot_3" layoutX="305.0" mnemonicParsing="false" opacity="0.0" prefHeight="336.0" prefWidth="142.0" />
+                        <Button fx:id="dev_slot_2" layoutX="151.0" mnemonicParsing="false" opacity="0.0" prefHeight="336.0" prefWidth="142.0" />
+                        <Button fx:id="dev_slot_1" mnemonicParsing="false" opacity="0.0" prefHeight="336.0" prefWidth="142.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="29.0" layoutY="431.0">
@@ -351,6 +416,19 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+                  <Rectangle fx:id="pope_0" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="64.0" layoutX="191.0" layoutY="74.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
+                  <Rectangle fx:id="pope_1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="64.0" layoutX="384.0" layoutY="34.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
+                  <Rectangle fx:id="pope_2" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="64.0" layoutX="617.0" layoutY="74.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
+                  <ImageView fx:id="black_faith" fitHeight="41.0" fitWidth="41.0" layoutX="29.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/Materials/black_cross.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="nickname" layoutX="3.0" layoutY="528.0" text="Player" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <Polygon fx:id="goto_market_resource" layoutX="4.0" layoutY="317.0" points="0.0, 15.0, 63.0, -17.0, 0.0, -49.0" rotate="180.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;">

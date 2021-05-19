@@ -18,7 +18,7 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
-import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
+import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class RunningNetwork implements Runnable {
 
@@ -67,6 +67,9 @@ public class RunningNetwork implements Runnable {
             case IDLE:
                 view.setScene(IDLE);
                 return null;
+            case GAME_ENDED:
+                view.setScene(GAME_ENDED);
+                Thread.currentThread().interrupt();
             case DIE:
                 System.exit(-101);
             default:

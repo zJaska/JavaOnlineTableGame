@@ -41,6 +41,7 @@ public class GuiDefaultConfig implements GuiConfig {
             gui.setData(new Pair<>(RES_MARKET, null));
         });
 
+
         GuiUtil.setLeadersActions(realScene, PLAY_LEADER, gui);
         GuiUtil.setLeadersActions(realScene, DISCARD_LEAD, gui);
     }

@@ -184,11 +184,10 @@ public class GameManager implements Runnable {
 
 
     private void endGame() {
-
-        //Display results
+        network.sendAll(new Packet(GAME_ENDED, null, null));
 
         //Delete game data
-
+        MainServer.forgetManager(getUUID());
     }
 
 }

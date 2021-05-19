@@ -19,6 +19,7 @@ public class GuiSceneFactory {
     private GuiScene GuiDefaultScene;
     private GuiScene GuiEmptyScene;
     private GuiScene GuiInitScene;
+    private GuiScene GuiGameEndedScene;
 
     private ArrayList<GuiScene> scenes = new ArrayList<>();
 
@@ -60,6 +61,8 @@ public class GuiSceneFactory {
                 return new Pair<>(GuiDefaultScene, new GuiActivateProductionConfig(gui));
             case IDLE:
                 return new Pair<>(GuiDefaultScene, new GuiIdleConfig(gui));
+            case GAME_ENDED:
+                return new Pair<>(new GuiGameEndedScene(GuiUtil.getParentFromFXML("/scene_builder/game_ended_scene.fxml")), null);
             default:
                 return null;
         }

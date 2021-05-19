@@ -108,7 +108,7 @@ public class GuiManageWarehouseConfig implements GuiConfig {
                                 parseInt(target.getId().split("_")[1])))
                 ));
             }
-            if (target.getId().startsWith("leader")) {
+            if (target.getId().startsWith("leader_btn")) {
                 gui.setData(new Pair<>(
                         DEPOT_TO_CARD,
                         new ArrayList<>(Arrays.asList(
@@ -118,7 +118,7 @@ public class GuiManageWarehouseConfig implements GuiConfig {
         }
 
         if (source.getId().startsWith("extra")) {
-            if (target.getId().startsWith("leader"))
+            if (target.getId().startsWith("leader_btn"))
                 gui.setData(new Pair<>(
                         EXTRA_TO_CARD,
                         new ArrayList<>(Arrays.asList(

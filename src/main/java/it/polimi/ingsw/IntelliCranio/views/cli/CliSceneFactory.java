@@ -16,6 +16,7 @@ public class CliSceneFactory {
     private CliScene CliCardMarketScene = new CliCardMarketScene();
     private CliScene CliActivateProductionScene = new CliActivateProductionScene();
     private CliScene CliWannaPlayAloneScene = new CliWannaPlayAloneScene();
+    private CliScene CliGameEndedScene = new CliGameEndedScene();
 
     public CliScene getScene(InstructionCode code) {
         switch (code) {
@@ -42,6 +43,8 @@ public class CliSceneFactory {
                 return CliActivateProductionScene;
             case IDLE:
                 return CliIdleScene;
+            case GAME_ENDED:
+                return CliGameEndedScene;
             default:
                 return null;
         }

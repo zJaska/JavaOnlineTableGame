@@ -15,7 +15,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="600.0" prefWidth="1024.0">
@@ -55,7 +54,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Button fx:id="leader_0" layoutX="4.0" layoutY="6.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                        <Button fx:id="leader_btn_0" layoutX="4.0" layoutY="6.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
                      </children>
                   </Pane>
                   <Pane layoutX="235.0" layoutY="21.0" prefHeight="288.0" prefWidth="200.0">
@@ -68,7 +67,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Button fx:id="leader_1" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                        <Button fx:id="leader_btn_1" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
                      </children>
                   </Pane>
                   <Pane layoutX="458.0" layoutY="20.0" prefHeight="288.0" prefWidth="200.0">
@@ -81,7 +80,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Button fx:id="leader_2" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                        <Button fx:id="leader_btn_2" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
                      </children>
                   </Pane>
                   <Pane layoutX="675.0" layoutY="19.0" prefHeight="288.0" prefWidth="200.0">
@@ -94,7 +93,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <Button fx:id="leader_3" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
+                        <Button fx:id="leader_btn_3" layoutX="6.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="279.0" prefWidth="188.0" text="Button" />
                      </children>
                   </Pane>
                </children>

@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Save {
 
@@ -130,21 +131,13 @@ public class Save {
      *
      * @param uuid The uuid to remove
      */
-    public static void deleteGameData(UUID uuid) {
+    public static void deleteGameData(UUID uuid, ConcurrentHashMap<String, UUID> nickname_uuid) {
 
         //Delete File from disk
-        //Path from game unique ID
-        String path = pathPrefix + uuid.toString();
-        File file = new File(path);
-        file.delete();
+        try { new File(Save.pathPrefix + uuid.toString()).delete(); }
+        catch (Exception e) {}
 
-        //Remove from database and save the updated one
-        /*
-        HashMap<String, UUID> database = getDatabase();
-        database.entrySet().removeIf(e -> e.getValue().equals(uuid));
-        saveDatabase(database);
-        */
-
+        saveDatabase(new HashMap<>(nickname_uuid), "database.json");
     }
 
 }

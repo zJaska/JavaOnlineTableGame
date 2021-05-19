@@ -16,6 +16,7 @@ public class Packet implements Serializable {
         CARD_MARKET_AS,
         ACT_PROD,
         IDLE,
+        GAME_ENDED,
 
         // Instruction codes
         CANCEL,

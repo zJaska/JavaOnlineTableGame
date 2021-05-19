@@ -69,16 +69,9 @@ public class MainServer {
 
     public static void forgetManager(UUID uuid) {
         uuid_manager.remove(uuid);
+        nickname_uuid.entrySet().removeIf(e -> e.getValue().equals(uuid));
 
-        ArrayList<String> players = new ArrayList<>();
-        nickname_uuid.forEach((key, value) -> {
-            if (value.equals(uuid))
-                players.add(key);
-        });
-        players.forEach(nick -> nickname_uuid.remove(nick));
-
-        Save.saveDatabase(new HashMap<>(nickname_uuid), "database.json");
-        Save.deleteGameData(uuid);
+        Save.deleteGameData(uuid, nickname_uuid);
     }
 
     public static boolean isManagerRunning(String nickname) {

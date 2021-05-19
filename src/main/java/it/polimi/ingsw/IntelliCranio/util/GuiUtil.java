@@ -107,7 +107,7 @@ public class GuiUtil {
         scene.getLeadersButtons().forEach(btn -> {
             LeadCard leader;
             try {
-                leader = MainClient.game.getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[1]));
+                leader = MainClient.game.getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[2]));
             } catch (IndexOutOfBoundsException e) {
                 // There are no more player cards to be added
                 return;
@@ -122,7 +122,7 @@ public class GuiUtil {
             menu.getItems().add(item);
             ctrl.setContextMenu(menu);
 
-            int index = parseInt(btn.getId().split("_")[1]);
+            int index = parseInt(btn.getId().split("_")[2]);
 
             item.setOnAction(event -> {
                 gui.setData(new Pair<>(

@@ -117,6 +117,21 @@ public class Player implements Serializable {
         return temp;
     }
 
+    public ArrayList<DevCard>[] getDevCardsCopy() {
+        ArrayList<DevCard>[] local = new ArrayList[3];
+        for (int i=0; i<devSlots.length; i++) {
+            if (devSlots[i] == null)
+                local[i] = null;
+            else {
+                local[i] = new ArrayList<>();
+                for (DevCard card : devSlots[i])
+                    local[i].add(card.getCopy());
+            }
+        }
+
+        return local;
+    }
+
     /**
      * @return The top dev card of each slot
      */
