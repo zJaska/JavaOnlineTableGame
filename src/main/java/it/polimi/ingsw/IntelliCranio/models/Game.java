@@ -3,12 +3,14 @@ package it.polimi.ingsw.IntelliCranio.models;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import it.polimi.ingsw.IntelliCranio.models.cards.Card;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 import it.polimi.ingsw.IntelliCranio.models.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
+import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import javafx.util.Pair;
 
@@ -17,13 +19,11 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.IntelliCranio.models.cards.PopeCard.Status.*;
 import static java.util.Collections.reverseOrder;
 import static java.util.Comparator.comparing;
 
@@ -43,7 +43,8 @@ public class Game implements Serializable {
 
     private SinglePlayerData singlePlayerData;
 
-    public Game () { }
+    public Game() {
+    }
 
     public Game(ArrayList<String> nicknames) {
 
@@ -59,12 +60,10 @@ public class Game implements Serializable {
 
         createLeaderCards("src/main/resources/leadcards_config.json", true);
 
-        if(players.size() == 1) {
+        if (players.size() == 1) {
             singlePlayerData = new SinglePlayerData();
             singlePlayer = true;
-        }
-
-        else
+        } else
             shufflePlayers();
 
     }
@@ -78,8 +77,8 @@ public class Game implements Serializable {
     }
 
     /**
-     *  Get the amount of resources a player can take at the start of
-     *  the game given the current player index
+     * Get the amount of resources a player can take at the start of
+     * the game given the current player index
      *
      * @param index The index of the player is currently playing
      * @return The amount of resources a player can take at the start of the game
@@ -96,8 +95,8 @@ public class Game implements Serializable {
     }
 
     /**
-     *  Get the amount of resources a player has at the start of
-     *  the game given the current player index
+     * Get the amount of resources a player has at the start of
+     * the game given the current player index
      *
      * @param index The index of the player is currently playing
      * @return The amount of faith a player has at the start of the game
@@ -113,74 +112,71 @@ public class Game implements Serializable {
         return table.get(index);
     }
 
-    /**
-     * Get the faithtrack.
-     * @return This faithtrack
-     */
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
 
-    /**
-     * Get the CardMarket
-     * @return This cardmarket
-     */
     public CardMarket getCardMarket() {
         return cardMarket;
     }
 
-    /**
-     * Get the resource market
-     * @return This resource market
-     */
     public ResourceMarket getResourceMarket() {
         return resourceMarket;
     }
 
-    /**
-     * Return the list of all players
-     * @return A list of Player
-     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * Get a player providing a nickname
+     *
+     * @param nickname The nickname to look for
+     * @return The player if nickname match, null otherwise
+     */
     public Player getPlayer(String nickname) {
         try {
             return players.stream().filter(x -> x.getNickname().equals(nickname)).findAny().get();
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         return null;
     }
 
     /**
      * Get the player that is actually playing its turn
+     *
      * @return A single Player. The active one in this turn.
      */
     public Player getCurrentPlayer() {
         return players.get(currentPlayerIndex);
     }
 
-    /**
-     * Get the index of the active player
-     * @return An integer representing the index in the list of players.
-     */
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
 
-    public boolean isTurnEnded() { return endTurn; }
+    public boolean isTurnEnded() {
+        return endTurn;
+    }
 
-    public boolean isGameEnded() { return endGame; }
+    public boolean isGameEnded() {
+        return endGame;
+    }
 
-    public boolean isSinglePlayer() { return singlePlayer; }
+    public boolean isSinglePlayer() {
+        return singlePlayer;
+    }
 
-    public SinglePlayerData getSinglePlayerData() { return singlePlayerData; }
+    public SinglePlayerData getSinglePlayerData() {
+        return singlePlayerData;
+    }
     //endregion
 
     /**
      * Creates all the cards from given json file and assign 4 of them randomly to each player.
-     * @param path The path of the leader cards config file
+     *
+     * @param path    The path of the json config file
      * @param shuffle If true, cards get shuffled
      */
     public void createLeaderCards(String path, boolean shuffle) {
@@ -192,7 +188,8 @@ public class Game implements Serializable {
             String text = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
             Gson gson = new Gson();
             //Generate the list of cards
-            leaders = gson.fromJson(text, new TypeToken<ArrayList<LeadCard>>(){}.getType());
+            leaders = gson.fromJson(text, new TypeToken<ArrayList<LeadCard>>() {
+            }.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,9 +203,11 @@ public class Game implements Serializable {
     /**
      * Called inside createLeaderCards method.
      * <p>
-     *     Assign 4 random cards from the input to each player.
+     * Assign 4 random cards from the input to each player.
      * </p>
-     * @param cards The input list to get cards from
+     *
+     * @param cards   The input list to get cards from
+     * @param shuffle Whether to shuffle the cards or not
      */
     private void assignCards(ArrayList<LeadCard> cards, boolean shuffle) {
 
@@ -217,11 +216,11 @@ public class Game implements Serializable {
             Random random = new Random();
 
             for (int i = 0; i < 4; ++i) {
-                if(shuffle) {
+                if (shuffle) {
                     int index = random.ints(0, cards.size()).findFirst().getAsInt();
                     playerCards.add(cards.get(index));
                     cards.remove(index);
-                }else {
+                } else {
                     playerCards.add(cards.get(0));
                     cards.remove(0);
                 }
@@ -239,7 +238,7 @@ public class Game implements Serializable {
         ArrayList<Player> temp = new ArrayList<>(); //Temporary array for randomized players
         Random random = new Random();
 
-        do{
+        do {
             int randIndex = random.ints(0, players.size()).findFirst().getAsInt();
 
             temp.add(players.get(randIndex));
@@ -249,20 +248,30 @@ public class Game implements Serializable {
         players = temp;
     }
 
+    /**
+     * Increment the position in the faithtrack of current player and check for the updated position
+     */
     public void addCurrentPlayerFaith() {
         //Increment player Faith
         //Check every increment the position of the player on the faith track
-        Player current = getCurrentPlayer();
+        Player player = getCurrentPlayer();
 
-        if(current.getFaithPosition() < faithTrack.getTrackLength())
+        if (player.getFaithPosition() < faithTrack.getTrackLength())
             getCurrentPlayer().addFaith();
 
-        faithTrack.checkStatus(this, current.getFaithPosition());
+        faithTrack.checkStatus(this, player.getFaithPosition());
     }
 
-    public void addFaithToAll(int faithAmount) {
+    /**
+     * Increment by 1 the faith position of every player different from current one.
+     * Check for all the new positions.
+     * Repeat for faithAmount times
+     *
+     * @param faithAmount The total amount of faith to add
+     */
+    public void addFaithToOthers(int faithAmount) {
 
-        for(int i = 0; i < faithAmount; ++i) {
+        for (int i = 0; i < faithAmount; ++i) {
             //Increment faith for every player other than current one
             players.stream()
                     .filter(player -> (!player.equals(getCurrentPlayer()) && player.getFaithPosition() < faithTrack.getTrackLength()))
@@ -275,75 +284,89 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Calculate all the points scored by each player and return the result
+     * in a table-like form.
+     *
+     * @return A list of pair nickname - points, the result of the game
+     */
+    public ArrayList<Pair<String, Integer>> calculatePoints() {
 
-    public ArrayList<Pair<String,Integer>> calculatePoints(){
+        ArrayList<Pair<String, Integer>> tablePoints = new ArrayList<>();
 
-        ArrayList<Pair<String,Integer>> tablePoints=new ArrayList<>();
+        for (Player player : players) {
+            int points = 0;
+            //int numResources = 0;
 
+            ArrayList<LeadCard> leadCards = player.getLeaders();
+            ArrayList<Resource> resources = player.getAllResources();
+            ArrayList<DevCard> devCards = player.getAllDevCards();
+            ArrayList<PopeCard> popeCards = player.getPopeCards();
 
+            points += leadCards.stream()
+                    .filter(LeadCard::isActive)
+                    .mapToInt(Card::getVictoryPoints).sum();
 
-        for (Player player: players) {
-            int points=0;
-            int numResources=0;
-            ArrayList<Resource> resources=player.getAllResources();
-            ArrayList<DevCard> devCards=player.getAllDevCards();
-            ArrayList<PopeCard> popeCards=player.getPopeCards();
+            for (DevCard devCard : devCards) points += devCard.getVictoryPoints();
 
-            for(int i=0;i<player.getLeaders().size();i++)
-                if(player.getLeaders().get(i).isActive())
-                    points+=player.getLeaders().get(i).getVictoryPoints();
+            points += popeCards.stream()
+                    .filter(popeCard -> popeCard.getStatus().equals(ACTIVE))
+                    .mapToInt(Card::getVictoryPoints).sum();
 
+            points += faithTrack.getVp(player.getFaithPosition());
 
-            for(int i=0;i<devCards.size();i++)
-                points+=devCards.get(i).getVictoryPoints();
+            points += resources.stream().mapToInt(FinalResource::getAmount).sum() / 5;
 
-            for(int i=0;i<popeCards.size();i++)
-                if(popeCards.get(i).getStatus().equals(PopeCard.Status.ACTIVE))
-                    points+=popeCards.get(i).getVictoryPoints();
+            /*
+            for (int i = 0; i < player.getLeaders().size(); i++)
+                if (player.getLeaders().get(i).isActive())
+                    points += player.getLeaders().get(i).getVictoryPoints();
 
-            points+=faithTrack.getVp(player.getFaithPosition());
+            for (PopeCard popeCard : popeCards)
+                if (popeCard.getStatus().equals(PopeCard.Status.ACTIVE))
+                    points += popeCard.getVictoryPoints();
 
-            for(int i=0;i<resources.size();i++)
-                numResources+=resources.get(i).getAmount();
+            for (Resource resource : resources) numResources += resource.getAmount();
 
-            numResources=numResources/5;
+            numResources = numResources / 5;
 
-            points+=numResources;
+            points += numResources;
+            */
 
-            tablePoints.add(new Pair<>(player.getNickname(),points));
+            tablePoints.add(new Pair<>(player.getNickname(), points));
         }
 
-        Comparator<Pair<String,Integer>> c = reverseOrder(comparing(Pair::getValue));
+        Comparator<Pair<String, Integer>> descendingOrder = reverseOrder(comparing(Pair::getValue));
 
-        tablePoints.sort(c);
-
-        tablePoints.stream().map(Pair::getValue).forEach(points ->System.out.println(points));
+        tablePoints.sort(descendingOrder);
 
         return tablePoints;
     }
 
-   
-
-    //Remove me
-    public void addPlayer(Player player, int turn) {
-        //Bisogna fare un check sul numero di giocatori presenti
-        players.add(turn, player);
+    public void singlePlayer(boolean value) {
+        singlePlayer = value;
     }
 
-    public void singlePlayer(boolean value) { singlePlayer = value; }
-
-    public void endTurn(boolean value) { endTurn = value; }
+    public void endTurn(boolean value) {
+        endTurn = value;
+    }
 
     public void changeTurn() {
-        if(singlePlayer)
+        if (singlePlayer)
             lorenzoAction();
 
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
         endTurn = false;
     }
 
-    public void endGame(boolean value) { endGame = value; }
+    public void endGame(boolean value) {
+        endGame = value;
+    }
 
+    /**
+     * Set every field with the one from a previously saved game
+     * @param newGame The game loaded from save file
+     */
     public void loadGame(Game newGame) {
         uuid = newGame.getUuid();
         currentPlayerIndex = newGame.getCurrentPlayerIndex();
@@ -357,39 +380,53 @@ public class Game implements Serializable {
         singlePlayerData = newGame.getSinglePlayerData();
     }
 
+    /**
+     * Execute Lorenzo the Magnificent action at the end of each single player turn
+     * by taking a token and performing the token action.
+     */
     private void lorenzoAction() {
         SinglePlayerData.Token token = singlePlayerData.getToken();
 
         switch (token) {
 
-            case BLACK_CROSS: addLorenzoFaith(2); break;
-            case SHUFFLE_CROSS: addLorenzoFaith(1); break;
-            default: removeCards(token, 2); break;
+            case BLACK_CROSS:
+                addLorenzoFaith(2);
+                break;
+            case SHUFFLE_CROSS:
+                addLorenzoFaith(1);
+                break;
+            default:
+                removeCards(token, 2);
+                break;
 
         }
     }
 
+    /**
+     * Remove amount of cards from card market of the type specified by the token
+     * @param token The token extracted
+     * @param amount The amount of cards to remove
+     */
     private void removeCards(SinglePlayerData.Token token, int amount) {
 
         int col;
 
         //Find correct column for type
-        for(col = 0; col < cardMarket.cols; ++col) {
-            if(token.toString().equals(cardMarket.getCard(0, col).getType().toString()))
+        for (col = 0; col < cardMarket.cols; ++col) {
+            if (token.toString().equals(cardMarket.getCard(0, col).getType().toString()))
                 break;
         }
 
         int row = cardMarket.rows - 1;
 
-        for(int i = 0; i < amount; ++i) {
+        for (int i = 0; i < amount; ++i) {
 
             if (cardMarket.getCard(row, col) != null) {
                 cardMarket.removeCard(row, col);
 
-                if(cardMarket.getCard(0, col) == null)
+                if (cardMarket.getCard(0, col) == null)
                     endGame = true;
-            }
-            else {
+            } else {
                 row--;
                 i--;
             }
@@ -397,12 +434,16 @@ public class Game implements Serializable {
 
     }
 
+    /**
+     * Add faith to Lorenzo
+     * @param amount Faith to add
+     */
     private void addLorenzoFaith(int amount) {
 
         int ftLength = faithTrack.getTrackLength();
 
-        for(int i = 0; i < amount; ++i) {
-            if(singlePlayerData.getLorenzoFaith() < ftLength) {
+        for (int i = 0; i < amount; ++i) {
+            if (singlePlayerData.getLorenzoFaith() < ftLength) {
                 singlePlayerData.addLorenzoFaith();
                 faithTrack.checkStatus(this, singlePlayerData.getLorenzoFaith());
             }

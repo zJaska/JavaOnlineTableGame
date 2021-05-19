@@ -12,24 +12,24 @@ import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType;
-import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability.AbilityType;
+import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.BLANK;
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.FAITH;
-import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.CHOOSE_INIT_RES;
-import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.DEFAULT;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
-import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
 
 public class Checks {
 
+    /**
+     * Check if packet, action code or args is null
+     * @param packet The packet to check
+     * @throws InvalidArgumentsException
+     */
     public static void packetCheck(Packet packet) throws InvalidArgumentsException {
         if(packet == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(PACKET_NULL);
@@ -53,6 +53,12 @@ public class Checks {
         }
     }
 
+    /**
+     * Checks if size of args is different from the expected amount
+     * @param args The ArrayList from packet
+     * @param expectedAmount The amount of args expected
+     * @throws InvalidArgumentsException
+     */
     public static void argsAmount(ArrayList<Object> args, int expectedAmount) throws InvalidArgumentsException {
 
         if(args.size() < expectedAmount) {
@@ -80,6 +86,12 @@ public class Checks {
 
     }
 
+    /**
+     * Check if first line is the same as second
+     * @param first
+     * @param second
+     * @throws InvalidArgumentsException
+     */
     public static void sameLine(int first, int second) throws InvalidArgumentsException {
         if(first == second) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
@@ -94,6 +106,11 @@ public class Checks {
         }
     }
 
+    /**
+     * Check if provided value is negative
+     * @param value
+     * @throws InvalidArgumentsException
+     */
     public static void negativeValue(int value) throws InvalidArgumentsException {
         if(value < 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
@@ -107,9 +124,9 @@ public class Checks {
     }
 
     /**
-     * Used for single values checks
-     * @param value
-     * @param max
+     * Used for single values checks. Throws if value is greater than max
+     * @param value The value to check
+     * @param max The max allowed value [inclusive]
      * @throws InvalidArgumentsException
      */
     public static void overMaxValue(int value, int max) throws InvalidArgumentsException {
@@ -127,9 +144,9 @@ public class Checks {
     }
 
     /**
-     * Used for depots and arrays checks
-     * @param line
-     * @param size
+     * Used for depots and arrays checks. Throws if line is greater or equal than size
+     * @param line The value to check
+     * @param size The max allowed value [exclusive]
      * @throws InvalidArgumentsException
      */
     public static void overSizeLine(int line, int size) throws InvalidArgumentsException{
@@ -159,6 +176,11 @@ public class Checks {
         }
     }
 
+    /**
+     * Check if the extra resources of given player is empty
+     * @param player The player to get its extra resources
+     * @throws InvalidArgumentsException
+     */
     public static void extraEmpty(Player player) throws InvalidArgumentsException {
         if(!player.hasExtra()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
@@ -171,6 +193,12 @@ public class Checks {
         }
     }
 
+    /**
+     * Check if player extra resources does not contains an element of given type
+     * @param player The player to get its extra resources
+     * @param type The type to check if is present
+     * @throws InvalidArgumentsException
+     */
     public static void notInExtra(Player player, ResourceType type) throws InvalidArgumentsException{
         if(!player.hasExtra(type)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
@@ -184,6 +212,14 @@ public class Checks {
         }
     }
 
+    /**
+     * Check if the given types are the same type. If ignoreNull flag is set to true,
+     * the check doesn't throw any exception if one of the given type is null.
+     * @param first The first resource type
+     * @param second The second resource type
+     * @param ignoreNull If set to true, if at least one of the types is null, does not throw
+     * @throws InvalidArgumentsException
+     */
     public static void notSameResource(ResourceType first, ResourceType second, boolean ignoreNull) throws InvalidArgumentsException {
 
         if(ignoreNull)
@@ -203,6 +239,13 @@ public class Checks {
         }
     }
 
+    /**
+     * Check if res type is already present in warehouse in other lines different from given line
+     * @param wh The warehouse to check
+     * @param line The line to insert a new resource
+     * @param res The resource to insert
+     * @throws InvalidArgumentsException
+     */
     public static void resInDifferentLine(Warehouse wh, int line, Resource res) throws InvalidArgumentsException {
         if(wh.isPresent(line, res)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);

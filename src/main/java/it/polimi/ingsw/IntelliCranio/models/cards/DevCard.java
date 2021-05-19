@@ -49,6 +49,10 @@ public class DevCard extends Card {
         return product;
     }
 
+    /**
+     * Creates a single string of the card from its fields
+     * @return A string with all the data of the card
+     */
     @Override
     public String toString() {
         return "DevCard {" +

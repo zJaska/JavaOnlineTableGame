@@ -18,7 +18,9 @@ public class Warehouse implements Serializable {
      *
      * @param dim the dimension of the depot
      */
-    public Warehouse(int dim) { depot = new Resource[dim]; }
+    public Warehouse(int dim) {
+        depot = new Resource[dim];
+    }
 
 
     public Resource[] getDepot() {
@@ -26,13 +28,13 @@ public class Warehouse implements Serializable {
     }
 
     /**
-     *
      * Swap two lines in the depot and add the resource surplus
      * to player extra resources.
      * Set the amount to depot line capacity
-     *  @param first first index of depot line
+     *
+     * @param first  first index of depot line
      * @param second second index of depot line
-     * @return
+     * @return A list with all the exceeding resources to put into player extra
      */
     public ArrayList<Resource> swapLines(int first, int second) {
 
@@ -50,7 +52,7 @@ public class Warehouse implements Serializable {
         ArrayList<Resource> extra = new ArrayList<>();
 
         //Surplus on first index after swapping
-        if(depot[first] != null && depot[first].getAmount() > first + 1) {
+        if (depot[first] != null && depot[first].getAmount() > first + 1) {
             //Add to extra a new resource of the same type and with amount
             //given by difference between resource amount and depot capacity
             extra.add(new Resource(depot[first].getType(), depot[first].getAmount() - (first + 1)));
@@ -58,11 +60,11 @@ public class Warehouse implements Serializable {
         }
 
         //Surplus on second index after swapping
-        if(depot[second] != null && depot[second].getAmount() > second + 1) {
+        if (depot[second] != null && depot[second].getAmount() > second + 1) {
             //Add to extra a new resource of the same type and with amount
             //given by difference between resource amount and depot capacity
             extra.add(new Resource(depot[second].getType(), depot[second].getAmount() - (second + 1)));
-            depot[second].setAmount(second+1);
+            depot[second].setAmount(second + 1);
         }
 
         //endregion
@@ -83,6 +85,7 @@ public class Warehouse implements Serializable {
      * @param extraRes  this is sent by client which is left from market.
      * @return -1 if error else number of cards discarded.
      */
+    @Deprecated
     public int update(Resource[] tempDepot, ArrayList<Resource> extraRes) {
         int numDiscards = 0;
 
@@ -114,26 +117,28 @@ public class Warehouse implements Serializable {
 
     /**
      * Remove a single amount from selected line. If the amount of resources is 0, depot line is set to null.
+     *
      * @param depotLine Index of the depot
      */
     public void remove(int depotLine) {
-        if(!isEmpty(depotLine))
+        if (!isEmpty(depotLine))
             depot[depotLine].removeAmount(1);
 
         //Set the line to null if there are no resources there
-        if(depot[depotLine].getAmount() == 0)
+        if (depot[depotLine].getAmount() == 0)
             depot[depotLine] = null;
     }
 
     /**
      * Add a single amount in specified line. Add a new resource with amount 1 if line is empty.
+     *
      * @param depotLine Line of depot to add a resource
-     * @param resource The resource to add if line is empty
+     * @param resource  The resource to add if line is empty
      */
     public void add(int depotLine, Resource resource) {
-        if(isEmpty(depotLine))
+        if (isEmpty(depotLine))
             depot[depotLine] = new Resource(resource.getType(), 1);
-        else if(!isFull(depotLine))
+        else if (!isFull(depotLine))
             depot[depotLine].addAmount(1);
 
     }
@@ -142,6 +147,7 @@ public class Warehouse implements Serializable {
 
     /**
      * Check if selected line in depot is full
+     *
      * @param depotLine The line to check
      * @return True if line is full, false otherwise
      */
@@ -153,6 +159,7 @@ public class Warehouse implements Serializable {
 
     /**
      * Check if selected line in depot is empty
+     *
      * @param depotLine The line to check
      * @return True if line is null, false otherwise
      */
@@ -161,29 +168,33 @@ public class Warehouse implements Serializable {
     }
 
     public FinalResource.ResourceType getType(int depotLine) {
-        if(depot[depotLine] != null)
+        if (depot[depotLine] != null)
             return depot[depotLine].getType();
         return null;
     }
 
-    public ArrayList<Resource> getAll() {
+    /**
+     * @return All the nonNull resources
+     */
+    public ArrayList<Resource> getAllResources() {
         ArrayList<Resource> temp = new ArrayList<>();
 
-        Arrays.stream(depot).forEach(res -> temp.add(res));
+        Arrays.stream(depot).filter(Objects::nonNull).forEach(temp::add);
 
         return temp;
     }
 
     /**
      * Check if some resource is already present in a different line respect the one to add the new resource
+     *
      * @param depotLine The line to put the resource
-     * @param resource The resource to add
+     * @param resource  The resource to add
      * @return True if the resource is already present in a different line, false otherwise
      */
     public boolean isPresent(int depotLine, Resource resource) {
-        for(int i = 0; i < depot.length; ++i)
-            if(i != depotLine)
-                if(depot[i] != null && depot[i].getType() == resource.getType())
+        for (int i = 0; i < depot.length; ++i)
+            if (i != depotLine)
+                if (depot[i] != null && depot[i].getType() == resource.getType())
                     return true;
 
         return false;

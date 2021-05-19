@@ -9,7 +9,7 @@ import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
+import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
 import it.polimi.ingsw.IntelliCranio.util.Conversions;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
-import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
+import static it.polimi.ingsw.IntelliCranio.models.ability.Ability.AbilityType.*;
 
 public class ActivateProduction_ActionState extends ActionState{
 

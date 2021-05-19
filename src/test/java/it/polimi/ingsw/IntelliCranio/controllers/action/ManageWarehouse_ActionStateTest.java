@@ -1,18 +1,16 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
 import it.polimi.ingsw.IntelliCranio.models.Game;
-import it.polimi.ingsw.IntelliCranio.models.cards.Card;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
-import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Save;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -151,8 +149,8 @@ class ManageWarehouse_ActionStateTest {
         action.setActionState(new ManageWarehouse_ActionState(action, null), MNG_WARE);
 
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SHIELD, 2));
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SHIELD, 2);
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 2);
 
         ArrayList<Object> argsRes = new ArrayList<>();
         argsRes.add(new Resource(FinalResource.ResourceType.SHIELD, 2));
@@ -200,8 +198,8 @@ class ManageWarehouse_ActionStateTest {
         action.setActionState(new ManageWarehouse_ActionState(action, null), MNG_WARE);
 
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SHIELD, 2));
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 3));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SHIELD, 2);
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 3);
 
         ArrayList<Object> argsRes = new ArrayList<>();
         argsRes.add(new Resource(FinalResource.ResourceType.SHIELD, 2));
@@ -377,7 +375,7 @@ class ManageWarehouse_ActionStateTest {
 
         Packet packet = new Packet(ADD_FROM_EXTRA, null, args);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 2);
 
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(FinalResource.ResourceType.COIN, 2));
@@ -401,7 +399,7 @@ class ManageWarehouse_ActionStateTest {
 
         Packet packet = new Packet(ADD_FROM_EXTRA, null, args);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 2);
 
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(FinalResource.ResourceType.COIN, 2));
@@ -425,7 +423,7 @@ class ManageWarehouse_ActionStateTest {
 
         Packet packet = new Packet(ADD_FROM_EXTRA, null, args);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 2);
 
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(FinalResource.ResourceType.COIN, 2));
@@ -450,7 +448,7 @@ class ManageWarehouse_ActionStateTest {
 
         Packet packet = new Packet(ADD_FROM_EXTRA, null, args);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 2);
 
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(FinalResource.ResourceType.COIN, 2));
@@ -568,7 +566,7 @@ class ManageWarehouse_ActionStateTest {
 
         Packet packet = new Packet(ADD_FROM_EXTRA, null, args);
 
-        game.getCurrentPlayer().addExtra(new Resource(p, 2));
+        game.getCurrentPlayer().addExtra(p, 2);
 
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(p, 2));
@@ -605,7 +603,7 @@ class ManageWarehouse_ActionStateTest {
 
         Packet packet = new Packet(ADD_FROM_EXTRA, null, args);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, val + 1));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, val + 1);
 
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(FinalResource.ResourceType.COIN, val + 1));
@@ -738,7 +736,8 @@ class ManageWarehouse_ActionStateTest {
         cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         ArrayList<LeadCard> cards = new ArrayList<>();
 
-        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, true);
+        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null,
+                Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, true);
         card.setupAbility();
 
         cards.add(card);
@@ -768,14 +767,15 @@ class ManageWarehouse_ActionStateTest {
         cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         ArrayList<LeadCard> cards = new ArrayList<>();
 
-        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, true);
+        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null,
+                Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, true);
         card.setupAbility();
 
         cards.add(card);
 
         game.getCurrentPlayer().setLeaders(cards);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 1));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 1);
 
         ArrayList<Object> args1 = new ArrayList<>();
         args1.add(new Resource(FinalResource.ResourceType.SERVANT, 1));
@@ -825,7 +825,7 @@ class ManageWarehouse_ActionStateTest {
 
         game.getCurrentPlayer().setLeaders(cards);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 1));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 1);
 
         ArrayList<Object> args1 = new ArrayList<>();
         args1.add(new Resource(FinalResource.ResourceType.COIN, 1));
@@ -874,7 +874,7 @@ class ManageWarehouse_ActionStateTest {
 
         game.getCurrentPlayer().setLeaders(cards);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 3));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 3);
 
         ArrayList<Object> args1 = new ArrayList<>();
         args1.add(new Resource(FinalResource.ResourceType.SERVANT, 3));
@@ -928,7 +928,7 @@ class ManageWarehouse_ActionStateTest {
 
         game.getCurrentPlayer().setLeaders(cards);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 3));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 3);
 
         ArrayList<Object> args1 = new ArrayList<>();
         args1.add(new Resource(FinalResource.ResourceType.SERVANT, 3));
@@ -1021,7 +1021,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SERVANT,1));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 2);
 
         ArrayList<CardResource> cardRequirements = new ArrayList<>();
         ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
@@ -1087,7 +1087,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SERVANT, 2));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 2);
 
         ArrayList<CardResource> cardRequirements = new ArrayList<>();
         ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
@@ -1125,7 +1125,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SERVANT, 3));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 3));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 3);
 
         ArrayList<CardResource> cardRequirements = new ArrayList<>();
         ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
@@ -1162,7 +1162,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.COIN, 2));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 2);
 
         ArrayList<CardResource> cardRequirements = new ArrayList<>();
         ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
@@ -1198,7 +1198,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SERVANT, 2));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 2);
 
         ArrayList<CardResource> cardRequirements = new ArrayList<>();
         ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
@@ -1231,7 +1231,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SERVANT, 2));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 2);
 
         ArrayList<CardResource> cardRequirements = new ArrayList<>();
         ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
@@ -1266,8 +1266,8 @@ class ManageWarehouse_ActionStateTest {
         action.setActionState(new ManageWarehouse_ActionState(action, null), MNG_WARE);
 
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SHIELD, 2));
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.COIN, 3));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SHIELD, 2);
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 3);
 
         ArrayList<Object> argsRes = new ArrayList<>();
         argsRes.add(new Resource(FinalResource.ResourceType.SHIELD, 2));
@@ -1334,7 +1334,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SERVANT, 2));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 2);
 
 
         Packet packet = new Packet(CONFIRM, null, args);
@@ -1357,7 +1357,7 @@ class ManageWarehouse_ActionStateTest {
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.SERVANT, 2));
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.SERVANT, 2));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.SERVANT, 2);
 
 
         Packet packet = new Packet(CONFIRM, null, args);

@@ -8,7 +8,6 @@ import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.market.CardMarket;
 import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
-import it.polimi.ingsw.IntelliCranio.models.player.Strongbox;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet.*;
@@ -16,7 +15,6 @@ import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException
 import it.polimi.ingsw.IntelliCranio.util.CliUtil;
 import javafx.util.Pair;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -77,7 +75,7 @@ public class CliIdleScene implements CliScene {
 
     private static void _showStrongbox(Player player) {
         System.out.println("Strongbox (" + player.getNickname() + "): ");
-        player.getStrongbox().getAll().forEach(System.out::println);
+        player.getStrongbox().getAllResources().forEach(System.out::println);
     }
 
     public static void showResourceMarket() {

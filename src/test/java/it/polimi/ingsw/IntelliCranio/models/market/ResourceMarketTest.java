@@ -36,10 +36,10 @@ class ResourceMarketTest {
         ArrayList<FinalResource> list = new ArrayList<>();
         for (int r=0; r<3; r++) {
             for (int c=0; c<4; c++) {
-                list.add(market.getMarbleGrid()[r][c]);
+                list.add(market.getGridCopy()[r][c]);
             }
         }
-        list.add(market.getExtraMarble());
+        list.add(market.getExtraMarbleCopy());
         list = Lists.unifyResourceAmounts(list);
 
         list.sort(Comparator.comparing(FinalResource::getType));
@@ -54,18 +54,18 @@ class ResourceMarketTest {
         ResourceMarket market =new ResourceMarket(3,4);
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         for(int c=0;c< market.COLUMNS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[test][c].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[test][c].getType(),1));
 
         market.selectRow(test);
 
         for(int c=0;c<market.COLUMNS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),market.getMarbleGrid()[test][c].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),market.getGridCopy()[test][c].getType()));
 
-        assertTrue(deepEquals(ExtraMrblOld,market.getMarbleGrid()[test][market.COLUMNS-1]));
-        assertTrue(deepEquals(expected.get(0).getType(),market.getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblOld,market.getGridCopy()[test][market.COLUMNS-1]));
+        assertTrue(deepEquals(expected.get(0).getType(),market.getExtraMarbleCopy().getType()));
     }
 
     @ParameterizedTest
@@ -74,18 +74,18 @@ class ResourceMarketTest {
         ResourceMarket market =new ResourceMarket(3,4);
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         for(int c=0;c< market.ROWS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[c][test].getType(),1));
 
         market.selectColumn(test);
 
         for(int c=0;c<market.ROWS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),market.getMarbleGrid()[c][test].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),market.getGridCopy()[c][test].getType()));
 
-        assertTrue(deepEquals(ExtraMrblOld,market.getMarbleGrid()[market.ROWS-1][test]));
-        assertTrue(deepEquals(expected.get(0).getType(),market.getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblOld,market.getGridCopy()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),market.getExtraMarbleCopy().getType()));
 
 
     }

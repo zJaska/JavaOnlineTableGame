@@ -44,9 +44,8 @@ public class CardMarket implements Serializable {
     }
 
     /**
-     * <summary>
-     *     Generates the grid of cards from a json file.
-     * </summary>
+     * Generates the grid of cards from a json file
+     * @param path The path for the json file to load
      */
     private void generateGrid(String path) {
         ArrayList<DevCard> cardList = new ArrayList<>(); //Temporary list to create all the cards
@@ -129,8 +128,8 @@ public class CardMarket implements Serializable {
      *     Get the first card given the grid coordinates.
      *     Null if slot is empty.
      * </summary>
-     * @param row
-     * @param col
+     * @param row The row index (0 - rows [exclusive])
+     * @param col The col index (0 - cols [exclusive])
      * @return First DevCard in slot or null if empty
      */
     public DevCard getCard(int row, int col) {
@@ -143,19 +142,13 @@ public class CardMarket implements Serializable {
     /**
      * <summary>
      *     Remove the first card given the grid coordinates.
-     *     Remaining cards get shifted in the list.
+     *     Remaining cards are shifted in the list.
      * </summary>
-     * @param row
-     * @param col
+     * @param row The row index (0 - rows [exclusive])
+     * @param col The col index (0 - cols [exclusive])
      */
     public void removeCard(int row, int col) {
         if(!marketGrid[row][col].isEmpty())
             marketGrid[row][col].remove(0);
     }
-
-    //Test
-    public ArrayList<DevCard>[][] getMarketGrid() {
-        return marketGrid;
-    }
-
 }

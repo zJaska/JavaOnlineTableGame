@@ -81,7 +81,7 @@ public class ChooseInitResources_ActionState extends ActionState {
         }
 
         //Add the selected resource the player extras
-        player.addExtra(resource);
+        player.addExtra(resource.getType(), 1);
 
         if(player.extraAmount() == allowedAmount) {
             //Add initial amount of faith (no need to check for position)

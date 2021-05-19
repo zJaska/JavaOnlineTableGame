@@ -22,11 +22,10 @@ public class FaithTrack implements Serializable {
     private ArrayList<Integer> startOfVaticanSections;
 
     /**
-     * Initializes the FaithTrack object from a json file
+     * Initializes the FaithTrack object from a json config file
      *
-     * @param filePath The path of the file that contains the configuration of the FaithTrack
+     * @param filePath The path of the json file to load
      */
-
     public FaithTrack(String filePath) {
         try {
             //Get the json file as String
@@ -44,55 +43,36 @@ public class FaithTrack implements Serializable {
         }
     }
 
+    /**
+     * Check if position is a popeSpace, if so get the section of that space.
+     * From game, get all the players and activate that section pope card if they are inside of it,
+     * remove otherwise.
+     * <p>
+     * Check if position reached the end of the faithtrack and flag the game for game ending.
+     *
+     * @param game     The current game
+     * @param position The position to check
+     */
     public void checkStatus(Game game, int position) {
 
         int section = popeSpace(position);
 
-        if(section != -1) {
+        if (section != -1) {
 
             game.getPlayers().forEach(player -> {
                 PopeCard pCard = player.getPopeCard(section);
 
-                if(pCard != null)
-                    if(isXSectionOrHigher(section, player.getFaithPosition()))
+                if (pCard != null)
+                    if (isXSectionOrHigher(section, player.getFaithPosition()))
                         pCard.setStatus(ACTIVE);
                     else
                         pCard.setStatus(REMOVED);
             });
 
-            if(position == length)
+            if (position == length)
                 game.endGame(true);
 
         }
-
-        /*
-        //Todo: Single Player Check
-
-        //Check if: pope space
-        players.forEach(player -> {
-            int section = popeSpace(player.getFaithPosition()); //Get the section from player position
-
-            if(section != -1) {
-                //The player reached a pope space
-
-                //Update players pope card status
-                players.forEach(player1 -> {
-                    PopeCard popeCard = player1.getPopeCard(section); //Get the pope card of this section
-
-                    if(popeCard != null)
-                        //Set the status based on player current position
-                        if(isXSectionOrHigher(section, player1.getFaithPosition()))
-                            player1.getPopeCard(section).setStatus(ACTIVE);
-                        else
-                            player1.getPopeCard(section).setStatus(REMOVED);
-                });
-
-                //Check for game ending
-                if(player.getFaithPosition() == length)
-                    game.endGame(true);
-            }
-        }); */
-
     }
 
     public int getTrackLength() {
@@ -103,7 +83,6 @@ public class FaithTrack implements Serializable {
      * @param space The number of the cell
      * @return The number of the vatican section the pope space is in, otherwise -1 if the cell isn't a pope space
      */
-
     public int popeSpace(int space) {
         return popeSpaces.indexOf(space);
     }
@@ -116,7 +95,6 @@ public class FaithTrack implements Serializable {
      * @param space    The number of the cell to be checked
      * @return The number of the last section that the player has passed, or -1 if he hasn't still passed a section
      */
-
     public boolean isXSectionOrHigher(int sectionX, int space) {
         if (sectionX < 0 || sectionX >= startOfVaticanSections.size())
             return false;

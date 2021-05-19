@@ -44,6 +44,14 @@ public class SinglePlayerData implements Serializable {
 
     public void addLorenzoFaith() { lorenzoFaithPos++; }
 
+
+    /**
+     * Get a token from available tokens, if the token is a shuffle one,
+     * shuffle the available tokens before returning the extracted one,
+     * else remove it from available tokens
+     *
+     * @return The token extracted
+     */
     public Token getToken() {
 
         Token temp = tokens.remove(0);

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.IntelliCranio.models.cards;
 
-import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType;
-import it.polimi.ingsw.IntelliCranio.server.ability.AbilityFactory;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability.AbilityType;
+import it.polimi.ingsw.IntelliCranio.models.ability.AbilityFactory;
 import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
@@ -32,9 +31,14 @@ public class LeadCard extends Card{
     }
 
 
+    /**
+     * Creates a specific ability using a factory from ability and resource types of the card
+     */
     public void setupAbility() {
         specialAbility = new AbilityFactory().getAbility(abilityType, resourceType);
     }
+
+    //region Getters
 
     public boolean isActive() {
         return isActive;
@@ -63,10 +67,16 @@ public class LeadCard extends Card{
         return resourceRequirements;
     }
 
+    //endregion
+
     public void activateCard() {
         isActive = true;
     }
-
+    
+    /**
+     * Creates a single string of the card from its fields
+     * @return A string with all the data of the card
+     */
     @Override
     public String toString() {
         return "LeadCard {" +

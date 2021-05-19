@@ -36,6 +36,15 @@ public class MainClient {
 
         HashMap<String, String> config = Save.getDatabase("network_config.json", Save.netConfigType);
 
+        if(args.length == 2) {
+            config.put("ip", args[0]);
+            config.put("port", args[1]);
+        } else {
+            System.out.println("Using default configuration.");
+        }
+
+        System.out.println("Connecting to " + config.get("ip") + " on port " + config.get("port"));
+
         try { socketHandler = new SocketHandler(config.get("ip"), parseInt(config.get("port"))); }
         catch (IOException e) { return ; }
 

@@ -5,21 +5,18 @@ import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
-import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
-import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.util.Lists;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.DEPOT;
+import static it.polimi.ingsw.IntelliCranio.models.ability.Ability.AbilityType.DEPOT;
 
 public class Player implements Serializable {
 
@@ -63,20 +60,13 @@ public class Player implements Serializable {
 
     }
 
+    //region Getters
     public InstructionCode getLastAction() {
         return lastAction;
     }
 
-    public void setLastAction(InstructionCode action) {
-        lastAction = action;
-    }
-
     public String getNickname() {
         return nickname;
-    }
-
-    public void setLeaders(ArrayList<LeadCard> cards) {
-        leaders = cards;
     }
 
     public ArrayList<LeadCard> getLeaders() {
@@ -95,14 +85,58 @@ public class Player implements Serializable {
         return extraRes;
     }
 
+    public int getFaithPosition() {
+        return faithPosition;
+    }
+
     /**
-     * Add a resource to the list, then unify it
+     * Return the pope card given its section in faith track
      *
-     * @param resource The resource to add
+     * @param section the section in faith track
+     * @return The pope card of that section, or null if error
      */
-    public void addExtra(Resource resource) {
-        extraRes.add(resource);
-        extraRes = Lists.unifyResourceAmounts(extraRes);
+    public PopeCard getPopeCard(int section) {
+        if (!(section < 0 || section >= popeCards.size()))
+            return popeCards.get(section);
+        else
+            return null;
+    }
+
+    public ArrayList<PopeCard> getPopeCards() {
+        return popeCards;
+    }
+
+    /**
+     * @return All the dev cards bought by player
+     */
+    public ArrayList<DevCard> getAllDevCards() {
+        ArrayList<DevCard> temp = new ArrayList<>();
+
+        Arrays.stream(devSlots).filter(Objects::nonNull).forEach(temp::addAll);
+
+        return temp;
+    }
+
+    /**
+     * @return The top dev card of each slot
+     */
+    public DevCard[] getFirstDevCards() {
+        DevCard[] cards = new DevCard[devSlots.length];
+        int i = 0;
+        for (ArrayList<DevCard> devSlot : devSlots)
+            cards[i++] = (devSlot.size() > 0) ? devSlot.get(0) : null;
+        return cards;
+    }
+
+    //endregion
+
+
+    public void setLastAction(InstructionCode action) {
+        lastAction = action;
+    }
+
+    public void setLeaders(ArrayList<LeadCard> cards) {
+        leaders = cards;
     }
 
     /**
@@ -117,9 +151,8 @@ public class Player implements Serializable {
         extraRes = Lists.unifyResourceAmounts(extraRes);
     }
 
-
     /**
-     * Try remove the specified amount from the selected type of resource.
+     * Try remove the specified amount from selected type of resource.
      * <p>
      * If amount is bigger than actual resource amount, the difference is IGNORED
      * and the resource gets completely removed from list.
@@ -151,46 +184,16 @@ public class Player implements Serializable {
         faithPosition++;
     }
 
-    public int getFaithPosition() {
-        return faithPosition;
-    }
-
     /**
-     * Return the pope card given its section in faith track
+     * Add a new card at the top of selected slot
      *
-     * @param section the section in faith track
-     * @return The pope card of that section, or null if error
+     * @param card The card to place
+     * @param slot The selected slot
      */
-    public PopeCard getPopeCard(int section) {
-        if (!(section < 0 || section >= popeCards.size()))
-            return popeCards.get(section);
-        else
-            return null;
-    }
-
-    public ArrayList<PopeCard> getPopeCards() {
-        return popeCards;
-    }
-
-    public ArrayList<DevCard> getAllDevCards() {
-        ArrayList<DevCard> temp = new ArrayList<>();
-
-        Arrays.stream(devSlots).filter(Objects::nonNull).forEach(temp::addAll);
-
-        return temp;
-    }
-
     public void addDevCard(DevCard card, int slot) {
         devSlots[slot].add(0, card);
     }
 
-    public DevCard[] getFirstDevCards() {
-        DevCard[] cards = new DevCard[devSlots.length];
-        int i = 0;
-        for (ArrayList<DevCard> devSlot : devSlots)
-            cards[i++] = (devSlot.size() > 0) ? devSlot.get(0) : null;
-        return cards;
-    }
 
     //region Utility methods
 
@@ -210,7 +213,7 @@ public class Player implements Serializable {
      * The player has at least one card of selected ability type
      *
      * @param at The ability type to look for
-     * @return True if player has the card, false otherwise
+     * @return True if player has any card, false otherwise
      */
     public boolean hasLeader(Ability.AbilityType at) {
         if (leaders == null)
@@ -222,7 +225,7 @@ public class Player implements Serializable {
      * The player has at least one card of selected resource type
      *
      * @param rt The resource type to look for
-     * @return True if player has the card, false otherwise
+     * @return True if player has any card, false otherwise
      */
     public boolean hasLeader(FinalResource.ResourceType rt) {
         if (leaders == null)
@@ -245,6 +248,8 @@ public class Player implements Serializable {
     }
     //endregion
 
+    //region getLeader
+
     /**
      * Get a card stored on server providing a matching object.
      *
@@ -252,10 +257,10 @@ public class Player implements Serializable {
      * @return The server card matched by ID, null if player doesn't have card
      */
     public LeadCard getLeader(LeadCard card) {
-        if (hasLeader(card))
-            return leaders.stream().filter(lead -> lead.getID().equals(card.getID())).findFirst().get();
-        else
+        if (!hasLeader(card))
             return null;
+
+        return leaders.stream().filter(lead -> lead.getID().equals(card.getID())).findFirst().get();
     }
 
     /**
@@ -268,14 +273,21 @@ public class Player implements Serializable {
      * @return The card matching both ability and resource type if present, null otherwise
      */
     public LeadCard getLeader(Ability.AbilityType at, FinalResource.ResourceType rt) {
-        if (hasLeader(at, rt)) //Double check to prevent exception throwing
-            return leaders.stream()
-                    .filter(lead -> (lead.getAbilityType() == at && lead.getResourceType() == rt))
-                    .findFirst().get();
-        else
+        if (!hasLeader(at, rt)) //Double check to prevent exception throwing
             return null;
+
+        return leaders.stream()
+                .filter(lead -> (lead.getAbilityType() == at && lead.getResourceType() == rt))
+                .findFirst().get();
     }
 
+    //endregion
+
+    /**
+     * Remove a leader matched by id
+     *
+     * @param card The card to remove by ID
+     */
     public void removeLeader(LeadCard card) {
         if (leaders == null)
             return;
@@ -321,25 +333,32 @@ public class Player implements Serializable {
      * @return The amount of resources in extra resources list, 0 if empty
      */
     public int extraAmount() {
-        if (hasExtra())
-            return extraRes.stream().map(Resource::getAmount).reduce(Integer::sum).get();
-        else
+        if (!hasExtra())
             return 0;
+
+        return extraRes.stream().map(Resource::getAmount).reduce(Integer::sum).get();
     }
 
+    /**
+     * Set extraRes with a new ArrayList
+     */
     public void resetExtra() {
         extraRes = new ArrayList<>();
     }
 
+    /**
+     * Get all the resources of the player from Warehouse, Strongbox and Depot Leader Cards
+     * @return A list with all the resources of the player
+     */
     public ArrayList<Resource> getAllResources() {
 
         ArrayList<Resource> temp = new ArrayList<>();
 
         //Warehouse
-        temp.addAll(warehouse.getAll());
+        temp.addAll(warehouse.getAllResources());
 
         //Strongbox
-        temp.addAll(strongbox.getAll());
+        temp.addAll(strongbox.getAllResources());
 
         //Leaders
         temp.addAll(leaders.stream()

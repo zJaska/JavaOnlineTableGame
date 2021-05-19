@@ -30,6 +30,7 @@ public class CardResource implements Serializable {
         return level;
     }
 
+    @Override
     public String toString() {
         return "{" + type + ", " + amount + ", " + level + "}";
     }

@@ -33,12 +33,11 @@ public class ResourceMarket implements Serializable {
         setup(resources);
     }
 
-    //Todo
-
     /**
-     * This method generate a my resource market.
+     * Generates the market initial configuration providing the resources to use
+     * for a total amount of ROWS * COLS +1 for extra marble.
      *
-     * @param resourcesParam
+     * @param resourcesParam The list with all the resources and their amounts to use for generating the grid
      */
     public void setup(ArrayList<Resource> resourcesParam) {
         ArrayList<Resource> resources = new ArrayList<>();
@@ -61,11 +60,10 @@ public class ResourceMarket implements Serializable {
     }
 
     /**
-     * This method return a row of my resourceMarket
-     * and updates its model
+     * Get all the resources in the row, and shift them to insert the current extra marble.
      *
-     * @param row
-     * @return a row of resource market
+     * @param row The row to take resources from
+     * @return The resources present in selected row
      */
     public ArrayList<FinalResource> selectRow(int row) {
         ArrayList<FinalResource> rowResources = new ArrayList<>(); //List to return
@@ -96,11 +94,10 @@ public class ResourceMarket implements Serializable {
     }
 
     /**
-     * This method return a column of my resourceMarket
-     * and updates its model
+     * Get all the resources in the column, and shift them to insert the current extra marble.
      *
-     * @param column
-     * @return a column of my resourceMarket
+     * @param column The column to take resources from
+     * @return The resources present in selected column
      */
     public ArrayList<FinalResource> selectColumn(int column) {
         ArrayList<FinalResource> colResources = new ArrayList<>();
@@ -130,6 +127,10 @@ public class ResourceMarket implements Serializable {
         return Lists.unifyResourceAmounts(colResources);
     }
 
+    /**
+     * Creates a copy of the current grid
+     * @return The new copy
+     */
     public FinalResource[][] getGridCopy() {
         FinalResource[][] newGrid = new FinalResource[ROWS][COLUMNS];
 
@@ -140,17 +141,11 @@ public class ResourceMarket implements Serializable {
         return newGrid;
     }
 
+    /**
+     *
+     * @return A copy of the extra marble
+     */
     public FinalResource getExtraMarbleCopy() {
         return new FinalResource(extraMarble.getType(), extraMarble.getAmount());
-    }
-
-    // NEEDED ONLY TO TEST
-
-    public FinalResource[][] getMarbleGrid() {
-        return marbleGrid;
-    }
-
-    public FinalResource getExtraMarble() {
-        return extraMarble;
     }
 }

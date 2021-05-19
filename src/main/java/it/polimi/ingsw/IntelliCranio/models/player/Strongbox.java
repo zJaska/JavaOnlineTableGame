@@ -22,28 +22,44 @@ public class Strongbox implements Serializable {
                 .forEach( type -> resources.add(new Resource(type, 0)));
     }
 
-    public int getAmount(ResourceType resource) {
+    /**
+     * Get the amount of the resource given its type
+     * @param rt The type to get its amount
+     * @return The amount of resource
+     */
+    public int getAmount(ResourceType rt) {
         return resources.stream()
-                .filter(res -> res.getType() == resource)
+                .filter(res -> res.getType() == rt)
                 .findFirst().get().getAmount();
     }
 
-    public void addResources(ResourceType resource, int amount) {
-        if (FinalResource.EXCLUDED.contains(resource))
+    /**
+     * Add amount resources to the strongbox
+     * @param rt The resource to add
+     * @param amount The amount of resource to add
+     */
+    public void addResources(ResourceType rt, int amount) {
+        if (FinalResource.EXCLUDED.contains(rt))
             return;
 
         resources.stream()
-                .filter(res -> res.getType() == resource)
+                .filter(res -> res.getType() == rt)
                 .findFirst().get()
                 .addAmount(amount);
     }
 
-    public void removeResources(ResourceType resource, int amount) {
-        if (FinalResource.EXCLUDED.contains(resource))
+    /**
+     * Remove selected amount of resources of type rt
+     * If amount is greater than actual value, resource amount is set to 0.
+     * @param rt The type of the resource
+     * @param amount The amount to remove
+     */
+    public void removeResources(ResourceType rt, int amount) {
+        if (FinalResource.EXCLUDED.contains(rt))
             return;
 
         Resource temp = resources.stream()
-                .filter(res -> !FinalResource.EXCLUDED.contains(res.getType()) && res.getType() == resource)
+                .filter(res -> res.getType() == rt)
                 .findFirst().get();
 
         if(temp.getAmount() < amount){
@@ -52,15 +68,14 @@ public class Strongbox implements Serializable {
         }
 
         resources.stream()
-                .filter(res -> res.getType() == resource)
+                .filter(res -> res.getType() == rt)
                 .findFirst().get()
                 .removeAmount(amount);
     }
 
     //region Utility
 
-    public ArrayList<Resource> getAll() {
-
+    public ArrayList<Resource> getAllResources() {
         return new ArrayList<>(resources);
     }
 

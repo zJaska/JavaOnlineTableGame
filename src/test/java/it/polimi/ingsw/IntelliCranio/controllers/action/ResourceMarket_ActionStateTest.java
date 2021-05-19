@@ -8,7 +8,7 @@ import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 import org.junit.jupiter.api.BeforeEach;
@@ -214,7 +214,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblExpected=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblExpected=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -226,7 +226,7 @@ class ResourceMarket_ActionStateTest {
 
 
         for(int c=0;c< market.COLUMNS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[test][c].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[test][c].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -261,10 +261,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.COLUMNS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[test][c].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[test][c].getType()));
 
-        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getMarbleGrid()[test][market.COLUMNS-1]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getGridCopy()[test][market.COLUMNS-1]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -331,7 +331,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblExpected=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblExpected=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -343,7 +343,7 @@ class ResourceMarket_ActionStateTest {
 
 
         for(int c=0;c< market.COLUMNS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[test][c].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[test][c].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -378,10 +378,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.COLUMNS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[test][c].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[test][c].getType()));
 
-        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getMarbleGrid()[test][market.COLUMNS-1]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getGridCopy()[test][market.COLUMNS-1]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -445,7 +445,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblExpected=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblExpected=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -457,7 +457,7 @@ class ResourceMarket_ActionStateTest {
 
 
         for(int c=0;c< market.COLUMNS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[test][c].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[test][c].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -492,10 +492,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.COLUMNS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[test][c].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[test][c].getType()));
 
-        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getMarbleGrid()[test][market.COLUMNS-1]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getGridCopy()[test][market.COLUMNS-1]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -559,7 +559,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblExpected=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblExpected=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -571,7 +571,7 @@ class ResourceMarket_ActionStateTest {
 
 
         for(int c=0;c< market.COLUMNS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[test][c].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[test][c].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -649,7 +649,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblExpected=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblExpected=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -661,7 +661,7 @@ class ResourceMarket_ActionStateTest {
 
 
         for(int c=0;c< market.COLUMNS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[test][c].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[test][c].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -696,10 +696,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.COLUMNS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[test][c].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[test][c].getType()));
 
-        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getMarbleGrid()[test][market.COLUMNS-1]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblExpected,game.getResourceMarket().getGridCopy()[test][market.COLUMNS-1]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -893,7 +893,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -902,7 +902,7 @@ class ResourceMarket_ActionStateTest {
         int numServant=0;
 
         for(int c=0;c< market.ROWS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[c][test].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -937,10 +937,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.ROWS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[c][test].getType()));
 
-        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getGridCopy()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -1004,7 +1004,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -1013,7 +1013,7 @@ class ResourceMarket_ActionStateTest {
         int numServant=0;
 
         for(int c=0;c< market.ROWS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[c][test].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -1048,10 +1048,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.ROWS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[c][test].getType()));
 
-        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getGridCopy()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -1115,7 +1115,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -1124,7 +1124,7 @@ class ResourceMarket_ActionStateTest {
         int numServant=0;
 
         for(int c=0;c< market.ROWS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[c][test].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -1159,10 +1159,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.ROWS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[c][test].getType()));
 
-        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getGridCopy()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -1226,7 +1226,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -1235,7 +1235,7 @@ class ResourceMarket_ActionStateTest {
         int numServant=0;
 
         for(int c=0;c< market.ROWS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[c][test].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -1270,10 +1270,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.ROWS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[c][test].getType()));
 
-        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getGridCopy()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 
@@ -1337,7 +1337,7 @@ class ResourceMarket_ActionStateTest {
         ResourceMarket market = game.getResourceMarket();
         //I would like to select a row and shift that
         ArrayList<Resource> expected=new ArrayList<>();
-        Resource ExtraMrblOld=new Resource(market.getExtraMarble().getType(),1);
+        Resource ExtraMrblOld=new Resource(market.getExtraMarbleCopy().getType(),1);
 
         int incrementFaith=0;
         int numCoin=0;
@@ -1347,7 +1347,7 @@ class ResourceMarket_ActionStateTest {
         int numBlank=0;
 
         for(int c=0;c< market.ROWS;c++)
-            expected.add(new Resource(market.getMarbleGrid()[c][test].getType(),1));
+            expected.add(new Resource(market.getGridCopy()[c][test].getType(),1));
 
         for(int i=0;i<expected.size();i++){
             switch (expected.get(i).getType()){
@@ -1382,10 +1382,10 @@ class ResourceMarket_ActionStateTest {
         });
 
         for(int c=0;c<market.ROWS-1;c++)
-            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getMarbleGrid()[c][test].getType()));
+            assertTrue(deepEquals(expected.get(c+1).getType(),game.getResourceMarket().getGridCopy()[c][test].getType()));
 
-        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getMarbleGrid()[market.ROWS-1][test]));
-        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarble().getType()));
+        assertTrue(deepEquals(ExtraMrblOld,game.getResourceMarket().getGridCopy()[market.ROWS-1][test]));
+        assertTrue(deepEquals(expected.get(0).getType(),game.getResourceMarket().getExtraMarbleCopy().getType()));
 
         assertTrue(deepEquals(incrementFaith,game.getCurrentPlayer().getFaithPosition()));
 

@@ -1,16 +1,14 @@
 package it.polimi.ingsw.IntelliCranio.controllers.action;
 
-import com.cedarsoftware.util.DeepEquals;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.cards.Card;
-import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
-import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 
@@ -26,7 +24,6 @@ import static com.cedarsoftware.util.DeepEquals.deepEquals;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
 
 class CardMarket_ActionStateTest {
 

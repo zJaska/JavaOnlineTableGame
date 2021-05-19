@@ -6,7 +6,7 @@ import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.DepotAbility;
+import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
 import it.polimi.ingsw.IntelliCranio.util.Conversions;
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
-import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
+import static it.polimi.ingsw.IntelliCranio.models.ability.Ability.AbilityType.*;
 
 public class ManageWarehouse_ActionState extends ActionState {
 
@@ -327,7 +327,7 @@ public class ManageWarehouse_ActionState extends ActionState {
         //region Execute operation
 
         //Add faith to every other player other than current one
-        game.addFaithToAll(game.getCurrentPlayer().extraAmount());
+        game.addFaithToOthers(game.getCurrentPlayer().extraAmount());
         game.getCurrentPlayer().resetExtra();
 
         //Apply changes

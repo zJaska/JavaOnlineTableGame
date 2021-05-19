@@ -7,7 +7,7 @@ import it.polimi.ingsw.IntelliCranio.models.resource.CardResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Save;
 import org.junit.jupiter.api.BeforeEach;
@@ -238,7 +238,7 @@ class Default_ActionStateTest {
 
         game.getCurrentPlayer().setLeaders(ins);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.STONE,1));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.STONE,1);
 
         ArrayList<Object> args = new ArrayList<>();
         args.add(new Resource(FinalResource.ResourceType.STONE, 1));
@@ -246,7 +246,7 @@ class Default_ActionStateTest {
 
         Packet PackAdder=new Packet(ADD_FROM_EXTRA, null, args);
 
-        game.getCurrentPlayer().addExtra(new Resource(FinalResource.ResourceType.STONE, 1));
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.STONE, 1);
 
         ArrayList<Resource> expectedExtra = new ArrayList<>();
         expectedExtra.add(new Resource(FinalResource.ResourceType.STONE, 1));

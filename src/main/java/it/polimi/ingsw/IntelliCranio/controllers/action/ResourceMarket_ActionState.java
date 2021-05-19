@@ -7,7 +7,6 @@ import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.server.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.util.Checks;
 import it.polimi.ingsw.IntelliCranio.util.Conversions;
@@ -19,7 +18,7 @@ import java.util.Objects;
 import static it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
-import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
+import static it.polimi.ingsw.IntelliCranio.models.ability.Ability.AbilityType.*;
 
 public class ResourceMarket_ActionState extends ActionState {
 

@@ -10,11 +10,9 @@ import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException
 import it.polimi.ingsw.IntelliCranio.util.CliUtil;
 import javafx.util.Pair;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static it.polimi.ingsw.IntelliCranio.server.ability.Ability.AbilityType.*;
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 
 public class CliActivateProductionScene implements CliScene {
