@@ -1,6 +1,7 @@
 package it.polimi.ingsw.IntelliCranio.views.gui.config;
 
 import it.polimi.ingsw.IntelliCranio.client.MainClient;
+import it.polimi.ingsw.IntelliCranio.models.ability.Ability;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
@@ -47,9 +48,11 @@ public class GuiResFromConfig implements GuiConfig {
         });
 
         realScene.getLeadersButtons().forEach(btn -> {
-            btn.setOnMouseClicked(event -> {
-                LeadCard lead = MainClient.game.getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[1]));
+            LeadCard lead = MainClient.game.getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[1]));
+            if (lead.getAbilityType() != Ability.AbilityType.DEPOT)
+                return;
 
+            btn.setOnMouseClicked(event -> {
                 gui.setData(new Pair<>(
                         RES_FROM_CARD,
                         new ArrayList<>(Arrays.asList(lead))

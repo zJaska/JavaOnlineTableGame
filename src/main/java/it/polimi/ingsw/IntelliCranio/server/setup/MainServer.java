@@ -23,7 +23,11 @@ public class MainServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT);
 
-        nickname_uuid = new ConcurrentHashMap<String, UUID>(Save.getDatabase("database.json", Save.playerDatabaseType));
+        HashMap<String, UUID> database = Save.getDatabase("database.json", Save.playerDatabaseType);
+        if (database == null)
+            nickname_uuid = new ConcurrentHashMap<>();
+        else
+            nickname_uuid = new ConcurrentHashMap<>(database);
 
         while (true) {
             try {

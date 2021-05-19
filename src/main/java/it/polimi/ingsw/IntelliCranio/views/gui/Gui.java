@@ -39,8 +39,8 @@ public class Gui implements View {
 
     public void setScene(InstructionCode code) {
         runLater(() -> {
-            if (config != null)
-                config.removeConfig(scene);
+            try { config.removeConfig(scene); }
+            catch (Exception ignored) { }
 
             Pair<GuiScene, GuiConfig> pair = sceneFactory.getScene(code);
             if (pair.getKey() != null)
@@ -55,6 +55,9 @@ public class Gui implements View {
 
     public void setIdleScene(InstructionCode code) {
         runLater(() -> {
+            try { config.removeConfig(scene); }
+            catch (Exception ignored) { }
+
             GuiScene tmpscene = sceneFactory.getScene(code).getKey();
             if (tmpscene != null)  scene = tmpscene;
 

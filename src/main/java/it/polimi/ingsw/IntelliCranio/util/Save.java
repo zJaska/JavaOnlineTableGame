@@ -94,8 +94,8 @@ public class Save {
 
         try {
             fileData = new String(Files.readAllBytes(Paths.get(databasePath + filename)));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            return null;
         }
 
         return gson.fromJson(fileData, tClass);
