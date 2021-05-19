@@ -25,6 +25,7 @@ import static it.polimi.ingsw.IntelliCranio.models.ability.Ability.AbilityType.*
 public class CardMarket_ActionState extends ActionState{
 
     private DevCard selected;
+    private int selectedRow, selectedCol;
     private ArrayList<Resource> costResources = new ArrayList<>();
     private boolean confirmed;
 
@@ -94,6 +95,8 @@ public class CardMarket_ActionState extends ActionState{
 
 
         selected = card;
+        selectedRow = row;
+        selectedCol = col;
 
         // TODO: questa riga l'ha messa STE
         action.setActionState(this, CARD_MARKET_AS);
@@ -281,6 +284,8 @@ public class CardMarket_ActionState extends ActionState{
 
         //Get here if cost resources selected are the same as card resources
         confirmed = true;
+
+        game.getCardMarket().removeCard(selectedRow, selectedCol);
     }
 
     private void selectSlot(ArrayList<Object> args) throws InvalidArgumentsException {
@@ -320,6 +325,7 @@ public class CardMarket_ActionState extends ActionState{
         // TODO: ste
         action.setActionState(new Default_ActionState(action), DEFAULT);
         game.getCurrentPlayer().setLastAction(DEFAULT);
+        game.getCurrentPlayer().hasPlayed = true;
         Save.saveGame(game);
     }
 

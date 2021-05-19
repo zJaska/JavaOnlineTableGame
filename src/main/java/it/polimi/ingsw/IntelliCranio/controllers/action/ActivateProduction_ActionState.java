@@ -293,7 +293,7 @@ public class ActivateProduction_ActionState extends ActionState{
         game.loadGame(Save.loadGame(game.getUuid()));
 
         //Reset action status
-        action.setActionState(new ActivateProduction_ActionState(action), ACT_PROD);
+        action.setActionState(new Default_ActionState(action), DEFAULT);
 
     }
 
@@ -375,7 +375,10 @@ public class ActivateProduction_ActionState extends ActionState{
         Player player = game.getCurrentPlayer();
 
         //Add faith from devcards
-        allProduct.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> player.addFaith());
+        allProduct.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> {
+            for(int i = 0; i < faith.getAmount(); ++i)
+                player.addFaith();
+        });
 
         //Add resources to player strongbox
         Strongbox sb = game.getCurrentPlayer().getStrongbox();

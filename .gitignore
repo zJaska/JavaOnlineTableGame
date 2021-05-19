@@ -16,5 +16,6 @@ target/
 
 .idea/
 saved_games
+out
 IntelliCranio.iml
 
