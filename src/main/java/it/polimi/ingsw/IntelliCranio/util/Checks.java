@@ -27,25 +27,26 @@ public class Checks {
 
     /**
      * Check if packet, action code or args is null
+     *
      * @param packet The packet to check
      * @throws InvalidArgumentsException
      */
     public static void packetCheck(Packet packet) throws InvalidArgumentsException {
-        if(packet == null) {
+        if (packet == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(PACKET_NULL);
             String errorMessage = "OOOPS, something went wrong! Server received no packet";
             e.setErrorMessage(errorMessage);
             throw e;
         }
 
-        if(packet.getInstructionCode() == null) {
+        if (packet.getInstructionCode() == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(CODE_NULL);
             String errorMessage = "OOOPS, something went wrong! Server received no code";
             e.setErrorMessage(errorMessage);
             throw e;
         }
 
-        if(packet.getArgs() == null) {
+        if (packet.getArgs() == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(ARGS_NULL);
             String errorMessage = "OOOPS, something went wrong! Server received null args";
             e.setErrorMessage(errorMessage);
@@ -55,13 +56,14 @@ public class Checks {
 
     /**
      * Checks if size of args is different from the expected amount
-     * @param args The ArrayList from packet
+     *
+     * @param args           The ArrayList from packet
      * @param expectedAmount The amount of args expected
      * @throws InvalidArgumentsException
      */
     public static void argsAmount(ArrayList<Object> args, int expectedAmount) throws InvalidArgumentsException {
 
-        if(args.size() < expectedAmount) {
+        if (args.size() < expectedAmount) {
             InvalidArgumentsException e = new InvalidArgumentsException(NOT_ENOUGH_ARGS);
 
             String errorMessage = "OOOPS, something went wrong! Server received less arguments than expected";
@@ -72,7 +74,7 @@ public class Checks {
 
             throw e;
         }
-        if(args.size() > expectedAmount) {
+        if (args.size() > expectedAmount) {
             InvalidArgumentsException e = new InvalidArgumentsException(TOO_MANY_ARGS);
 
             String errorMessage = "OOOPS, something went wrong! Server received more arguments than expected";
@@ -88,12 +90,13 @@ public class Checks {
 
     /**
      * Check if first line is the same as second
+     *
      * @param first
      * @param second
      * @throws InvalidArgumentsException
      */
     public static void sameLine(int first, int second) throws InvalidArgumentsException {
-        if(first == second) {
+        if (first == second) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Selected lines are the same";
@@ -108,11 +111,12 @@ public class Checks {
 
     /**
      * Check if provided value is negative
+     *
      * @param value
      * @throws InvalidArgumentsException
      */
     public static void negativeValue(int value) throws InvalidArgumentsException {
-        if(value < 0) {
+        if (value < 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! One or more values selected are negative";
@@ -125,12 +129,13 @@ public class Checks {
 
     /**
      * Used for single values checks. Throws if value is greater than max
+     *
      * @param value The value to check
-     * @param max The max allowed value [inclusive]
+     * @param max   The max allowed value [inclusive]
      * @throws InvalidArgumentsException
      */
     public static void overMaxValue(int value, int max) throws InvalidArgumentsException {
-        if(value > max) {
+        if (value > max) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! One or more values selected exceed maximum size";
@@ -145,12 +150,13 @@ public class Checks {
 
     /**
      * Used for depots and arrays checks. Throws if line is greater or equal than size
+     *
      * @param line The value to check
      * @param size The max allowed value [exclusive]
      * @throws InvalidArgumentsException
      */
-    public static void overSizeLine(int line, int size) throws InvalidArgumentsException{
-        if(line >= size) {
+    public static void overSizeLine(int line, int size) throws InvalidArgumentsException {
+        if (line >= size) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! One or more values selected exceed maximum size";
@@ -164,7 +170,7 @@ public class Checks {
     }
 
     public static void nullElement(Object element, String expected) throws InvalidArgumentsException {
-        if(element == null) {
+        if (element == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(NULL_ARG);
 
             String errorMessage = "OOOPS, something went wrong! Server received a null element";
@@ -178,11 +184,12 @@ public class Checks {
 
     /**
      * Check if the extra resources of given player is empty
+     *
      * @param player The player to get its extra resources
      * @throws InvalidArgumentsException
      */
     public static void extraEmpty(Player player) throws InvalidArgumentsException {
-        if(!player.hasExtra()) {
+        if (!player.hasExtra()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Your extra resources slot is empty";
@@ -195,12 +202,13 @@ public class Checks {
 
     /**
      * Check if player extra resources does not contains an element of given type
+     *
      * @param player The player to get its extra resources
-     * @param type The type to check if is present
+     * @param type   The type to check if is present
      * @throws InvalidArgumentsException
      */
-    public static void notInExtra(Player player, ResourceType type) throws InvalidArgumentsException{
-        if(!player.hasExtra(type)) {
+    public static void notInExtra(Player player, ResourceType type) throws InvalidArgumentsException {
+        if (!player.hasExtra(type)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The type selected is not present in your extra resources slot";
@@ -215,18 +223,19 @@ public class Checks {
     /**
      * Check if the given types are the same type. If ignoreNull flag is set to true,
      * the check doesn't throw any exception if one of the given type is null.
-     * @param first The first resource type
-     * @param second The second resource type
+     *
+     * @param first      The first resource type
+     * @param second     The second resource type
      * @param ignoreNull If set to true, if at least one of the types is null, does not throw
      * @throws InvalidArgumentsException
      */
     public static void notSameResource(ResourceType first, ResourceType second, boolean ignoreNull) throws InvalidArgumentsException {
 
-        if(ignoreNull)
-            if(first == null || second == null)
+        if (ignoreNull)
+            if (first == null || second == null)
                 return;
 
-        if(first != second) {
+        if (first != second) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The types does not match";
@@ -241,13 +250,14 @@ public class Checks {
 
     /**
      * Check if res type is already present in warehouse in other lines different from given line
-     * @param wh The warehouse to check
+     *
+     * @param wh   The warehouse to check
      * @param line The line to insert a new resource
-     * @param res The resource to insert
+     * @param res  The resource to insert
      * @throws InvalidArgumentsException
      */
     public static void resInDifferentLine(Warehouse wh, int line, Resource res) throws InvalidArgumentsException {
-        if(wh.isPresent(line, res)) {
+        if (wh.isPresent(line, res)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The depot already has this resource in another line";
@@ -261,7 +271,7 @@ public class Checks {
     }
 
     public static void depotFull(Warehouse wh, int line) throws InvalidArgumentsException {
-        if(wh.isFull(line)) {
+        if (wh.isFull(line)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The selected depot line is already full";
@@ -274,7 +284,7 @@ public class Checks {
     }
 
     public static void depotEmpty(Warehouse wh, int line) throws InvalidArgumentsException {
-        if(wh.isEmpty(line)) {
+        if (wh.isEmpty(line)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Selected depot line is empty";
@@ -287,7 +297,7 @@ public class Checks {
     }
 
     public static void notInHand(Player player, LeadCard card) throws InvalidArgumentsException {
-        if(!player.hasLeader(card)) {
+        if (!player.hasLeader(card)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Selected card is not in you hand";
@@ -298,8 +308,9 @@ public class Checks {
             throw e;
         }
     }
+
     public static void notInHand(Player player, AbilityType at) throws InvalidArgumentsException {
-        if(!player.hasLeader(at)) {
+        if (!player.hasLeader(at)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! None of your cards meet the ability selected";
@@ -310,8 +321,9 @@ public class Checks {
             throw e;
         }
     }
+
     public static void notInHand(Player player, ResourceType rt) throws InvalidArgumentsException {
-        if(!player.hasLeader(rt)) {
+        if (!player.hasLeader(rt)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! None of your cards meet the resource selected";
@@ -322,8 +334,9 @@ public class Checks {
             throw e;
         }
     }
+
     public static void notInHand(Player player, AbilityType at, ResourceType rt) throws InvalidArgumentsException {
-        if(!player.hasLeader(at, rt)) {
+        if (!player.hasLeader(at, rt)) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! None of your cards meet the resource and ability";
@@ -337,14 +350,13 @@ public class Checks {
     }
 
     /**
-     *
      * @param card The SERVER copy of provided card
      * @param at
      * @throws InvalidArgumentsException
      */
     public static void invalidAbility(LeadCard card, AbilityType at) throws InvalidArgumentsException {
 
-        if(card.getAbilityType() != at) {
+        if (card.getAbilityType() != at) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Selected card doesn't have a valid ability";
             errorMessage += "\nExpected ability: " + at;
@@ -356,12 +368,11 @@ public class Checks {
     }
 
     /**
-     *
      * @param serverCard The SERVER copy of given card
      * @throws InvalidArgumentsException
      */
     public static void cardInactive(LeadCard serverCard) throws InvalidArgumentsException {
-        if(!serverCard.isActive()) {
+        if (!serverCard.isActive()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Your card is not active";
@@ -374,12 +385,11 @@ public class Checks {
     }
 
     /**
-     *
      * @param serverCard The SERVER copy of given card
      * @throws InvalidArgumentsException
      */
     public static void cardDepotFull(LeadCard serverCard) throws InvalidArgumentsException {
-        if(((DepotAbility)serverCard.getSpecialAbility()).isFull()) {
+        if (((DepotAbility) serverCard.getSpecialAbility()).isFull()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The depot of the card is already full";
@@ -392,13 +402,12 @@ public class Checks {
     }
 
     /**
-     *
      * @param serverCard The SERVER copy of given card
      * @throws InvalidArgumentsException
      */
     public static void cardDepotEmpty(LeadCard serverCard) throws InvalidArgumentsException {
 
-        if(((DepotAbility)serverCard.getSpecialAbility()).isEmpty()) {
+        if (((DepotAbility) serverCard.getSpecialAbility()).isEmpty()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Selected card has empty depot";
             errorMessage += "\nSelected card ID: " + serverCard.getID();
@@ -408,8 +417,8 @@ public class Checks {
 
     }
 
-    public static void invalidResource(ResourceType selected, ResourceType invalid) throws InvalidArgumentsException{
-        if(selected == invalid) {
+    public static void invalidResource(ResourceType selected, ResourceType invalid) throws InvalidArgumentsException {
+        if (selected == invalid) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Received an invalid type for the resource";
@@ -422,7 +431,7 @@ public class Checks {
     }
 
     public static void invalidAmount(int selected, int expected) throws InvalidArgumentsException {
-        if(selected != expected) {
+        if (selected != expected) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Selected amount is invalid";
@@ -436,7 +445,7 @@ public class Checks {
     }
 
     public static void invalidState(InstructionCode state, InstructionCode invalid) throws InvalidArgumentsException {
-        if(state == invalid) {
+        if (state == invalid) {
             InvalidArgumentsException e = new InvalidArgumentsException(STATE_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! Operation not allowed in current state";
@@ -454,17 +463,17 @@ public class Checks {
         ArrayList<Resource> playerResources = player.getAllResources();
         ArrayList<FinalResource> resourceRequirements = player.getLeader(card).getResourceRequirements();
 
-        if(resourceRequirements != null)
+        if (resourceRequirements != null)
             resourceRequirements.forEach(resReq -> {
 
                 //No match of type and amount
-                if(playerResources.stream().noneMatch(pRes ->
+                if (playerResources.stream().noneMatch(pRes ->
                         (pRes.getType() == resReq.getType() && pRes.getAmount() >= resReq.getAmount())))
                     error.set(true);
 
             });
 
-        if(error.get()) {
+        if (error.get()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You don't have enough resources to activate this card";
             errorMessage += "\nSelected card ID: " + card.getID();
@@ -480,31 +489,31 @@ public class Checks {
         ArrayList<CardResource> playerDevCards = Lists.toCardResource(player.getAllDevCards());
         ArrayList<CardResource> cardRequirements = player.getLeader(card).getCardRequirements();
 
-        cardRequirements.forEach(cReq -> {
-            //If not 0, the lead card has a specific level requirement
-            if(cReq.getLevel() != 0) {
-                //No specific match of type and level
-                if(playerDevCards.stream().noneMatch(pDev ->
-                        (pDev.getType() == cReq.getType() && pDev.getLevel() == cReq.getLevel())))
-                    error.set(true);
-            }
-            else {
-                int typeAmount;
+        if (cardRequirements != null)
+            cardRequirements.forEach(cReq -> {
+                //If not 0, the lead card has a specific level requirement
+                if (cReq.getLevel() != 0) {
+                    //No specific match of type and level
+                    if (playerDevCards.stream().noneMatch(pDev ->
+                            (pDev.getType() == cReq.getType() && pDev.getLevel() == cReq.getLevel())))
+                        error.set(true);
+                } else {
+                    int typeAmount;
 
-                try {
-                    typeAmount = playerDevCards.stream()
-                            .filter(pDev -> pDev.getType() == cReq.getType())
-                            .map(CardResource::getAmount).reduce(Integer::sum).get();
-                } catch (NoSuchElementException e) {
-                    typeAmount = 0;
+                    try {
+                        typeAmount = playerDevCards.stream()
+                                .filter(pDev -> pDev.getType() == cReq.getType())
+                                .map(CardResource::getAmount).reduce(Integer::sum).get();
+                    } catch (NoSuchElementException e) {
+                        typeAmount = 0;
+                    }
+
+                    if (typeAmount < cReq.getAmount())
+                        error.set(true);
                 }
+            });
 
-                if(typeAmount < cReq.getAmount())
-                    error.set(true);
-            }
-        });
-
-        if(error.get()) {
+        if (error.get()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You don't have enough development cards to activate this card";
             errorMessage += "\nSelected card ID: " + card.getID();
@@ -514,13 +523,12 @@ public class Checks {
     }
 
     /**
-     *
      * @param serverCard The SERVER copy of given card
      * @throws InvalidArgumentsException
      */
     public static void cardActive(LeadCard serverCard) throws InvalidArgumentsException {
 
-        if(serverCard.isActive()) {
+        if (serverCard.isActive()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! The card seems to be active";
@@ -532,7 +540,7 @@ public class Checks {
     }
 
     public static void hasPlayed(Player player) throws InvalidArgumentsException {
-        if(player.hasPlayed) {
+        if (player.hasPlayed) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
 
             String errorMessage = "OOOPS, something went wrong! You can only perform one action per turn";
@@ -545,7 +553,7 @@ public class Checks {
 
     public static void hasSelected(boolean hasSelected) throws InvalidArgumentsException {
 
-        if(hasSelected) {
+        if (hasSelected) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You have already selected something";
             e.setErrorMessage(errorMessage);
@@ -557,7 +565,7 @@ public class Checks {
 
     public static void notSelected(boolean hasSelected) throws InvalidArgumentsException {
 
-        if(!hasSelected) {
+        if (!hasSelected) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Nothing was selected";
             e.setErrorMessage(errorMessage);
@@ -569,7 +577,7 @@ public class Checks {
 
     public static void noBlanks(Resource blanks) throws InvalidArgumentsException {
 
-        if(blanks.getAmount() == 0) {
+        if (blanks.getAmount() == 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! No blank resources to choose from";
             e.setErrorMessage(errorMessage);
@@ -580,7 +588,7 @@ public class Checks {
 
     public static void hasBlanks(Resource blanks) throws InvalidArgumentsException {
 
-        if(blanks.getAmount() != 0) {
+        if (blanks.getAmount() != 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! There are some blank resources left";
             errorMessage += "\nAmount left: " + blanks.getAmount();
@@ -592,7 +600,7 @@ public class Checks {
 
     public static void blankOrFaith(Resource resource) throws InvalidArgumentsException {
 
-        if(resource.getType() == BLANK || resource.getType() == FAITH) {
+        if (resource.getType() == BLANK || resource.getType() == FAITH) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Selection contains a BLANK or FAITH resource";
             errorMessage += "\nSelected type: " + resource.getType();
@@ -605,15 +613,16 @@ public class Checks {
 
     /**
      * If slot == 0, don't throw (base is always possible)
+     *
      * @param player
      * @param slot
      */
     public static void slotEmpty(Player player, int slot) throws InvalidArgumentsException {
 
-        if(slot == 0)
+        if (slot == 0)
             return;
 
-        if(player.getFirstDevCards()[slot - 1] == null) {
+        if (player.getFirstDevCards()[slot - 1] == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! There are no cards in selected slot";
             errorMessage += "\nSelected slot: " + slot;
@@ -626,7 +635,7 @@ public class Checks {
 
     public static void strongboxEmpty(Strongbox sb, ResourceType rt) throws InvalidArgumentsException {
 
-        if(sb.getAmount(rt) == 0) {
+        if (sb.getAmount(rt) == 0) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Selected resource is empty in strongbox";
             errorMessage += "\nSelected resource: " + rt;
@@ -655,7 +664,7 @@ public class Checks {
                 error.set(true);
         });*/
 
-        if(error.get()){
+        if (error.get()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You don't have enough resources selected";
             e.setErrorMessage(errorMessage);
@@ -667,7 +676,7 @@ public class Checks {
 
         AtomicBoolean error = new AtomicBoolean(false);
         ArrayList<T> unifiedActual = Lists.unifyResourceAmounts(actual);
-        ArrayList<T> unifiedExpected=Lists.unifyResourceAmounts(expected);
+        ArrayList<T> unifiedExpected = Lists.unifyResourceAmounts(expected);
 
         unifiedExpected.forEach(ex -> {
             if (unifiedActual.stream().noneMatch(ac -> ac.getType() == ex.getType()))
@@ -676,7 +685,7 @@ public class Checks {
                 error.set(true);
         });
 
-        if(error.get()){
+        if (error.get()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You have selected an invalid amount of resources";
             e.setErrorMessage(errorMessage);
@@ -686,7 +695,7 @@ public class Checks {
 
     public static void cardMarketEmpty(CardMarket cm, int row, int col) throws InvalidArgumentsException {
 
-        if(cm.getCard(row, col) == null) {
+        if (cm.getCard(row, col) == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! There are no cards left in this slot";
             errorMessage += "\nSelected row: " + (row + 1);
@@ -701,22 +710,22 @@ public class Checks {
         DevCard[] topCards = player.getFirstDevCards();
         AtomicBoolean error = new AtomicBoolean(false);
 
-        if(card.getLevel() == 1) {
-            if(Arrays.stream(topCards).noneMatch(Objects::isNull))
+        if (card.getLevel() == 1) {
+            if (Arrays.stream(topCards).noneMatch(Objects::isNull))
                 error.set(true);
 
-            if(error.get()) {
+            if (error.get()) {
                 InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
                 String errorMessage = "OOOPs, something went wrong! You need an empty slot to put this card";
                 errorMessage += "\nSelected card level: " + card.getLevel();
                 e.setErrorMessage(errorMessage);
                 throw e;
             }
-        }else {
-            if(Arrays.stream(topCards).filter(Objects::nonNull).noneMatch(topC -> topC.getLevel() == card.getLevel() - 1))
+        } else {
+            if (Arrays.stream(topCards).filter(Objects::nonNull).noneMatch(topC -> topC.getLevel() == card.getLevel() - 1))
                 error.set(true);
 
-            if(error.get()) {
+            if (error.get()) {
                 InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
                 String errorMessage = "OOOPS, something went wrong! You don't have a card a level below selected one";
                 errorMessage += "\nSelected card level: " + card.getLevel();
@@ -726,12 +735,10 @@ public class Checks {
         }
 
 
-
-
     }
 
     public static void alreadyConfirmed(boolean confirmed) throws InvalidArgumentsException {
-        if(confirmed) {
+        if (confirmed) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You have confirmed the card, please select a slot";
             e.setErrorMessage(errorMessage);
@@ -740,7 +747,7 @@ public class Checks {
     }
 
     public static void notConfirmed(boolean confirmed) throws InvalidArgumentsException {
-        if(!confirmed) {
+        if (!confirmed) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You have to confirm before selecting a slot";
             e.setErrorMessage(errorMessage);
@@ -750,7 +757,7 @@ public class Checks {
 
     public static void cardSelected(DevCard card) throws InvalidArgumentsException {
 
-        if(card != null) {
+        if (card != null) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! A card is already selected";
             errorMessage += "\nSelected card ID: " + card.getID();
@@ -761,7 +768,7 @@ public class Checks {
     }
 
     public static void cardNotSelected(DevCard card) throws InvalidArgumentsException {
-        if(card == null) {
+        if (card == null) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! You need to select a card first";
             e.setErrorMessage(errorMessage);
@@ -771,8 +778,8 @@ public class Checks {
 
     public static void invalidSlot(DevCard slotCard, DevCard selected) throws InvalidArgumentsException {
 
-        if(selected.getLevel() == 1) {
-            if(slotCard != null) {
+        if (selected.getLevel() == 1) {
+            if (slotCard != null) {
                 InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
                 String errorMessage = "OOOPS, something went wrong! Can't add selected card in this slot";
                 e.setErrorMessage(errorMessage);
@@ -781,7 +788,7 @@ public class Checks {
             return;
         }
 
-        if(slotCard.getLevel() != selected.getLevel() - 1) {
+        if (slotCard.getLevel() != selected.getLevel() - 1) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
             String errorMessage = "OOOPS, something went wrong! Can't add selected card in this slot";
             e.setErrorMessage(errorMessage);
