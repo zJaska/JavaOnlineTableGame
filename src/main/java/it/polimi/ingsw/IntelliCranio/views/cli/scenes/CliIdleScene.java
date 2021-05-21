@@ -43,11 +43,11 @@ public class CliIdleScene implements CliScene {
      *              Otherwise, input.get(1) should be the nickname of a player.
      */
     public static void showWarehouse(ArrayList<String> input) throws InvalidArgumentsException {
-        _showWarehouse(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
+        _showWarehouse(CliUtil.checkPlayerHelpCommands(input, MainClient.getGame()));
     }
 
     public static void showWarehouse() {
-        _showWarehouse(MainClient.game.getPlayer(MainClient.nickname));
+        _showWarehouse(MainClient.getGame().getPlayer(MainClient.getNickname()));
     }
 
     private static void _showWarehouse(Player player) {
@@ -66,11 +66,11 @@ public class CliIdleScene implements CliScene {
      * @param input The command that calls the method. input.get(1) should be the nickname of a player.
      */
     public static void showStrongbox(ArrayList<String> input) throws InvalidArgumentsException {
-        _showStrongbox(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
+        _showStrongbox(CliUtil.checkPlayerHelpCommands(input, MainClient.getGame()));
     }
 
     public static void showStrongbox() {
-        _showStrongbox(MainClient.game.getPlayer(MainClient.nickname));
+        _showStrongbox(MainClient.getGame().getPlayer(MainClient.getNickname()));
     }
 
     private static void _showStrongbox(Player player) {
@@ -81,7 +81,7 @@ public class CliIdleScene implements CliScene {
     public static void showResourceMarket() {
         System.out.println("Resource market: ");
 
-        ResourceMarket market = MainClient.game.getResourceMarket();
+        ResourceMarket market = MainClient.getGame().getResourceMarket();
         FinalResource[][] grid = market.getGridCopy();
 
         for (int i = 0; i < market.COLUMNS; i++)
@@ -98,7 +98,7 @@ public class CliIdleScene implements CliScene {
     }
 
     public static void showCardMarket() {
-        Game game = MainClient.game;
+        Game game = MainClient.getGame();
         CardMarket market = game.getCardMarket();
 
         final int FIRST = 15;
@@ -161,7 +161,7 @@ public class CliIdleScene implements CliScene {
     }
 
     public static void showFaithTrack() {
-        Game game = MainClient.game;
+        Game game = MainClient.getGame();
 
         System.out.println("Faith track:");
 
@@ -178,6 +178,9 @@ public class CliIdleScene implements CliScene {
         System.out.print("Start of vatican sections: ");
         game.getFaithTrack().getStartOfVaticanSectionsCopy().forEach(x -> System.out.print(x + " "));
         System.out.println();
+
+        if (MainClient.getGame().isSinglePlayer())
+            System.out.println("Lorenzo Il Magnifico's position: " + MainClient.getGame().getSinglePlayerData().getLorenzoFaith());
     }
 
     /**
@@ -185,28 +188,28 @@ public class CliIdleScene implements CliScene {
      *              Otherwise, input.get(1) should be the nickname of a player.
      */
     public static void showLeaders(ArrayList<String> input) throws InvalidArgumentsException {
-        _showLeaders(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
+        _showLeaders(CliUtil.checkPlayerHelpCommands(input, MainClient.getGame()));
     }
 
     public static void showLeaders() {
-        _showLeaders(MainClient.game.getPlayer(MainClient.nickname));
+        _showLeaders(MainClient.getGame().getPlayer(MainClient.getNickname()));
     }
 
     private static void _showLeaders(Player player) {
         ArrayList<LeadCard> leaders = player.getLeaders();
         System.out.println("Leader cards (" + player.getNickname() + "): (requirements: {type, amount, level})");
         leaders.forEach(x -> {
-            if (player.getNickname().equals(MainClient.nickname) || x.isActive())
+            if (player.getNickname().equals(MainClient.getNickname()) || x.isActive())
                 System.out.println((leaders.indexOf(x) + 1) + ") " + x);
         });
     }
 
     public static void showDevCards(ArrayList<String> input) throws InvalidArgumentsException {
-        _showDevCards(CliUtil.checkPlayerHelpCommands(input, MainClient.game));
+        _showDevCards(CliUtil.checkPlayerHelpCommands(input, MainClient.getGame()));
     }
 
     public static void showDevCards() {
-        _showDevCards(MainClient.game.getPlayer(MainClient.nickname));
+        _showDevCards(MainClient.getGame().getPlayer(MainClient.getNickname()));
     }
 
     private static void _showDevCards(Player player) {

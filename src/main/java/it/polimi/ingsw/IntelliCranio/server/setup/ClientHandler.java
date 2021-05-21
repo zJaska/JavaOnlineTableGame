@@ -114,6 +114,7 @@ public class ClientHandler implements Runnable {
         try {
             if (socketHandler.receive().getInstructionCode() == ALONE) {
                 MainServer.startManager(new ArrayList<>(Arrays.asList(new Pair<>(nickname, socketHandler))));
+                playersTempNames.remove(nickname);
                 return;
             }
 

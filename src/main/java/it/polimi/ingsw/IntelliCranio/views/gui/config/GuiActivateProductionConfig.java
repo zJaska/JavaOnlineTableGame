@@ -54,7 +54,7 @@ public class GuiActivateProductionConfig implements GuiConfig {
         });
 
         realScene.getLeadersButtons().forEach(btn -> {
-            LeadCard lead = MainClient.game.getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[2]));
+            LeadCard lead = MainClient.getGame().getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[2]));
 
             if (lead.getAbilityType() != Ability.AbilityType.PRODUCTION)
                 return;

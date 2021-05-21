@@ -51,11 +51,11 @@ public class CliUtil {
         if (input.size() != 2)
             throw new InvalidArgumentsException("ERROR: you must input only 1 arguments");
 
-        int amount = CliUtil.checkInt(input.get(1),1,MainClient.game.getCurrentPlayer().getLeaders().size());
+        int amount = CliUtil.checkInt(input.get(1),1,MainClient.getGame().getCurrentPlayer().getLeaders().size());
 
         return new Pair<>(
                 RES_FROM_CARD,
-                new ArrayList<>(Arrays.asList(MainClient.game.getCurrentPlayer().getLeaders().get(amount - 1)))
+                new ArrayList<>(Arrays.asList(MainClient.getGame().getCurrentPlayer().getLeaders().get(amount - 1)))
         );
     }
 
@@ -98,7 +98,7 @@ public class CliUtil {
      */
     public static Player checkPlayerHelpCommands(ArrayList<String> input, Game game) throws InvalidArgumentsException {
         if (input.size() == 1)
-            return game.getPlayer(MainClient.nickname);
+            return game.getPlayer(MainClient.getNickname());
         else {
             if (input.size() != 2)
                 throw new InvalidArgumentsException("ERROR: you must only input the nickname of the player");

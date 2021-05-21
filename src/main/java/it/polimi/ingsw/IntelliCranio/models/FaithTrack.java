@@ -10,7 +10,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import static it.polimi.ingsw.IntelliCranio.models.cards.PopeCard.Status.*;
 
@@ -102,7 +104,10 @@ public class FaithTrack implements Serializable {
     }
 
     public int getVp(int space) {
-        return vpTiles.get(space);
+        Map.Entry<Integer,Integer> entry= vpTiles.floorEntry(space);
+        if (entry == null)
+            return 0;
+        return entry.getValue();
     }
 
 

@@ -23,8 +23,31 @@ import static java.lang.Integer.parseInt;
 
 public class MainClient {
 
-    public static Game game;
-    public static String nickname;
+    private static Game game;
+    private static Object game_lock = new Object();
+    public static Game getGame() {
+        synchronized (game_lock) {
+            return game;
+        }
+    }
+    public static void setGame(Game newGame) {
+        synchronized (game_lock) {
+            game = newGame;
+        }
+    }
+
+    private static String nickname;
+    private static Object nick_lock = new Object();
+    public static String getNickname() {
+        synchronized (nick_lock) {
+            return nickname;
+        }
+    }
+    public static void setNickname(String newNickname) {
+        synchronized (nick_lock) {
+            nickname = newNickname;
+        }
+    }
 
     private static SocketHandler socketHandler;
     private static View view;

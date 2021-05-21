@@ -151,4 +151,16 @@ public class CardMarket implements Serializable {
         if(!marketGrid[row][col].isEmpty())
             marketGrid[row][col].remove(0);
     }
+
+    /**
+     * <summary>
+     *     Get the amount of cards of a slot given the grid coordinates.
+     * </summary>
+     * @param row The row index (0 - rows [exclusive])
+     * @param col The col index (0 - cols [exclusive])
+     * @return First DevCard in slot or null if empty
+     */
+    public int getCardsAmount(int row, int col) {
+        return marketGrid[row][col].size();
+    }
 }

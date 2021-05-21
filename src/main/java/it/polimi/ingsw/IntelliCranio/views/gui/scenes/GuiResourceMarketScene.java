@@ -41,8 +41,8 @@ public class GuiResourceMarketScene extends GuiScene implements SceneWithResourc
         marbles = GuiUtil.getNodesStartingWithId(parent, "marble");
         marbles.forEach(marble -> {
             marble.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                FinalResource[][] grid = MainClient.game.getResourceMarket().getGridCopy();
-                FinalResource extra = MainClient.game.getResourceMarket().getExtraMarbleCopy();
+                FinalResource[][] grid = MainClient.getGame().getResourceMarket().getGridCopy();
+                FinalResource extra = MainClient.getGame().getResourceMarket().getExtraMarbleCopy();
 
                 if (marble.getId().equals("marble_extra")) {
                     InputStream tmp = getClass().getResourceAsStream("/assets/Materials/marble_" + extra.getType().toString().toLowerCase() + ".png");

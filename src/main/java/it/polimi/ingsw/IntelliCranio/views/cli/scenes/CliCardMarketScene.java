@@ -29,7 +29,7 @@ public class CliCardMarketScene implements CliScene {
     }
 
     private Pair<InstructionCode, ArrayList<Object>> selectCard(ArrayList<String> input) throws InvalidArgumentsException {
-        Game game = MainClient.game;
+        Game game = MainClient.getGame();
 
         if (input.size() == 1) {
             System.out.println("Choose the indexes (row, column) of the card you want to buy");

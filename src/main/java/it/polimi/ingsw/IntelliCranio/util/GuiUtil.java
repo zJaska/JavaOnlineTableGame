@@ -90,7 +90,7 @@ public class GuiUtil {
     public static void setLeadersUpdater(Parent root) {
         GuiUtil.getNodesStartingWithId(root, "img_leader").forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                ArrayList<LeadCard> cards = MainClient.game.getPlayer(MainClient.nickname).getLeaders();
+                ArrayList<LeadCard> cards = MainClient.getGame().getPlayer(MainClient.getNickname()).getLeaders();
                 int index = parseInt(image.getId().split("_")[2]);
 
                 if (index >= cards.size())
@@ -107,7 +107,7 @@ public class GuiUtil {
         scene.getLeadersButtons().forEach(btn -> {
             LeadCard leader;
             try {
-                leader = MainClient.game.getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[2]));
+                leader = MainClient.getGame().getCurrentPlayer().getLeaders().get(parseInt(btn.getId().split("_")[2]));
             } catch (IndexOutOfBoundsException e) {
                 // There are no more player cards to be added
                 return;
@@ -127,7 +127,7 @@ public class GuiUtil {
             item.setOnAction(event -> {
                 gui.setData(new Pair<>(
                         action,
-                        new ArrayList<>(Arrays.asList(MainClient.game.getCurrentPlayer().getLeaders().get(index)))
+                        new ArrayList<>(Arrays.asList(MainClient.getGame().getCurrentPlayer().getLeaders().get(index)))
                 ));
             });
         });

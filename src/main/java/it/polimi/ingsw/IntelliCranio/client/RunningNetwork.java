@@ -53,7 +53,7 @@ public class RunningNetwork implements Runnable {
 
         switch (pack.getInstructionCode()) {
             case NICKNAME:
-                MainClient.nickname = (String) pack.getArgs().get(0);
+                MainClient.setNickname((String) pack.getArgs().get(0));
                 return null;
             case PING:
                 return null;
@@ -61,7 +61,7 @@ public class RunningNetwork implements Runnable {
                 view.showCommunication((String) pack.getArgs().get(0));
                 return null;
             case GAME:
-                MainClient.game = (Game) pack.getArgs().get(0);
+                MainClient.setGame((Game) pack.getArgs().get(0));
                 view.gameChanged();
                 return null;
             case IDLE:
@@ -69,7 +69,7 @@ public class RunningNetwork implements Runnable {
                 return null;
             case GAME_ENDED:
                 view.setScene(GAME_ENDED);
-                Thread.currentThread().interrupt();
+                Thread.currentThread().stop();
             case DIE:
                 System.exit(-101);
             default:

@@ -26,7 +26,7 @@ public class CliResourceMarketScene implements CliScene {
     }
 
     private Pair<InstructionCode, ArrayList<Object>> selectRowColumn(String type, ArrayList<String> input) throws InvalidArgumentsException {
-        Game game = MainClient.game;
+        Game game = MainClient.getGame();
 
         if (input.size() == 1) {
             System.out.println("Select the " + type + " from which the resources will be taken");

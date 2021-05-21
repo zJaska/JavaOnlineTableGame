@@ -8,6 +8,7 @@ import it.polimi.ingsw.IntelliCranio.views.gui.GameChangedEvent;
 import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
@@ -36,7 +37,7 @@ public class GuiCardMarketScene extends GuiScene {
                 int row = parseInt(image.getId().split("_")[1]);
                 int col = parseInt(image.getId().split("_")[2]);
 
-                DevCard card = MainClient.game.getCardMarket().getCard(row, col);
+                DevCard card = MainClient.getGame().getCardMarket().getCard(row, col);
 
                 if (card == null)
                     ((ImageView) image).setImage(null);
@@ -44,6 +45,15 @@ public class GuiCardMarketScene extends GuiScene {
                     InputStream tmp = getClass().getResourceAsStream("/assets/development_cards/" + card.getID() + ".jpg");
                     ((ImageView) image).setImage(new Image(tmp));
                 }
+            });
+        });
+
+        GuiUtil.getNodesStartingWithId(parent, "count").forEach(label -> {
+            label.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
+                int row = parseInt(label.getId().split("_")[1]);
+                int col = parseInt(label.getId().split("_")[2]);
+
+                ((Label) label).setText(String.valueOf(MainClient.getGame().getCardMarket().getCardsAmount(row,col)));
             });
         });
     }

@@ -32,7 +32,7 @@ public class CliDefaultScene implements CliScene {
     }
 
     public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) throws InvalidArgumentsException {
-        Game game = MainClient.game;
+        Game game = MainClient.getGame();
 
         switch (input.get(0)) {
             case "playLeader":

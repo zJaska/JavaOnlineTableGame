@@ -23,7 +23,7 @@ public class Gui implements View {
     private GuiScene scene;
     private GuiSceneFactory sceneFactory;
 
-    private Semaphore waitForInput = new Semaphore(0);
+    private final Semaphore waitForInput = new Semaphore(0);
     private Pair<InstructionCode, ArrayList<Object>> data;
 
     public void setup() {
@@ -49,7 +49,8 @@ public class Gui implements View {
 
             GuiUtil.fireDownEvent(scene.getRoot(), new GameChangedEvent(GAME_CHANGED_EVENT_TYPE));
             stage.setScene(scene);
-            config.setConfig(scene);
+            try { config.setConfig(scene); }
+            catch (Exception e) {}
         });
     }
 

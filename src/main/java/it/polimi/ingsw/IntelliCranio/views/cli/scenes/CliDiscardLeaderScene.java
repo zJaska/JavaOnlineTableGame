@@ -23,7 +23,7 @@ public class CliDiscardLeaderScene implements CliScene {
     }
 
     public Pair<InstructionCode, ArrayList<Object>> createData(ArrayList<String> input) throws InvalidArgumentsException {
-        Game game = MainClient.game;
+        Game game = MainClient.getGame();
 
         if (input.size() > 1)
             throw new InvalidArgumentsException("ERROR: you must input only one argument");

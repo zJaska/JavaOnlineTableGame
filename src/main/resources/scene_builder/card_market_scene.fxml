@@ -47,103 +47,163 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane layoutX="188.0" layoutY="15.0" prefHeight="570.0" prefWidth="759.0">
+            <AnchorPane layoutX="158.0" layoutY="15.0" prefHeight="570.0" prefWidth="843.0">
                <children>
                   <Label layoutX="185.0" layoutY="30.0" text="Verde">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="355.0" layoutY="30.0" text="Blu">
+                  <Label layoutX="376.0" layoutY="30.0" text="Blu">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="500.0" layoutY="30.0" text="Giallo">
+                  <Label layoutX="541.0" layoutY="30.0" text="Giallo">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="650.0" layoutY="30.0" text="Viola">
+                  <Label layoutX="722.0" layoutY="30.0" text="Viola">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="40.0" layoutY="154.0" text="Livello III">
+                  <Label layoutX="14.0" layoutY="154.0" text="Livello III">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="43.0" layoutY="308.0" text="Livello II">
+                  <Label layoutX="17.0" layoutY="308.0" text="Livello II">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="46.0" layoutY="458.0" text="Livello I">
+                  <Label layoutX="20.0" layoutY="458.0" text="Livello I">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                   <ImageView fx:id="dev_0_0" fitHeight="158.0" fitWidth="104.0" layoutX="157.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="dev_1_0" fitHeight="158.0" fitWidth="104.0" layoutX="157.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="dev_2_0" fitHeight="158.0" fitWidth="104.0" layoutX="157.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_0_1" fitHeight="158.0" fitWidth="104.0" layoutX="315.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_0_1" fitHeight="158.0" fitWidth="104.0" layoutX="336.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_1_1" fitHeight="158.0" fitWidth="104.0" layoutX="314.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_1_1" fitHeight="158.0" fitWidth="104.0" layoutX="335.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_2_1" fitHeight="158.0" fitWidth="104.0" layoutX="315.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_2_1" fitHeight="158.0" fitWidth="104.0" layoutX="336.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_0_3" fitHeight="158.0" fitWidth="104.0" layoutX="618.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_0_3" fitHeight="158.0" fitWidth="104.0" layoutX="690.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_1_3" fitHeight="158.0" fitWidth="104.0" layoutX="617.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_1_3" fitHeight="158.0" fitWidth="104.0" layoutX="689.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_2_3" fitHeight="158.0" fitWidth="104.0" layoutX="618.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_2_3" fitHeight="158.0" fitWidth="104.0" layoutX="690.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_0_2" fitHeight="158.0" fitWidth="104.0" layoutX="471.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_0_2" fitHeight="158.0" fitWidth="104.0" layoutX="512.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_1_2" fitHeight="158.0" fitWidth="104.0" layoutX="470.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_1_2" fitHeight="158.0" fitWidth="104.0" layoutX="511.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="dev_2_2" fitHeight="158.0" fitWidth="104.0" layoutX="471.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="dev_2_2" fitHeight="158.0" fitWidth="104.0" layoutX="512.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/development_cards/developmentcard_front_1_1.JPG" />
+                        <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                      </image>
                   </ImageView>
+                  <Label fx:id="count_0_0" layoutX="143.0" layoutY="85.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_1_0" layoutX="143.0" layoutY="253.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_2_0" layoutX="143.0" layoutY="411.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_0_1" layoutX="315.0" layoutY="80.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_1_1" layoutX="315.0" layoutY="248.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_2_1" layoutX="315.0" layoutY="406.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_0_2" layoutX="495.0" layoutY="80.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_1_2" layoutX="495.0" layoutY="248.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_2_2" layoutX="495.0" layoutY="406.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_0_3" layoutX="674.0" layoutY="80.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_1_3" layoutX="674.0" layoutY="248.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="count_2_3" layoutX="674.0" layoutY="406.0" text="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <Polygon fx:id="goto_default" layoutX="25.0" layoutY="317.0" points="0.0, 15.0, 63.0, -17.0, 0.0, -49.0" rotate="180.0" stroke="BLACK" strokeType="INSIDE" style="-fx-cursor: hand;">

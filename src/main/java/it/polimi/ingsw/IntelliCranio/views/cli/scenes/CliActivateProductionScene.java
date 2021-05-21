@@ -38,7 +38,7 @@ public class CliActivateProductionScene implements CliScene {
         if (input.size() != 2)
             throw new InvalidArgumentsException("ERROR: you must input only the number of the slot");
 
-        int num = CliUtil.checkInt(input.get(1),0, MainClient.game.getCurrentPlayer().getFirstDevCards().length);
+        int num = CliUtil.checkInt(input.get(1),0, MainClient.getGame().getCurrentPlayer().getFirstDevCards().length);
 
         return new Pair<>(
                 SELECT_SLOT,
@@ -53,7 +53,7 @@ public class CliActivateProductionScene implements CliScene {
         if (input.size() != 2)
             throw new InvalidArgumentsException("ERROR: you must input only the number of the leader card");
 
-        ArrayList<LeadCard> leaders = MainClient.game.getCurrentPlayer().getLeaders();
+        ArrayList<LeadCard> leaders = MainClient.getGame().getCurrentPlayer().getLeaders();
         int num = CliUtil.checkInt(input.get(1), 1, leaders.size());
         LeadCard lead = leaders.get(num-1);
 

@@ -10,8 +10,19 @@ import java.util.ArrayList;
 public class CliGameEndedScene implements CliScene {
 
     public void displayOptions() {
-        System.out.println("GAME FINISHED!");
-        ArrayList<Pair<String, Integer>> table = MainClient.game.calculatePoints();
+        boolean won = false;
+        ArrayList<Pair<String, Integer>> table = MainClient.getGame().calculatePoints();
+
+        if (MainClient.getGame().isSinglePlayer()) {
+            if (MainClient.getGame().getPlayer(MainClient.getNickname()).getFaithPosition() >= MainClient.getGame().getFaithTrack().getTrackLength())
+                won = true;
+        } else if (table.get(0).getKey().equals(MainClient.getNickname()))
+            won = true;
+
+        if (won)
+            System.out.println("VICTORY");
+        else
+            System.out.println("DEFEAT");
 
         for (int i=0; i<table.size(); i++)
             System.out.println((i+1) + ") " + table.get(i).getKey() + " with " + table.get(i).getValue() + " points!");
