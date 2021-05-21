@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import static it.polimi.ingsw.IntelliCranio.views.gui.GameChangedEvent.GAME_CHANGED_EVENT_TYPE;
 import static java.lang.Integer.parseInt;
 
-public class GuiInitScene extends GuiScene implements SceneWithResources, SceneWithLeaders {
+public class GuiInitScene extends GuiScene implements SceneWithResources, SceneWithLeaders, SceneWithNickname {
 
     public Label message;
     public AnchorPane anchor_resources;
@@ -35,7 +35,7 @@ public class GuiInitScene extends GuiScene implements SceneWithResources, SceneW
 
         message.setText("");
 
-        GuiUtil.setLeadersUpdater(anchor_leaders);
+        GuiUtil.setLeadersUpdater(anchor_leaders, this);
     }
 
     public void setIdle(Gui gui) { }
@@ -49,4 +49,6 @@ public class GuiInitScene extends GuiScene implements SceneWithResources, SceneW
     public ArrayList<Node> getLeadersButtons() {
         return GuiUtil.getNodesStartingWithId(anchor_leaders, "leader");
     }
+
+    public String getNickname() { return MainClient.getNickname(); }
 }
