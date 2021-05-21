@@ -184,20 +184,18 @@ class Default_ActionStateTest {
         Action action = new Action();
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
-        ArrayList<CardResource> cardRequirements = new ArrayList<>();
+
         ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
         resourceRequirements.add(new Resource(FinalResource.ResourceType.STONE, 1));
-        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
-        cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
         ArrayList<Object> cards = new ArrayList<>();
 
-        LeadCard card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
+        LeadCard card = new LeadCard("leadercard_front_1_1", 2, null, resourceRequirements, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
         card.setupAbility();
 
         cards.add(card);
 
         ArrayList<LeadCard> ins=new ArrayList<>();
-        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
+        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, null, resourceRequirements, Ability.AbilityType.SALE, FinalResource.ResourceType.SERVANT, false);
         i1.setupAbility();
         ins.add(i1);
 
@@ -212,7 +210,57 @@ class Default_ActionStateTest {
         assertEquals(SELECTION_INVALID, e.getCode());
     }
 
-    //ResourceWrong
+    @Test
+    void PlayLeader_Card_RESOURCE_WRONGS(){
+        Action action = new Action();
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
+        resourceRequirements.add(new Resource(FinalResource.ResourceType.STONE, 1));
+        ArrayList<Object> cards = new ArrayList<>();
+
+        Object card = new LeadCard("leadercard_front_1_1", 2, null, resourceRequirements, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        ((LeadCard)(card)).setupAbility();
+
+        cards.add(card);
+
+        ArrayList<LeadCard> ins=new ArrayList<>();
+        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, null, resourceRequirements, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        i1.setupAbility();
+        ins.add(i1);
+
+        game.getCurrentPlayer().setLeaders(ins);
+
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN,1);
+
+        ArrayList<Object> args = new ArrayList<>();
+        args.add(new Resource(FinalResource.ResourceType.COIN, 1));
+        args.add(1);
+
+        Packet PackAdder=new Packet(ADD_FROM_EXTRA, null, args);
+
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.COIN, 1);
+
+        ArrayList<Resource> expectedExtra = new ArrayList<>();
+        expectedExtra.add(new Resource(FinalResource.ResourceType.COIN, 1));
+        action.setActionState(new ManageWarehouse_ActionState(action,null), MNG_WARE);
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, PackAdder);
+        });
+
+        assertTrue(deepEquals(expectedExtra.toArray()[0], game.getCurrentPlayer().getWarehouse().getDepot()[1]));
+
+
+        Packet packet = new Packet(PLAY_LEADER, null, cards);// For each test
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet);
+        });
+        System.out.println(e.getErrorMessage());
+        assertEquals(SELECTION_INVALID, e.getCode());
+    }
 
     @Test
     void PlayLeader_Card_NOT_CARD_REQUIRMENTS(){
@@ -269,9 +317,136 @@ class Default_ActionStateTest {
         assertEquals(SELECTION_INVALID, e.getCode());
     }
 
+    @Test
+    void PlayLeader_Card_CORRECT_CARD(){
+        Action action = new Action();
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        ArrayList<CardResource> cardRequirements = new ArrayList<>();;
+        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
+        cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
+        ArrayList<Object> cards = new ArrayList<>();
+
+        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        ((LeadCard)(card)).setupAbility();
+
+        cards.add(card);
+
+        ArrayList<LeadCard> ins=new ArrayList<>();
+        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        i1.setupAbility();
+        ins.add(i1);
+
+        game.getCurrentPlayer().setLeaders(ins);
+
+        game.getCurrentPlayer().addDevCard(new DevCard(null,0, DevCard.CardType.YELLOW,1,null,null,null),1);
+        game.getCurrentPlayer().addDevCard(new DevCard(null,0, DevCard.CardType.GREEN,1,null,null,null),1);
+
+        Packet packet = new Packet(PLAY_LEADER, null, cards);// For each test
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+        assertTrue(game.getCurrentPlayer().getLeader(i1).isActive());
+    }
+
     //wrongcard
 
-    //correct
+    @Test
+    void PlayLeader_Card_WRONG_CARD(){
+        Action action = new Action();
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        ArrayList<CardResource> cardRequirements = new ArrayList<>();;
+        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
+        cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
+        ArrayList<Object> cards = new ArrayList<>();
+
+        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        ((LeadCard)(card)).setupAbility();
+
+        cards.add(card);
+
+        ArrayList<LeadCard> ins=new ArrayList<>();
+        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, null, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        i1.setupAbility();
+        ins.add(i1);
+
+        game.getCurrentPlayer().setLeaders(ins);
+
+        game.getCurrentPlayer().addDevCard(new DevCard(null,0, DevCard.CardType.BLUE,1,null,null,null),1);
+        game.getCurrentPlayer().addDevCard(new DevCard(null,0, DevCard.CardType.PURPLE,1,null,null,null),1);
+
+        Packet packet = new Packet(PLAY_LEADER, null, cards);// For each test
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet);
+        });
+        System.out.println(e.getErrorMessage());
+        assertEquals(SELECTION_INVALID, e.getCode());
+    }
+
+    @Test
+    void PlayLeader_Card_CORRECT(){
+        Action action = new Action();
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        ArrayList<CardResource> cardRequirements = new ArrayList<>();;
+        cardRequirements.add(new CardResource(DevCard.CardType.YELLOW, 1, 0));
+        cardRequirements.add(new CardResource(DevCard.CardType.GREEN, 1, 0));
+
+        ArrayList<FinalResource> resourceRequirements = new ArrayList<>();
+        resourceRequirements.add(new Resource(FinalResource.ResourceType.STONE, 1));
+        ArrayList<Object> cards = new ArrayList<>();
+
+        Object card = new LeadCard("leadercard_front_1_1", 2, cardRequirements, resourceRequirements, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        ((LeadCard)(card)).setupAbility();
+
+        cards.add(card);
+
+        ArrayList<LeadCard> ins=new ArrayList<>();
+        LeadCard i1=new LeadCard("leadercard_front_1_1", 2, cardRequirements, resourceRequirements, Ability.AbilityType.DEPOT, FinalResource.ResourceType.SERVANT, false);
+        i1.setupAbility();
+        ins.add(i1);
+
+        game.getCurrentPlayer().setLeaders(ins);
+
+        game.getCurrentPlayer().addDevCard(new DevCard(null,0, DevCard.CardType.YELLOW,1,null,null,null),1);
+        game.getCurrentPlayer().addDevCard(new DevCard(null,0, DevCard.CardType.GREEN,1,null,null,null),1);
+
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.STONE,1);
+
+        ArrayList<Object> args = new ArrayList<>();
+        args.add(new Resource(FinalResource.ResourceType.STONE, 1));
+        args.add(1);
+
+        Packet PackAdder=new Packet(ADD_FROM_EXTRA, null, args);
+
+        game.getCurrentPlayer().addExtra(FinalResource.ResourceType.STONE, 1);
+
+        ArrayList<Resource> expectedExtra = new ArrayList<>();
+        expectedExtra.add(new Resource(FinalResource.ResourceType.STONE, 1));
+        action.setActionState(new ManageWarehouse_ActionState(action,null), MNG_WARE);
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, PackAdder);
+        });
+
+        assertTrue(deepEquals(expectedExtra.toArray()[0], game.getCurrentPlayer().getWarehouse().getDepot()[1]));
+
+
+        Packet packet = new Packet(PLAY_LEADER, null, cards);// For each test
+        action.setActionState(new Default_ActionState(action), DEFAULT);
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+        assertTrue(game.getCurrentPlayer().getLeader(i1).isActive());
+    }
 
     //End region
 
@@ -451,7 +626,7 @@ class Default_ActionStateTest {
 
         assertTrue(deepEquals(null,game.getCurrentPlayer().getLeader(i1)));
         assertTrue(deepEquals(0,game.getCurrentPlayer().getLeaders().size()));
-        assertTrue(!game.getCurrentPlayer().hasLeader(i1));
+        assertFalse(game.getCurrentPlayer().hasLeader(i1));
         assertTrue(deepEquals(1,game.getCurrentPlayer().getFaithPosition()));
 
 

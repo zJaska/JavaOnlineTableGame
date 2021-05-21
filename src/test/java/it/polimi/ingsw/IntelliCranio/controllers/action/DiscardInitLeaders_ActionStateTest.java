@@ -8,9 +8,11 @@ import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import org.junit.jupiter.api.BeforeAll;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 
 import java.util.ArrayList;
@@ -24,15 +26,15 @@ import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
 
 class DiscardInitLeaders_ActionStateTest {
 
-    static Action  action=new Action();
+     Action  action=new Action();
 
-    static ArrayList<String> nicknames=new ArrayList<>();
-    static Game game;
+     ArrayList<String> nicknames=new ArrayList<>();
+     Game game;
 
 
 
-    @BeforeAll
-    static void setupTest(){
+    @BeforeEach
+     void setupTest(){
         nicknames.add("1");
         nicknames.add("2");
         nicknames.add("3");
@@ -123,6 +125,27 @@ class DiscardInitLeaders_ActionStateTest {
 
 
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3})
+    void TestCorrect2(int val){//Le instruction code e listobject
+        ArrayList<Object> args= new ArrayList<>();
+        LeadCard dis=game.getCurrentPlayer().getLeaders().get(val);
+
+        args.add(dis);
+        Packet packet=new Packet(DISCARD_LEAD,null,args);// For each test
+
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+        assertFalse(game.getCurrentPlayer().hasLeader(dis));
+
+
+    }
+
+
 
     @Test
     void execute() {
