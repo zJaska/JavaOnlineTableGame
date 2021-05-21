@@ -4,8 +4,10 @@ import it.polimi.ingsw.IntelliCranio.client.MainClient;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode;
 import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
+import it.polimi.ingsw.IntelliCranio.views.gui.scenes.GuiDefaultScene;
 import it.polimi.ingsw.IntelliCranio.views.gui.scenes.GuiScene;
 import it.polimi.ingsw.IntelliCranio.views.gui.scenes.SceneWithLeaders;
+import it.polimi.ingsw.IntelliCranio.views.gui.scenes.SceneWithNickname;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -87,10 +89,10 @@ public class GuiUtil {
         } catch (Exception e) { }
     }
 
-    public static void setLeadersUpdater(Parent root) {
+    public static void setLeadersUpdater(Parent root, SceneWithNickname scene) {
         GuiUtil.getNodesStartingWithId(root, "img_leader").forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                ArrayList<LeadCard> cards = MainClient.getGame().getPlayer(MainClient.getNickname()).getLeaders();
+                ArrayList<LeadCard> cards = MainClient.getGame().getPlayer(scene.getNickname()).getLeaders();
                 int index = parseInt(image.getId().split("_")[2]);
 
                 if (index >= cards.size())

@@ -5,6 +5,7 @@ import it.polimi.ingsw.IntelliCranio.models.ability.DepotAbility;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.LeadCard;
 import it.polimi.ingsw.IntelliCranio.models.cards.PopeCard;
+import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.player.Strongbox;
 import it.polimi.ingsw.IntelliCranio.models.player.Warehouse;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource.ResourceType;
@@ -25,6 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,9 +34,12 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
 import static it.polimi.ingsw.IntelliCranio.views.gui.GameChangedEvent.GAME_CHANGED_EVENT_TYPE;
 import static java.lang.Integer.parseInt;
 
-public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, SceneWithResources {
+public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, SceneWithResources, SceneWithNickname {
 
     private Parent root;
+
+    private String nickname = null;
+    private Integer player_index;
 
     public Button manage_warehouse;
     public Button activate_production;
@@ -52,16 +57,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
     public ArrayList<Node> strongbox;
 
     private ImageView faith;
-    private int faith_pos = 0;
-    private double faith_translate_x = 0;
-    private double faith_translate_y = 0;
-    private int dir = 0; // 0 to 3: right, down, left, up
-
     private ImageView black_faith;
-    private int black_faith_pos = 0;
-    private double black_faith_translate_x = 0;
-    private double black_faith_translate_y = 0;
-    private int black_dir = 0; // 0 to 3: right, down, left, up
 
     public GuiDefaultScene(Parent parent) {
         super(parent);
@@ -91,15 +87,19 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
         anchor_extra.setVisible(false);
         anchor_resources.setVisible(false);
 
-        GuiUtil.setLeadersUpdater(parent);
+        GuiUtil.setLeadersUpdater(parent, this);
 
-        Label nickname = ((Label) GuiUtil.getNodeById(root, "nickname"));
-        nickname.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-            nickname.setText(MainClient.getNickname());
+        Label nicknameLabel = ((Label) GuiUtil.getNodeById(root, "nickname"));
+        nicknameLabel.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
+            nicknameLabel.setText(nickname);
         });
 
         faith.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-            int newFaithPos = MainClient.getGame().getPlayer(MainClient.getNickname()).getFaithPosition();
+            int newFaithPos = MainClient.getGame().getPlayer(nickname).getFaithPosition();
+            int faith_pos = 0;
+            int dir = 0; // 0 to 3: right, down, left, up
+            int faith_translate_x = 0;
+            int faith_translate_y = 0;
             while (newFaithPos > faith_pos) {
                 if (Arrays.asList(2,16).contains(faith_pos))
                     dir = 3;
@@ -129,6 +129,10 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
             }
 
             int newFaithPos = MainClient.getGame().getSinglePlayerData().getLorenzoFaith();
+            int black_faith_pos = 0;
+            int black_dir = 0;
+            int black_faith_translate_x = 0;
+            int black_faith_translate_y = 0;
             while (newFaithPos > black_faith_pos) {
                 if (Arrays.asList(2,16).contains(black_faith_pos))
                     black_dir = 3;
@@ -153,7 +157,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
 
         GuiUtil.getNodesStartingWithId(root, "dev_image").forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                ArrayList<DevCard>[] cards = MainClient.getGame().getPlayer(MainClient.getNickname()).getDevCardsCopy();
+                ArrayList<DevCard>[] cards = MainClient.getGame().getPlayer(nickname).getDevCardsCopy();
 
                 int slot = parseInt(image.getId().split("_")[2]);
                 int col = parseInt(image.getId().split("_")[3]);
@@ -169,7 +173,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
 
         GuiUtil.getNodesStartingWithId(root, "img_res_leader").forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                ArrayList<LeadCard> leaders = MainClient.getGame().getPlayer(MainClient.getNickname()).getLeaders();
+                ArrayList<LeadCard> leaders = MainClient.getGame().getPlayer(nickname).getLeaders();
                 int index = parseInt(image.getId().split("_")[3]);
 
                 try {
@@ -189,7 +193,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
 
         GuiUtil.getNodesStartingWithId(root, "strong_count").forEach(label -> {
             label.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                Strongbox box = MainClient.getGame().getPlayer(MainClient.getNickname()).getStrongbox();
+                Strongbox box = MainClient.getGame().getPlayer(nickname).getStrongbox();
                 int amount = box.getAmount(ResourceType.valueOf(label.getId().split("_")[2].toUpperCase()));
                 ((Label) label).setText(String.valueOf(amount));
             });
@@ -197,7 +201,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
 
         GuiUtil.getNodesStartingWithId(root, "extra_count").forEach(label -> {
             label.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                ArrayList<Resource> resources = MainClient.getGame().getPlayer(MainClient.getNickname()).getExtraRes();
+                ArrayList<Resource> resources = MainClient.getGame().getPlayer(nickname).getExtraRes();
 
                 int amount = 0;
                 for (Resource res : resources)
@@ -210,7 +214,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
 
         warehouse.forEach(image -> {
             image.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                Warehouse warehouse = MainClient.getGame().getPlayer(MainClient.getNickname()).getWarehouse();
+                Warehouse warehouse = MainClient.getGame().getPlayer(nickname).getWarehouse();
                 int row = parseInt(image.getId().split("_")[1]);
                 int col = parseInt(image.getId().split("_")[2]);
                 if (warehouse.getDepot()[row] == null || warehouse.getDepot()[row].getAmount() <= col)
@@ -224,7 +228,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
 
         GuiUtil.getNodesStartingWithId(root, "pope").forEach(rect -> {
             rect.addEventHandler(GAME_CHANGED_EVENT_TYPE, event -> {
-                ArrayList<PopeCard> cards = MainClient.getGame().getPlayer(MainClient.getNickname()).getPopeCards();
+                ArrayList<PopeCard> cards = MainClient.getGame().getPlayer(nickname).getPopeCards();
 
                 switch (cards.get(parseInt(rect.getId().split("_")[1])).getStatus()) {
                     case ACTIVE:
@@ -248,11 +252,32 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
         goto_market_card.setOnMouseClicked(event -> {
             gui.setIdleScene(CARD_MARKET);
         });
+
+        GuiUtil.getNodeById(root, "goto_player_0").setOnMouseClicked(btn -> {
+            ArrayList<Player> players = MainClient.getGame().getPlayers();
+            player_index = (player_index + 1) % players.size();
+            nickname = players.get(player_index).getNickname();
+            GuiUtil.fireDownEvent(root, new GameChangedEvent(GAME_CHANGED_EVENT_TYPE));
+        });
+        GuiUtil.getNodeById(root, "goto_player_1").setOnMouseClicked(btn -> {
+            ArrayList<Player> players = MainClient.getGame().getPlayers();
+            player_index = (player_index - 1 + players.size()) % players.size();
+            nickname = players.get(player_index).getNickname();
+            GuiUtil.fireDownEvent(root, new GameChangedEvent(GAME_CHANGED_EVENT_TYPE));
+        });
     }
 
     public void removeIdle(Gui gui) {
         goto_market_resource.setOnMouseClicked(null);
         goto_market_card.setOnMouseClicked(null);
+
+        GuiUtil.getNodeById(root, "goto_player_0").setOnMouseClicked(null);
+        GuiUtil.getNodeById(root, "goto_player_1").setOnMouseClicked(null);
+    }
+
+    public void setMainPlayer() {
+        nickname = MainClient.getNickname();
+        player_index = MainClient.getGame().getPlayers().indexOf(MainClient.getGame().getPlayer(MainClient.getNickname()));
     }
 
     public ArrayList<Node> getLeadersButtons() {
@@ -262,4 +287,6 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
     public ArrayList<Node> getResources() {
         return GuiUtil.getNodesStartingWithId(root, "resource");
     }
+
+    public String getNickname() { return nickname; }
 }
