@@ -51,10 +51,12 @@ public class WaitingRoom {
 
         // Telling clients the game is starting
 
-        players.forEach(x -> {
+
+    // TODO JASKA
+    /**    players.forEach(x -> {
             x.getValue().send(new Packet(COMMUNICATION, null, new ArrayList<>(Arrays.asList("Starting game..."))));
             x.getValue().send(new Packet(IDLE, null,null));
-        });
+        });*/
 
         ClientHandler.removePlayerNames(players.stream().map(Pair::getKey).collect(Collectors.toList()));
         MainServer.startManager(players);

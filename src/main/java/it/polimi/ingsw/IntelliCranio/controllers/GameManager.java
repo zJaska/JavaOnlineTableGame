@@ -86,6 +86,9 @@ public class GameManager implements Runnable {
             Packet gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
             network.sendAll(gamePacket);
 
+            // TODO JASKA
+            network.sendAll(new Packet(IDLE, null,null));
+
             Player currentPlayer = game.getCurrentPlayer();
 
             String message = "It's " + currentPlayer.getNickname() + "'s turn";

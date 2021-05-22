@@ -38,6 +38,7 @@ public class CliSceneFactory {
             case RES_MARKET:
                 return CliResourceMarketScene;
             case CARD_MARKET:
+                case CARD_MARKET_AS://TODO JASKA (?)
                 return CliCardMarketScene;
             case ACT_PROD:
                 return CliActivateProductionScene;
