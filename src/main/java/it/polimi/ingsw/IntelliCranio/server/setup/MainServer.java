@@ -23,6 +23,12 @@ public class MainServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT);
 
+        // Create all directories necessary to save the games and reconnecting players
+        File userDir = new File(System.getProperty("user.home") + "/IntelliCranio/");
+        userDir.mkdir();
+        File savedGamesDir = new File(System.getProperty("user.home") + "/IntelliCranio/saved_games/");
+        savedGamesDir.mkdir();
+
         HashMap<String, UUID> database = Save.getDatabase("database.json", Save.playerDatabaseType);
         if (database == null)
             nickname_uuid = new ConcurrentHashMap<>();

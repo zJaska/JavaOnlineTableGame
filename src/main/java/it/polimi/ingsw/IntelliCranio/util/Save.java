@@ -3,6 +3,7 @@ package it.polimi.ingsw.IntelliCranio.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.IntelliCranio.client.MainClient;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 
 import java.io.*;
@@ -12,11 +13,12 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class Save {
 
-    public static final String pathPrefix = "src/main/resources/saved_games/";
-    public static final String databasePath = "src/main/resources/";
+    public static final String savedGamesPath = System.getProperty("user.home") + "/IntelliCranio/saved_games/";
+    public static final String databasePath = System.getProperty("user.home") + "/IntelliCranio/";
 
     public static final Type netConfigType = new TypeToken<HashMap<String, String>>() {}.getType();
     public static final Type playerDatabaseType = new TypeToken<HashMap<String, UUID>>() {}.getType();
@@ -30,7 +32,7 @@ public class Save {
     public static void saveGame(Game game) {
 
         //Path from game unique ID
-        String path = pathPrefix + game.getUuid().toString();
+        String path = savedGamesPath + game.getUuid().toString();
 
         File file = new File(path);
 
@@ -60,7 +62,7 @@ public class Save {
     public static Game loadGame(UUID gameUuid) {
 
         //Path from game unique ID
-        String path = pathPrefix + gameUuid.toString();
+        String path = savedGamesPath + gameUuid.toString();
 
         File file = new File(path);
 
@@ -95,8 +97,13 @@ public class Save {
 
         try {
             fileData = new String(Files.readAllBytes(Paths.get(databasePath + filename)));
-        } catch (Exception e) {
-            return null;
+        } catch (Exception e1) {
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(MainClient.class.getResourceAsStream("/" + filename)));
+                fileData = br.lines().collect(Collectors.joining());
+            } catch (Exception e2) {
+                return null;
+            }
         }
 
         return gson.fromJson(fileData, tClass);
@@ -134,7 +141,7 @@ public class Save {
     public static void deleteGameData(UUID uuid, ConcurrentHashMap<String, UUID> nickname_uuid) {
 
         //Delete File from disk
-        try { new File(Save.pathPrefix + uuid.toString()).delete(); }
+        try { new File(Save.savedGamesPath + uuid.toString()).delete(); }
         catch (Exception e) {}
 
         saveDatabase(new HashMap<>(nickname_uuid), "database.json");

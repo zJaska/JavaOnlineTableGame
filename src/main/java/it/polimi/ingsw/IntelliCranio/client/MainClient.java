@@ -53,7 +53,6 @@ public class MainClient {
     private static View view;
 
     public static void main(String[] args) {
-
         view = askView();
         //view = getDummyView(parseInt(args[0]));
 
