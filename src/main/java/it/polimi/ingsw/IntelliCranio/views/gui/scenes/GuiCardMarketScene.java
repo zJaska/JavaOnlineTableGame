@@ -42,7 +42,7 @@ public class GuiCardMarketScene extends GuiScene {
                 if (card == null)
                     ((ImageView) image).setImage(null);
                 else {
-                    InputStream tmp = getClass().getResourceAsStream("/assets/development_cards/" + card.getID() + ".jpg");
+                    InputStream tmp = getClass().getResourceAsStream("/assets/development_cards/" + card.getID() + ".JPG");
                     ((ImageView) image).setImage(new Image(tmp));
                 }
             });

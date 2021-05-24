@@ -21,7 +21,7 @@ import java.util.*;
 import static it.polimi.ingsw.IntelliCranio.util.Net.createPacketFromInput;
 import static java.lang.Integer.parseInt;
 
-public class MainClient {
+public class MainClient extends FakeMain {
 
     private static Game game;
     private static Object game_lock = new Object();

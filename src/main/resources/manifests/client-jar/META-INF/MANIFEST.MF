@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: it.polimi.ingsw.IntelliCranio.client.MainClient
+Main-Class: it.polimi.ingsw.IntelliCranio.client.FakeMain
 

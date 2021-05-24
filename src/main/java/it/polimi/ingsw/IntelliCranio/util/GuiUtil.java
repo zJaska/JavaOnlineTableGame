@@ -98,7 +98,7 @@ public class GuiUtil {
                 if (index >= cards.size())
                     ((ImageView) image).setImage(null);
                 else {
-                    InputStream tmp = GuiScene.class.getResourceAsStream("/assets/leaders/" + cards.get(index).getID() + ".jpg");
+                    InputStream tmp = GuiScene.class.getResourceAsStream("/assets/leaders/" + cards.get(index).getID() + ".JPG");
                     ((ImageView) image).setImage(new Image(tmp));
                 }
             });
