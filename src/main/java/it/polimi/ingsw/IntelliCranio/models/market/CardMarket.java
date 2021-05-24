@@ -3,6 +3,7 @@ package it.polimi.ingsw.IntelliCranio.models.market;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.models.cards.DevCard;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -16,12 +17,12 @@ public class CardMarket implements Serializable {
     public final int rows, cols;
     private ArrayList<DevCard>[][] marketGrid;
 
-    public CardMarket(String path, int rows, int cols, boolean shuffle) {
+    public CardMarket(String filename, int rows, int cols, boolean shuffle) {
         this.rows = rows;
         this.cols = cols;
         marketGrid = new ArrayList[rows][cols];
 
-        setup(path, shuffle);
+        setup(filename, shuffle);
     }
 
     /**
@@ -29,36 +30,26 @@ public class CardMarket implements Serializable {
      *     Creates all the development cards and place them on the market grid.
      *     Each group is then shuffled if shuffle is enabled.
      * </summary>
-     * @param path The path of the json config file to create the cards
+     * @param filename The filename of the json config file to create the cards
      * @param shuffle Flag if grid has to be shuffled
      */
-    private void setup(String path, boolean shuffle) {
+    private void setup(String filename, boolean shuffle) {
         //Creating the list for each group
         for (int row = 0; row < rows; ++row)
             for (int col = 0; col < cols; ++col)
                 marketGrid[row][col] = new ArrayList<>();
 
-        generateGrid(path);
+        generateGrid(filename);
         if(shuffle)
             shuffle();
     }
 
     /**
      * Generates the grid of cards from a json file
-     * @param path The path for the json file to load
+     * @param filename The path for the json file to load
      */
-    private void generateGrid(String path) {
-        ArrayList<DevCard> cardList = new ArrayList<>(); //Temporary list to create all the cards
-
-        try {
-            //Get the json file as String
-            String text = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-            Gson gson = new Gson();
-            //Generate the list of cards
-            cardList = gson.fromJson(text, new TypeToken<ArrayList<DevCard>>(){}.getType());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void generateGrid(String filename) {
+        ArrayList<DevCard> cardList = Save.getDatabase(filename, new TypeToken<ArrayList<DevCard>>(){}.getType());
 
         //Divide all the cards into each slot
         cardList.forEach(card -> {

@@ -12,6 +12,7 @@ import it.polimi.ingsw.IntelliCranio.models.market.ResourceMarket;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
 import it.polimi.ingsw.IntelliCranio.models.resource.FinalResource;
 import it.polimi.ingsw.IntelliCranio.models.resource.Resource;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -52,13 +53,13 @@ public class Game implements Serializable {
 
         currentPlayerIndex = 0;
 
-        faithTrack = new FaithTrack("src/main/resources/faithtrack_config.json");
-        cardMarket = new CardMarket("src/main/resources/devcards_config.json", 3, 4, true);
+        faithTrack = Save.getDatabase("faithtrack_config.json", FaithTrack.class);
+        cardMarket = new CardMarket("devcards_config.json", 3, 4, true);
         resourceMarket = new ResourceMarket(3, 4);
 
         nicknames.forEach(nick -> players.add(new Player(nick, 3, 3)));
 
-        createLeaderCards("src/main/resources/leadcards_config.json", true);
+        createLeaderCards("leadcards_config.json", true);
 
         if (players.size() == 1) {
             singlePlayerData = new SinglePlayerData();
@@ -176,28 +177,17 @@ public class Game implements Serializable {
     /**
      * Creates all the cards from given json file and assign 4 of them randomly to each player.
      *
-     * @param path    The path of the json config file
+     * @param filename    The filename of the json config file
      * @param shuffle If true, cards get shuffled
      */
-    public void createLeaderCards(String path, boolean shuffle) {
 
-        ArrayList<LeadCard> leaders = new ArrayList<>();
+    public void createLeaderCards(String filename, boolean shuffle) {
 
-        //Get the json file as String
-        try {
-            String text = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-            Gson gson = new Gson();
-            //Generate the list of cards
-            leaders = gson.fromJson(text, new TypeToken<ArrayList<LeadCard>>() {
-            }.getType());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ArrayList<LeadCard> leaders = Save.getDatabase(filename, new TypeToken<ArrayList<LeadCard>>() {}.getType());
 
         leaders.forEach(LeadCard::setupAbility);
 
         assignCards(leaders, shuffle);
-
     }
 
     /**

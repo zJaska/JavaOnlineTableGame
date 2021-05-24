@@ -15,7 +15,5 @@ target/
 .DS_Store
 
 .idea/
-saved_games
-out
 IntelliCranio.iml
 
