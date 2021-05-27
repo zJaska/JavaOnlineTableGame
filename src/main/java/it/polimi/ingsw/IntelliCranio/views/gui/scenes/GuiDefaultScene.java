@@ -165,7 +165,7 @@ public class GuiDefaultScene extends GuiScene implements SceneWithLeaders, Scene
                 if (cards[slot] == null || cards[slot].size() <= col)
                     ((ImageView)image).setImage(null);
                 else {
-                    InputStream tmp = getClass().getResourceAsStream("/assets/development_cards/" + cards[slot].get(col).getID() + ".jpg");
+                    InputStream tmp = getClass().getResourceAsStream("/assets/development_cards/" + cards[slot].get(col).getID() + ".JPG");
                     ((ImageView) image).setImage(new Image(tmp));
                 }
             });
