@@ -143,17 +143,17 @@
                   </ImageView>
                   <AnchorPane layoutX="301.0" layoutY="193.0" prefHeight="354.0" prefWidth="453.0">
                      <children>
-                        <ImageView fx:id="dev_image_2_0" fitHeight="209.0" fitWidth="148.0" layoutX="315.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_2_2" fitHeight="209.0" fitWidth="148.0" layoutX="315.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="dev_image_1_0" fitHeight="224.0" fitWidth="142.0" layoutX="151.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_1_2" fitHeight="224.0" fitWidth="142.0" layoutX="151.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="dev_image_0_0" fitHeight="224.0" fitWidth="142.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_0_2" fitHeight="224.0" fitWidth="142.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
@@ -163,7 +163,7 @@
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="dev_image_0_2" fitHeight="224.0" fitWidth="142.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_0_0" fitHeight="224.0" fitWidth="142.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
@@ -173,7 +173,7 @@
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="dev_image_1_2" fitHeight="209.0" fitWidth="148.0" layoutX="151.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_1_0" fitHeight="209.0" fitWidth="148.0" layoutX="151.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
@@ -183,7 +183,7 @@
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="dev_image_2_2" fitHeight="209.0" fitWidth="148.0" layoutX="315.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="dev_image_2_0" fitHeight="209.0" fitWidth="148.0" layoutX="315.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/development_cards/developmentcard_back_1_b.JPG" />
                            </image>
