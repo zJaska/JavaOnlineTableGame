@@ -21,6 +21,14 @@ public class DiscardInitLeaders_ActionState extends ActionState {
         super(action);
     }
 
+    /**
+     * Execute the action relative to the code received with packet.
+     * Actions for this state:
+     * DISCARD_LEAD: Choose the initial leader card to discard
+     * @param game The game to update
+     * @param packet Packet received from client
+     * @throws InvalidArgumentsException
+     */
     @Override
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;

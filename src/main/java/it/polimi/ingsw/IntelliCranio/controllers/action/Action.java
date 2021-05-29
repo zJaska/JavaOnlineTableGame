@@ -12,15 +12,31 @@ public class Action {
     private ActionState actionState;
     private InstructionCode actionCode;
 
+    /**
+     * Calls the execute method of its current ActionState
+     * @param game The game to update
+     * @param packet The packet from client
+     * @throws InvalidArgumentsException
+     */
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         actionState.execute(game, packet);
     }
 
+    /**
+     * Change the state of this object
+     * @param actionState The state to set
+     * @param actionCode The code of the new state
+     */
     public void setActionState(ActionState actionState, InstructionCode actionCode) {
         this.actionState = actionState;
         this.actionCode = actionCode;
     }
 
+    /**
+     * Restore the state of a player if it was a init one,
+     * sets the default state otherwise
+     * @param actionCode The action code from a player
+     */
     public void restoreState(InstructionCode actionCode) {
 
         switch (actionCode) {

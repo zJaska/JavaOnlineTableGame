@@ -25,6 +25,20 @@ public class Default_ActionState extends ActionState {
         super(action);
     }
 
+    /**
+     * Execute the action relative to the code received with packet.
+     * Actions for this state:
+     * PLAY_LEADER: Activate a leader card
+     * DISCARD_LEAD: Discard a leader and gain 1 faith
+     * MNG_WARE: Enter the manage warehouse state
+     * CARD_MARKET: Enter the card market state
+     * RES_MARKET: Enter the resource market state
+     * ACT_PROD: Enter the activate production state
+     * END_TURN: Calls its super implementation
+     * @param game The game to update
+     * @param packet Packet received from client
+     * @throws InvalidArgumentsException
+     */
     @Override
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
@@ -32,13 +46,13 @@ public class Default_ActionState extends ActionState {
         Checks.packetCheck(packet);
 
         switch (packet.getInstructionCode()) {
-            case END_TURN: endTurn(); return;
             case PLAY_LEADER: playLeader(packet.getArgs()); return;
             case DISCARD_LEAD: discardLeader(packet.getArgs()); return;
             case MNG_WARE: manageWarehouse(); return;
             case CARD_MARKET: cardMarket(); return;
             case RES_MARKET: resourceMarket(); return;
             case ACT_PROD: activateProduction(); return;
+            case END_TURN: endTurn(); return;
             default:
                 InvalidArgumentsException e = new InvalidArgumentsException(CODE_NOT_ALLOWED);
                 String errorMessage = "OOOPS, something went wrong! Action invalid in current state";
@@ -171,5 +185,4 @@ public class Default_ActionState extends ActionState {
         Save.saveGame(game);
         //endregion
     }
-
 }

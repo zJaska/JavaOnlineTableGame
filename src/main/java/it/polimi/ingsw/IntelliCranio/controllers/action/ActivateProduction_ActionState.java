@@ -37,6 +37,21 @@ public class ActivateProduction_ActionState extends ActionState{
         super(action);
     }
 
+    /**
+     * Execute the action relative to the code received with packet.
+     * Actions for this state:
+     * SELECT_SLOT: Choose a production slot to enable/disable (0 = base, 1 to 3 for slots)
+     * SELECT_CARD: Choose a leader PRODUCTION card to enable/disable
+     * RES_FROM_DEPOT: Pick a resource from warehouse
+     * RES_FROM_STRONG: Pick a resource from strongbox
+     * RES_FROM_CARD: Pick a resource from a leader DEPOT card
+     * CHOOSE_RES: Select a resource to obtain from production
+     * CANCEL: Cancel all the changes and go back to initial config.
+     * CONFIRM: Check for data consistency and give all the production results
+     * @param game The game to update
+     * @param packet Packet received from client
+     * @throws InvalidArgumentsException
+     */
     @Override
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;

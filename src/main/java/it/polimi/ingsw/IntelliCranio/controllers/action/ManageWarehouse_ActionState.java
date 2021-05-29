@@ -29,6 +29,20 @@ public class ManageWarehouse_ActionState extends ActionState {
         this.prevState = prevState;
     }
 
+    /**
+     * Execute the action relative to the code received with packet.
+     * Actions for this state:
+     * SWAP_LINES: Swap two lines in depot
+     * ADD_FROM_EXTRA: Add a resource from player extra to a depot line
+     * REMOVE_FROM_DEPOT: Remove 1 resource from a depot line and put it in player extra
+     * DEPOT_TO_CARD: Remove 1 resource from a depot line and put it in a depot leader card
+     * EXTRA_TO_CARD: Remove 1 resource from player extra and put it in a depot leader card
+     * CANCEL: Cancel all the changes and go back to initial config.
+     * CONFIRM: Save all the changes and return to the default state
+     * @param game The game to update
+     * @param packet Packet received from client
+     * @throws InvalidArgumentsException
+     */
     @Override
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
