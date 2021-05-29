@@ -679,7 +679,7 @@ public class Checks {
         ArrayList<T> unifiedExpected = Lists.unifyResourceAmounts(expected);
 
         unifiedExpected.forEach(ex -> {
-            if (unifiedActual.stream().noneMatch(ac -> ac.getType() == ex.getType()))
+            if (unifiedActual.stream().anyMatch(ac -> ac.getType() != ex.getType()))
                 error.set(true);
             if (unifiedActual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
                 error.set(true);
