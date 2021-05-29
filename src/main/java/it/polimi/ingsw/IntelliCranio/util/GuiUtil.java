@@ -97,6 +97,10 @@ public class GuiUtil {
 
                 if (index >= cards.size())
                     ((ImageView) image).setImage(null);
+                else if (!MainClient.getNickname().equals(scene.getNickname()) && !cards.get(index).isActive()) {
+                    InputStream tmp = GuiScene.class.getResourceAsStream("/assets/leaders/leadercard_back.JPG");
+                    ((ImageView) image).setImage(new Image(tmp));
+                }
                 else {
                     InputStream tmp = GuiScene.class.getResourceAsStream("/assets/leaders/" + cards.get(index).getID() + ".JPG");
                     ((ImageView) image).setImage(new Image(tmp));
