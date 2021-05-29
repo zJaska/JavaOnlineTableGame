@@ -2,6 +2,7 @@ package it.polimi.ingsw.IntelliCranio.server.setup;
 
 import it.polimi.ingsw.IntelliCranio.controllers.GameManager;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
+import it.polimi.ingsw.IntelliCranio.network.PingingDevice;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import javafx.util.Pair;
 
@@ -15,7 +16,6 @@ import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.IDLE;
 public class WaitingRoom {
     private int size;
     private ArrayList<Pair<String,SocketHandler>> players = new ArrayList<>();
-    private int sleepTime = 1000;
 
     private static int numLobbies = 0;
     public static int getNumLobbies() {
@@ -29,6 +29,21 @@ public class WaitingRoom {
     }
 
     public void run() {
+        // Thread that cleans disconnected players
+        Thread cleanDisc = new Thread(() -> {
+            while (true) {
+                try { Thread.sleep(1000); } catch (Exception e) { }
+
+                for (int i=0; i<players.size(); i++) {
+                    if (PingingDevice.isDisconnected(players.get(i).getValue())) {
+                        ClientHandler.removePlayerNames(Arrays.asList(players.get(i).getKey()));
+                        players.remove(i--);
+                    }
+                }
+            }
+        });
+        cleanDisc.start();
+
         numLobbies++;
 
         while (players.size() < size) {
@@ -41,6 +56,7 @@ public class WaitingRoom {
 
         numLobbies--;
 
+        cleanDisc.stop();
         startGame();
     }
 

@@ -28,6 +28,8 @@ public class SocketHandler {
 
     public SocketHandler(Socket socket, int timeout) throws IOException {
         this.socket = socket;
+        this.timeout = timeout;
+
         setup(socket);
     }
 
@@ -55,6 +57,17 @@ public class SocketHandler {
                 System.err.println("Unable to send the object for network problems");
             } catch (Exception e) {
                 System.err.println("Unable to send packet, problems with object serialization");
+            }
+        }
+    }
+
+    public void sendThrow(Packet packet) throws Exception {
+        synchronized (this) {
+            try {
+                out.reset();
+                out.writeObject(packet);
+            } catch (Exception e) {
+                throw e;
             }
         }
     }
