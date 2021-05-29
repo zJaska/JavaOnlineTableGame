@@ -29,6 +29,18 @@ public class ResourceMarket_ActionState extends ActionState {
         super(action);
     }
 
+    /**
+     * Execute the action relative to the code received with packet.
+     * Actions for this state:
+     * SELECT_ROW: Select a row of the card market
+     * SELECT_COLUMN: Select a column of the card market
+     * CHOOSE_RES: Choose a resource to solve a blank
+     * CANCEL: Cancel all the changes and go back to initial config.
+     * CONFIRM: Save the selection and go in manage warehouse state to place the resources
+     * @param game The game to update
+     * @param packet Packet received from client
+     * @throws InvalidArgumentsException
+     */
     @Override
     public void execute(Game game, Packet packet) throws InvalidArgumentsException {
         this.game = game;
