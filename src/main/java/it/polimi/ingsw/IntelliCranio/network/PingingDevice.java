@@ -12,7 +12,7 @@ public class PingingDevice implements Runnable {
 
     public void run() {
         while (true) {
-            try { Thread.sleep(SocketHandler.TIMEOUT/3); }
+            try { Thread.sleep(socketHandler.getTimeout()/3); }
             catch (Exception e) {}
 
             try { socketHandler.send(new Packet(PING,null,null)); }

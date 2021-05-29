@@ -12,9 +12,9 @@ public class SocketHandler {
     private ObjectOutputStream out;
     private Socket socket;
 
-    public static final int TIMEOUT = 1000*1000;
+    private int timeout;
 
-    public SocketHandler(String ip, int port) throws IOException {
+    public SocketHandler(String ip, int port, int timeout) throws IOException {
         try {
             socket = new Socket(ip, port);
         } catch (IOException e) {
@@ -22,10 +22,11 @@ public class SocketHandler {
             throw e;
         }
 
+        this.timeout = timeout;
         setup(socket);
     }
 
-    public SocketHandler(Socket socket) throws IOException {
+    public SocketHandler(Socket socket, int timeout) throws IOException {
         this.socket = socket;
         setup(socket);
     }
@@ -36,7 +37,7 @@ public class SocketHandler {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
-            socket.setSoTimeout(TIMEOUT);
+            socket.setSoTimeout(timeout);
 
         } catch (IOException e) {
             System.err.println("Unable to setup input and output streams");
@@ -89,4 +90,6 @@ public class SocketHandler {
             System.err.println("Failed to close the socket");
         }
     }
+
+    public int getTimeout() { return timeout; }
 }

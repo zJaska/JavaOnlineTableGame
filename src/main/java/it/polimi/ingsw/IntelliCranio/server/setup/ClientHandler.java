@@ -5,15 +5,13 @@ import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.PingingDevice;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
+import it.polimi.ingsw.IntelliCranio.util.Save;
 import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.Response.*;
@@ -39,7 +37,9 @@ public class ClientHandler implements Runnable {
     }
 
     ClientHandler(Socket socket) throws IOException {
-        socketHandler = new SocketHandler(socket);
+        HashMap<String, String> config = Save.getDatabase("network_config.json", Save.netConfigType);
+
+        socketHandler = new SocketHandler(socket, parseInt(config.get("timeout")));
     }
 
     /**

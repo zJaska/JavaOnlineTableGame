@@ -67,7 +67,7 @@ public class MainClient {
 
         System.out.println("Connecting to " + config.get("ip") + " on port " + config.get("port"));
 
-        try { socketHandler = new SocketHandler(config.get("ip"), parseInt(config.get("port"))); }
+        try { socketHandler = new SocketHandler(config.get("ip"), parseInt(config.get("port")), parseInt(config.get("timeout"))); }
         catch (IOException e) { return ; }
 
         new Thread(new RunningView(view)).start();
