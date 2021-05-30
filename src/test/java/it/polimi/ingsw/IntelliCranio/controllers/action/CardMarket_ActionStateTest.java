@@ -669,6 +669,7 @@ class CardMarket_ActionStateTest {
 
     }
 
+
     @Test
     void ResFromDepot_WrongAmount(){
         Action action = new Action();

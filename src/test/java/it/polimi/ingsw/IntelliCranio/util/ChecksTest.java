@@ -33,7 +33,7 @@ class ChecksTest {
             Checks.packetCheck(packet);
         });
 
-        assertEquals(NULL_ARG, e.getCode());
+        assertEquals(ARGS_NULL, e.getCode());
     }
 
     @Test
