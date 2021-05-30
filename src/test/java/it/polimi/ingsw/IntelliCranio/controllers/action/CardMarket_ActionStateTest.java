@@ -772,6 +772,129 @@ class CardMarket_ActionStateTest {
     }
 
     @Test
+    void ResFromDepot_WrongAmount2(){
+        Action action = new Action();
+        action.setActionState(new CardMarket_ActionState(action), CARD_MARKET);
+        ArrayList<Object> args=new ArrayList<>();
+        Card card=game.getCardMarket().getCard(2,0);
+
+        switch (card.getID()) {
+            case "developmentcard_front_g_1_1":
+                game.getCurrentPlayer().getWarehouse().add(1,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(1,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.COIN,1));
+                break;
+            case "developmentcard_front_g_1_2":
+                game.getCurrentPlayer().getWarehouse().add(0,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(1,new Resource(FinalResource.ResourceType.STONE,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.SERVANT,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.SERVANT,1));
+                break;
+            case "developmentcard_front_g_1_3":
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(0,new Resource(FinalResource.ResourceType.COIN,1));
+                break;
+            case "developmentcard_front_g_1_4":
+                game.getCurrentPlayer().getWarehouse().add(1,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(1,new Resource(FinalResource.ResourceType.SHIELD,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.COIN,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.COIN,1));
+                game.getCurrentPlayer().getWarehouse().add(2,new Resource(FinalResource.ResourceType.COIN,1));
+                break;
+        }
+
+        args.add(2);
+        args.add(0);
+
+
+        Packet packet = new Packet(SELECT_CARD, null, args);
+
+        assertDoesNotThrow(() -> {
+            action.execute(game, packet);
+        });
+
+
+
+        assertDoesNotThrow(() -> {
+            switch (card.getID()) {
+                case "developmentcard_front_g_1_1":
+                    System.out.println("1");
+                    ArrayList<Object> args2=new ArrayList<>();
+                    args2.add(1);
+
+                    Packet packet2=new Packet(RES_FROM_DEPOT,null,args2);
+
+                    action.execute(game, packet2);
+                    action.execute(game, packet2);
+
+                    args2.set(0,2);
+
+                    action.execute(game, packet2);
+                    break;
+                case "developmentcard_front_g_1_2":
+                    System.out.println("2");
+                    ArrayList<Object> args3=new ArrayList<>();
+                    args3.add(0);
+
+                    Packet packet3=new Packet(RES_FROM_DEPOT,null,args3);
+                    action.execute(game, packet3);
+
+                    args3.set(0,1);
+                    action.execute(game, packet3);
+
+                    args3.set(0,2);
+                    action.execute(game, packet3);
+                    action.execute(game, packet3);
+                    break;
+                case "developmentcard_front_g_1_3":
+                    System.out.println("3");
+                    ArrayList<Object> args4=new ArrayList<>();
+                    args4.add(2);
+                    Packet packet4=new Packet(RES_FROM_DEPOT,null,args4);
+                    action.execute(game, packet4);
+                    action.execute(game, packet4);
+                    action.execute(game, packet4);
+                    args4.set(0,0);
+                    action.execute(game, packet4);
+                    break;
+                case "developmentcard_front_g_1_4":
+                    System.out.println("4");
+                    ArrayList<Object> args5=new ArrayList<>();
+                    args5.add(1);
+                    Packet packet5=new Packet(RES_FROM_DEPOT,null,args5);
+
+                    action.execute(game, packet5);
+                    action.execute(game, packet5);
+
+                    args5.set(0,2);
+                    action.execute(game, packet5);
+                    action.execute(game, packet5);
+                    action.execute(game, packet5);
+
+                    break;
+            }
+
+
+
+
+        });
+
+        assertTrue(deepEquals(null, game.getCurrentPlayer().getWarehouse().getDepot()[2]));
+        assertTrue(deepEquals(null, game.getCurrentPlayer().getWarehouse().getDepot()[1]));
+        assertTrue(deepEquals(null, game.getCurrentPlayer().getWarehouse().getDepot()[0]));
+
+        Packet packet1 = new Packet(CONFIRM, null, new ArrayList<>());
+
+
+        InvalidArgumentsException e = assertThrows(InvalidArgumentsException.class, () -> {
+            action.execute(game, packet1);
+        });
+        assertEquals(SELECTION_INVALID, e.getCode());
+    }
+
+    @Test
     void ResFromStrong_Correct(){
         Action action = new Action();
         action.setActionState(new CardMarket_ActionState(action), CARD_MARKET);
