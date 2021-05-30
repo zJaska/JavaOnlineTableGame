@@ -13,7 +13,7 @@ public class CardMarketTest {
 
     @Test
     public void getCard() {
-        CardMarket market = new CardMarket("src/test/resources/devcards_config_test.json", 3, 4, false);
+        CardMarket market = new CardMarket("devcards_config_test.json", 3, 4, false);
         //market.setup("src/test/resources/devcards_config_test.json", false);
 
         //Region used to create a test card
@@ -87,7 +87,7 @@ public class CardMarketTest {
 
     @Test
     public void removeCard() {
-        CardMarket market = new CardMarket("src/test/resources/devcards_config_test.json", 3, 4, false);
+        CardMarket market = new CardMarket("devcards_config_test.json", 3, 4, false);
         //market.setup("src/test/resources/devcards_config_test.json", false);
 
         //region Create Test Card
