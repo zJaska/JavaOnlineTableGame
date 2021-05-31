@@ -648,10 +648,16 @@ public class Checks {
     public static <T extends FinalResource> void invalidProdCostResources(ArrayList<T> actual, ArrayList<T> expected) throws InvalidArgumentsException {
 
         AtomicBoolean error = new AtomicBoolean(false);
-
         ArrayList<T> unifiedActual = Lists.unifyResourceAmounts(actual);
+        ArrayList<T> unifiedExpected = Lists.unifyResourceAmounts(expected);
 
-        expected.forEach(ex -> {
+
+        unifiedActual.forEach(ac -> {
+            if(unifiedExpected.stream().noneMatch(ex -> ex.getType() == ac.getType()))
+                error.set(true);
+        });
+
+        unifiedExpected.forEach(ex -> {
             if (unifiedActual.stream().noneMatch(ac -> ac.getType() == ex.getType()))
                 error.set(true);
             if (unifiedActual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
