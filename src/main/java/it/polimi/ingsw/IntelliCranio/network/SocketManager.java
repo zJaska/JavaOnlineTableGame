@@ -59,9 +59,9 @@ public class SocketManager implements NetworkManagerI {
         players.values().forEach(x -> x.clear());
     }
 
-    public void disconnect (String name) {
-        players.get(name).close();
-    }
+    public void disconnect (String name) { players.get(name).close(); }
 
     public void connect (String name, SocketHandler socketHandler) { players.put(name, socketHandler); }
+
+    public SocketHandler getSocketHandler(String player) { return players.get(player); }
 }

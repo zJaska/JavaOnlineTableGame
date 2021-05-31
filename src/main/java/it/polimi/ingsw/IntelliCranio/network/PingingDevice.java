@@ -9,7 +9,8 @@ public class PingingDevice implements Runnable {
 
     private static ConcurrentHashMap<SocketHandler, Boolean> disconnectedSockets = new ConcurrentHashMap<>();
     public static boolean isDisconnected(SocketHandler sh) {
-        return disconnectedSockets.get(sh);
+        try { return disconnectedSockets.get(sh); }
+        catch (Exception e) { return true; }
     }
 
 
@@ -23,7 +24,7 @@ public class PingingDevice implements Runnable {
         disconnectedSockets.put(socketHandler, false);
 
         while (true) {
-            try { Thread.sleep(socketHandler.getTimeout()/3); }
+            try { Thread.sleep(2000); }
             catch (Exception e) {}
 
             try { socketHandler.sendThrow(new Packet(PING,null,null)); }

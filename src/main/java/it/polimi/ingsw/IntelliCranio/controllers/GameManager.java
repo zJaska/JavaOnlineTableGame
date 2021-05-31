@@ -3,10 +3,7 @@ package it.polimi.ingsw.IntelliCranio.controllers;
 import it.polimi.ingsw.IntelliCranio.controllers.action.*;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.models.player.Player;
-import it.polimi.ingsw.IntelliCranio.network.NetworkManagerI;
-import it.polimi.ingsw.IntelliCranio.network.Packet;
-import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
-import it.polimi.ingsw.IntelliCranio.network.SocketManager;
+import it.polimi.ingsw.IntelliCranio.network.*;
 import it.polimi.ingsw.IntelliCranio.server.exceptions.InvalidArgumentsException;
 import it.polimi.ingsw.IntelliCranio.server.setup.MainServer;
 import it.polimi.ingsw.IntelliCranio.util.Net;
@@ -16,6 +13,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.IntelliCranio.network.Packet.InstructionCode.*;
@@ -28,7 +26,7 @@ public class GameManager implements Runnable {
     private Action action = new Action();
 
     private NetworkManagerI network;
-    private TreeMap<String, Boolean> onlinePlayers = new TreeMap<>();
+    private ConcurrentHashMap<String, Boolean> onlinePlayers = new ConcurrentHashMap<>();
 
     public GameManager(UUID uuid, ArrayList<Pair<String, SocketHandler>> onlinePlayerConnections) {
         ArrayList<String> nicknames = new ArrayList<>();
@@ -70,6 +68,17 @@ public class GameManager implements Runnable {
 
     private void playGame() {
 
+        Thread checkDisconnected = new Thread(() -> {
+            while (true) {
+                try { Thread.sleep(2000); } catch (Exception e) {}
+                onlinePlayers.keySet().forEach(nick -> {
+                    if (onlinePlayers.get(nick) && PingingDevice.isDisconnected(((SocketManager)network).getSocketHandler(nick)))
+                        onlinePlayers.put(nick, false);
+                });
+            }
+        });
+        checkDisconnected.start();
+
         //Game lifecycle
         while (true) {
 
@@ -86,7 +95,6 @@ public class GameManager implements Runnable {
             Packet gamePacket = new Packet(GAME, null, new ArrayList<>(Arrays.asList(game)));
             network.sendAll(gamePacket);
 
-            // TODO JASKA
             network.sendAll(new Packet(IDLE, null,null));
 
             Player currentPlayer = game.getCurrentPlayer();
@@ -178,6 +186,7 @@ public class GameManager implements Runnable {
             }
         }
 
+        checkDisconnected.stop();
     }
 
     private void endTurn (Player currentPlayer) {
