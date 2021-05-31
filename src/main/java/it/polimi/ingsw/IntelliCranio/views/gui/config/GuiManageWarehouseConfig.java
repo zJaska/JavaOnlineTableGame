@@ -89,6 +89,8 @@ public class GuiManageWarehouseConfig implements GuiConfig {
         listeners.forEach(image -> {
             image.setOnMouseClicked(null);
         });
+
+        GuiUtil.removePointers(realScene);
     }
 
     public void resolve(Node source, Node target) {

@@ -56,8 +56,6 @@ public class Player implements Serializable {
 
         hasPlayed = false;
         lastAction = InstructionCode.DISCARD_INIT_LEAD;
-
-
     }
 
     //region Getters
