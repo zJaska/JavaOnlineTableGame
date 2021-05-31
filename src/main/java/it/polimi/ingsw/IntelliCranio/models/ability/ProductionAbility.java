@@ -11,9 +11,4 @@ public class ProductionAbility extends Ability{
         super(type);
     }
 
-    @Override
-    public ArrayList<Resource> effect() {
-        System.out.println("ProductionAbility");
-        return null;
-    }
 }

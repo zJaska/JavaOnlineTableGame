@@ -11,9 +11,4 @@ public class ResourceAbility extends Ability{
         super(type);
     }
 
-    @Override
-    public ArrayList<Resource> effect() {
-        System.out.println("ResourceAbility");
-        return null;
-    }
 }
