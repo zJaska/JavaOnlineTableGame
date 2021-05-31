@@ -82,6 +82,11 @@ public class GameManager implements Runnable {
         //Game lifecycle
         while (true) {
 
+            while (onlinePlayers.values().stream().filter(bool -> bool).count() <= 1 && !game.isSinglePlayer())
+                try { Thread.sleep(1000); } catch (Exception e) {}
+            while (onlinePlayers.values().stream().filter(bool -> bool).count() <= 0 && game.isSinglePlayer())
+                try { Thread.sleep(1000); } catch (Exception e) {}
+
             //Check for game ended and first player reached
             if(game.isGameEnded() && game.getCurrentPlayerIndex() == 0)
                 break; //Exit from main game loop and show results

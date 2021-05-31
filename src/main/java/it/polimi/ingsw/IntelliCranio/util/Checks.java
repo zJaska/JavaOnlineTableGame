@@ -651,24 +651,12 @@ public class Checks {
         ArrayList<T> unifiedActual = Lists.unifyResourceAmounts(actual);
         ArrayList<T> unifiedExpected = Lists.unifyResourceAmounts(expected);
 
-
-        unifiedActual.forEach(ac -> {
-            if(unifiedExpected.stream().noneMatch(ex -> ex.getType() == ac.getType()))
-                error.set(true);
-        });
-
         unifiedExpected.forEach(ex -> {
             if (unifiedActual.stream().noneMatch(ac -> ac.getType() == ex.getType()))
                 error.set(true);
-            if (unifiedActual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() != ex.getAmount())))
+            if (unifiedActual.stream().anyMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() < ex.getAmount())))
                 error.set(true);
         });
-
-        /*
-        expected.forEach(ex -> {
-            if(actual.stream().noneMatch(ac -> (ac.getType() == ex.getType() && ac.getAmount() < ex.getAmount())))
-                error.set(true);
-        });*/
 
         if (error.get()) {
             InvalidArgumentsException e = new InvalidArgumentsException(SELECTION_INVALID);
