@@ -411,5 +411,4 @@ public class ActivateProduction_ActionState extends ActionState{
         action.setActionState(new Default_ActionState(action), DEFAULT);
 
     }
-
 }
