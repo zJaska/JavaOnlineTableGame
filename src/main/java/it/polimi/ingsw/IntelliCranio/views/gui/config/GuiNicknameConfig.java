@@ -31,7 +31,7 @@ public class GuiNicknameConfig implements GuiConfig {
         realScene.message.setText("Choose your nickname");
         realScene.textInput.setVisible(true);
         realScene.confirm_button.setOnMouseClicked(event -> {
-            if (realScene.textInput.getText().trim() != "" && !(realScene.textInput.getText().split(" ").length > 1))
+            if (realScene.textInput.getText().trim().length() >= 1 && !(realScene.textInput.getText().split(" ").length > 1))
                 gui.setData(new Pair<>(
                         CHOOSE_NICKNAME,
                         new ArrayList<>(Arrays.asList(realScene.textInput.getText().trim()))));

@@ -28,7 +28,7 @@ public class Cli implements View {
         do {
             do {
                 input = new ArrayList<String>(Arrays.asList(scanner.nextLine().split(" ")));
-            } while (input.size() == 0 || input.get(0) == "");
+            } while (input.size() == 0 || input.get(0).equals(""));
 
             String firstWord = input.get(0);
             if (Arrays.stream(CliIdleScene.IDLE_COMMANDS).anyMatch(x -> x.equals(firstWord))) {

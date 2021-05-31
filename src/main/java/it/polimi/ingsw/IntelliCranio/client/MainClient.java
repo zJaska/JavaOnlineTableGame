@@ -1,21 +1,14 @@
 package it.polimi.ingsw.IntelliCranio.client;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.IntelliCranio.models.Game;
 import it.polimi.ingsw.IntelliCranio.network.Packet;
 import it.polimi.ingsw.IntelliCranio.network.SocketHandler;
 import it.polimi.ingsw.IntelliCranio.util.Save;
-import it.polimi.ingsw.IntelliCranio.views.DummyView;
 import it.polimi.ingsw.IntelliCranio.views.View;
 import it.polimi.ingsw.IntelliCranio.views.cli.Cli;
-import it.polimi.ingsw.IntelliCranio.views.cli.scenes.CliIdleScene;
-import it.polimi.ingsw.IntelliCranio.views.gui.Gui;
 import it.polimi.ingsw.IntelliCranio.views.gui.GuiLauncher;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 import static it.polimi.ingsw.IntelliCranio.util.Net.createPacketFromInput;
@@ -54,7 +47,6 @@ public class MainClient {
 
     public static void main(String[] args) {
         view = askView();
-        //view = getDummyView(parseInt(args[0]));
 
         HashMap<String, String> config = Save.getDatabase("network_config.json", Save.netConfigType);
 
@@ -102,28 +94,5 @@ public class MainClient {
         }
 
         return null;
-    }
-
-    private static View getDummyView(int count) {
-        String[] inputs = null;
-
-        switch (count) {
-            case 0:
-                inputs = new String [] {
-                        "ste",
-                        "2"
-                };
-                break;
-            case 1:
-                inputs = new String[] {
-                        "ste",
-                        "anna",
-                        "3"
-                };
-                break;
-
-        }
-
-        return new DummyView(inputs);
     }
 }

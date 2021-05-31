@@ -120,6 +120,7 @@ public class ClientHandler implements Runnable {
 
         } catch (IOException e) {
             disconnectPlayer(socketHandler,TIMEOUT_MSG);
+            playersTempNames.remove(nickname);
             return;
         }
 
