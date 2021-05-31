@@ -16,9 +16,5 @@ public abstract class Ability implements Serializable {
         this.type = type;
     }
 
-    public ArrayList<Resource> effect() {
-        System.out.println("Ability");
-        return null;
-    }
 
 }

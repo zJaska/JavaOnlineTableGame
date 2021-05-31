@@ -11,9 +11,4 @@ public class SaleAbility extends Ability{
         super(type);
     }
 
-    @Override
-    public ArrayList<Resource> effect() {
-        System.out.println("SaleAbility");
-        return null;
-    }
 }

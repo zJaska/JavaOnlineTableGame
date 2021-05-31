@@ -13,11 +13,6 @@ public class DepotAbility extends Ability{
         super(type);
     }
 
-    @Override
-    public ArrayList<Resource> effect() {
-        System.out.println("DepotAbility");
-        return null;
-    }
 
     public void addResource() {
 
