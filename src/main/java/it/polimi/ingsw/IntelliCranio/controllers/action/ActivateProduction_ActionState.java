@@ -392,7 +392,7 @@ public class ActivateProduction_ActionState extends ActionState{
         //Add faith from devcards
         allProduct.stream().filter(res -> res.getType().equals(FAITH)).forEach(faith -> {
             for(int i = 0; i < faith.getAmount(); ++i)
-                player.addFaith();
+                game.addCurrentPlayerFaith();
         });
 
         //Add resources to player strongbox
